@@ -1,5 +1,11 @@
 import { Layout } from "@/components/layout/Layout"
-import { Badge } from "@/components/ui/badge"
+import {
+  MacroContext,
+  FundingGap,
+  ProteinEfficiency,
+  EuropeanDeficit,
+  Leadership,
+} from "@/components/sections"
 
 function App() {
   return (
@@ -98,66 +104,12 @@ function App() {
         </div>
       </section>
 
-      {/* Placeholder Sections */}
-      <section id="macro-context" className="py-24 px-4 min-h-screen flex items-center">
-        <div className="max-w-5xl mx-auto text-center">
-          <Badge variant="outline" className="mb-4">Section 2</Badge>
-          <h2 className="font-heading text-3xl font-bold text-deep-navy mb-4">
-            Macro Context
-          </h2>
-          <p className="text-deep-navy/70">
-            Global food systems face a structural protein deficit...
-          </p>
-        </div>
-      </section>
-
-      <section id="funding-gap" className="py-24 px-4 min-h-screen flex items-center bg-glacier-blue/20">
-        <div className="max-w-5xl mx-auto text-center">
-          <Badge variant="outline" className="mb-4">Section 3</Badge>
-          <h2 className="font-heading text-3xl font-bold text-deep-navy mb-4">
-            SDG 14 Funding Gap
-          </h2>
-          <p className="text-deep-navy/70">
-            €126B annual deficit in ocean sustainability investment...
-          </p>
-        </div>
-      </section>
-
-      <section id="protein-efficiency" className="py-24 px-4 min-h-screen flex items-center">
-        <div className="max-w-5xl mx-auto text-center">
-          <Badge variant="outline" className="mb-4">Section 4</Badge>
-          <h2 className="font-heading text-3xl font-bold text-deep-navy mb-4">
-            Marine Protein Efficiency
-          </h2>
-          <p className="text-deep-navy/70">
-            225x less land and freshwater than terrestrial livestock...
-          </p>
-        </div>
-      </section>
-
-      <section id="european-deficit" className="py-24 px-4 min-h-screen flex items-center bg-glacier-blue/20">
-        <div className="max-w-5xl mx-auto text-center">
-          <Badge variant="outline" className="mb-4">Section 5</Badge>
-          <h2 className="font-heading text-3xl font-bold text-deep-navy mb-4">
-            The European Deficit
-          </h2>
-          <p className="text-deep-navy/70">
-            €22B structural trade imbalance in seafood...
-          </p>
-        </div>
-      </section>
-
-      <section id="team" className="py-24 px-4 min-h-screen flex items-center">
-        <div className="max-w-5xl mx-auto text-center">
-          <Badge variant="outline" className="mb-4">Section 6</Badge>
-          <h2 className="font-heading text-3xl font-bold text-deep-navy mb-4">
-            Executive Leadership
-          </h2>
-          <p className="text-deep-navy/70">
-            Over 150 years of combined experience in Private Equity and Corporate Finance...
-          </p>
-        </div>
-      </section>
+      {/* Content Sections */}
+      <MacroContext />
+      <FundingGap />
+      <ProteinEfficiency />
+      <EuropeanDeficit />
+      <Leadership />
     </Layout>
   )
 }
