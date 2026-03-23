@@ -4,8 +4,18 @@ export function FundingGap() {
   const { required, current, gap } = fundingGap.scorecard
 
   return (
-    <section id="funding-gap" className="py-24 px-6 md:px-12 lg:px-24 bg-deep-navy">
-      <div className="max-w-6xl mx-auto">
+    <section id="funding-gap" className="relative py-24 px-6 md:px-12 lg:px-24 overflow-hidden">
+      {/* Background Image */}
+      <div className="absolute inset-0">
+        <img
+          src="/assets/dolphins-group.png"
+          alt=""
+          className="w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-deep-navy/85" />
+      </div>
+
+      <div className="relative z-10 max-w-6xl mx-auto">
         {/* Section Header */}
         <div className="mb-16 text-center">
           <p className="text-atlantic-teal font-mono text-sm tracking-wider uppercase mb-2">

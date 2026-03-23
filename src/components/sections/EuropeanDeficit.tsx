@@ -16,17 +16,26 @@ import { europeanDeficit } from "@/data/content"
 
 export function EuropeanDeficit() {
   return (
-    <section id="european-deficit" className="py-24 px-6 md:px-12 lg:px-24 bg-glacier-blue/30">
-      <div className="max-w-6xl mx-auto">
+    <section id="european-deficit" className="relative py-24 px-6 md:px-12 lg:px-24 overflow-hidden">
+      {/* Background Image */}
+      <div className="absolute inset-0">
+        <img
+          src="/assets/sharks-cover.png"
+          alt=""
+          className="w-full h-full object-cover"
+        />
+      </div>
+
+      <div className="relative z-10 max-w-6xl mx-auto">
         {/* Section Header */}
         <div className="mb-16">
           <p className="text-atlantic-teal font-mono text-sm tracking-wider uppercase mb-2">
             Section 05
           </p>
-          <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl font-bold text-deep-navy mb-4">
+          <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl font-bold text-ice-white mb-4">
             {europeanDeficit.headline}
           </h2>
-          <p className="font-body text-lg text-deep-navy/70 max-w-2xl">
+          <p className="font-body text-lg text-ice-white/80 max-w-2xl">
             {europeanDeficit.subheadline}
           </p>
         </div>
@@ -36,7 +45,7 @@ export function EuropeanDeficit() {
           {europeanDeficit.copyPoints.map((point, index) => (
             <div
               key={index}
-              className="bg-white border border-glacier-blue rounded-lg p-6 shadow-sm"
+              className="bg-white/70 backdrop-blur-sm border border-ice-white/30 rounded-lg p-6 shadow-sm"
             >
               <p className="font-mono text-2xl md:text-3xl font-bold text-atlantic-teal mb-2">
                 {point.metric}

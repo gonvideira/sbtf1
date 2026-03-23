@@ -48,13 +48,13 @@ export function Leadership() {
               key={index}
               className="bg-white border border-glacier-blue rounded-lg overflow-hidden shadow-sm group hover:shadow-md transition-shadow"
             >
-              {/* Photo Placeholder */}
-              <div className="aspect-square bg-gradient-to-br from-deep-navy/5 to-deep-navy/10 flex items-center justify-center">
-                <div className="w-24 h-24 rounded-full bg-deep-navy/10 flex items-center justify-center">
-                  <span className="font-heading text-3xl font-bold text-deep-navy/30">
-                    {member.name.split(" ").map(n => n[0]).join("")}
-                  </span>
-                </div>
+              {/* Photo */}
+              <div className="aspect-[3/4] bg-gradient-to-br from-deep-navy/5 to-deep-navy/10 overflow-hidden">
+                <img
+                  src={member.image}
+                  alt={member.name}
+                  className="w-full h-full object-cover object-top grayscale hover:grayscale-0 transition-all duration-500"
+                />
               </div>
 
               {/* Info */}

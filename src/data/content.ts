@@ -215,7 +215,7 @@ export const leadership = {
     {
       name: "António Castel-Branco",
       role: "Managing Partner",
-      image: "/assets/team/antonio.jpg",
+      image: "/assets/team/antonio.png",
       highlights: [
         "8+ years investment in Blue Economy",
         "Chairman of NaturaFish",
@@ -226,7 +226,7 @@ export const leadership = {
     {
       name: "João Reis",
       role: "Operating Partner",
-      image: "/assets/team/joao-reis.jpg",
+      image: "/assets/team/joao-reis.png",
       highlights: [
         "20+ years in Blue Economy",
         "Former Board Member at Docapesca Portos e Lotas",
@@ -236,7 +236,7 @@ export const leadership = {
     {
       name: "João Fialho",
       role: "IC Member",
-      image: "/assets/team/joao-fialho.jpg",
+      image: "/assets/team/joao-fialho.png",
       highlights: [
         "10+ years in Structured Finance at Santander",
         "Managed collateralized portfolios exceeding €20B",
@@ -245,7 +245,7 @@ export const leadership = {
     {
       name: "Manuel Abreu",
       role: "IC Member",
-      image: "/assets/team/manuel.jpg",
+      image: "/assets/team/manuel.png",
       highlights: [
         "10+ years international business development",
         "Experience across real estate, energy, and IT",
