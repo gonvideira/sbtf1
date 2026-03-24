@@ -47,8 +47,8 @@ export function ProteinEfficiency() {
         {/* Charts Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
           {/* FCR Comparison Chart */}
-          <FadeIn delay={0.2}>
-            <div className="bg-white border border-glacier-blue rounded-lg p-4 md:p-6 shadow-sm">
+          <FadeIn delay={0.2} className="h-full">
+            <div className="bg-white border border-glacier-blue rounded-lg p-4 md:p-6 shadow-sm h-full">
               <h3 className="font-heading text-base md:text-lg font-semibold text-deep-navy mb-1">
                 {proteinEfficiency.fcrComparison.title}
               </h3>
@@ -56,7 +56,7 @@ export function ProteinEfficiency() {
                 {proteinEfficiency.fcrComparison.subtitle}
               </p>
               <div className="h-56 md:h-72">
-                <ResponsiveContainer width="100%" height="100%">
+                <ResponsiveContainer width="100%" height="100%" minWidth={0}>
                   <BarChart
                     data={proteinEfficiency.fcrComparison.data}
                     layout="vertical"
@@ -105,8 +105,8 @@ export function ProteinEfficiency() {
           </FadeIn>
 
           {/* Carbon Footprint Chart */}
-          <FadeIn delay={0.3}>
-            <div className="bg-white border border-glacier-blue rounded-lg p-4 md:p-6 shadow-sm">
+          <FadeIn delay={0.3} className="h-full">
+            <div className="bg-white border border-glacier-blue rounded-lg p-4 md:p-6 shadow-sm h-full">
               <h3 className="font-heading text-base md:text-lg font-semibold text-deep-navy mb-1">
                 {proteinEfficiency.carbonFootprint.title}
               </h3>
@@ -114,7 +114,7 @@ export function ProteinEfficiency() {
                 {proteinEfficiency.carbonFootprint.subtitle}
               </p>
               <div className="h-56 md:h-72">
-                <ResponsiveContainer width="100%" height="100%">
+                <ResponsiveContainer width="100%" height="100%" minWidth={0}>
                   <BarChart
                     data={proteinEfficiency.carbonFootprint.data}
                     margin={{ top: 5, right: 20, left: 10, bottom: 5 }}

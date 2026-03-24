@@ -46,7 +46,7 @@ export function EuropeanDeficit() {
         <StaggerContainer staggerDelay={0.1} className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 mb-10 md:mb-16">
           {europeanDeficit.copyPoints.map((point, index) => (
             <StaggerItem key={index}>
-              <div className="bg-white/70 backdrop-blur-sm border border-ice-white/30 rounded-lg p-4 md:p-6 shadow-sm h-full">
+              <div className="bg-white/40 backdrop-blur-sm border border-ice-white/30 rounded-lg p-4 md:p-6 shadow-sm h-full">
                 <p className="font-mono text-xl md:text-3xl font-bold text-atlantic-teal mb-1 md:mb-2">
                   {point.metric}
                 </p>
@@ -61,8 +61,8 @@ export function EuropeanDeficit() {
         {/* Charts Grid */}
         <StaggerContainer staggerDelay={0.15} className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-8">
           {/* Self-Sufficiency Chart */}
-          <StaggerItem>
-            <div className="bg-white border border-glacier-blue rounded-lg p-4 md:p-6 shadow-sm">
+          <StaggerItem className="h-full">
+            <div className="bg-white border border-glacier-blue rounded-lg p-4 md:p-6 shadow-sm h-full">
               <h3 className="font-heading text-sm md:text-lg font-semibold text-deep-navy mb-1">
                 {europeanDeficit.selfSufficiency.title}
               </h3>
@@ -70,7 +70,7 @@ export function EuropeanDeficit() {
                 {europeanDeficit.selfSufficiency.subtitle}
               </p>
               <div className="h-48 md:h-56">
-                <ResponsiveContainer width="100%" height="100%">
+                <ResponsiveContainer width="100%" height="100%" minWidth={0}>
                   <AreaChart
                     data={europeanDeficit.selfSufficiency.data}
                     margin={{ top: 5, right: 10, left: -10, bottom: 5 }}
@@ -109,8 +109,8 @@ export function EuropeanDeficit() {
           </StaggerItem>
 
           {/* Trade Deficit Chart */}
-          <StaggerItem>
-            <div className="bg-white border border-glacier-blue rounded-lg p-4 md:p-6 shadow-sm">
+          <StaggerItem className="h-full">
+            <div className="bg-white border border-glacier-blue rounded-lg p-4 md:p-6 shadow-sm h-full">
               <h3 className="font-heading text-sm md:text-lg font-semibold text-deep-navy mb-1">
                 {europeanDeficit.tradeDeficit.title}
               </h3>
@@ -118,7 +118,7 @@ export function EuropeanDeficit() {
                 {europeanDeficit.tradeDeficit.subtitle}
               </p>
               <div className="h-48 md:h-56">
-                <ResponsiveContainer width="100%" height="100%">
+                <ResponsiveContainer width="100%" height="100%" minWidth={0}>
                   <BarChart
                     data={europeanDeficit.tradeDeficit.data}
                     margin={{ top: 5, right: 10, left: -10, bottom: 5 }}
@@ -150,8 +150,8 @@ export function EuropeanDeficit() {
           </StaggerItem>
 
           {/* Global Consumption Donut */}
-          <StaggerItem>
-            <div className="bg-white border border-glacier-blue rounded-lg p-4 md:p-6 shadow-sm">
+          <StaggerItem className="h-full">
+            <div className="bg-white border border-glacier-blue rounded-lg p-4 md:p-6 shadow-sm h-full">
               <h3 className="font-heading text-sm md:text-lg font-semibold text-deep-navy mb-1">
                 {europeanDeficit.globalConsumption.title}
               </h3>
@@ -159,7 +159,7 @@ export function EuropeanDeficit() {
                 EU share of global demand
               </p>
               <div className="h-48 md:h-56 relative">
-                <ResponsiveContainer width="100%" height="100%">
+                <ResponsiveContainer width="100%" height="100%" minWidth={0}>
                   <PieChart>
                     <Pie
                       data={europeanDeficit.globalConsumption.data}

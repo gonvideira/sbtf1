@@ -5,8 +5,8 @@ export function MacroContext() {
     <section id="macro-context" className="relative">
       {/* Main Content */}
       <div className="min-h-screen flex flex-col lg:flex-row bg-ice-white">
-        {/* Left - Hero Video */}
-        <div className="lg:w-1/2 relative min-h-[40vh] md:min-h-[50vh] lg:min-h-screen">
+        {/* Left - Hero Video (Desktop only) */}
+        <div className="hidden lg:block lg:w-1/2 relative lg:min-h-screen">
           <video
             src="/assets/dolphin-underwater-animated.mp4"
             autoPlay
@@ -20,7 +20,7 @@ export function MacroContext() {
           {/* Top gradient for seamless Hero transition */}
           <div className="absolute inset-x-0 top-0 h-32 md:h-48 bg-gradient-to-b from-deep-navy/80 to-transparent" />
           {/* Right/Bottom gradient for content blend */}
-          <div className="absolute inset-0 bg-gradient-to-b lg:bg-gradient-to-r from-transparent via-transparent to-ice-white/50 lg:to-ice-white/50" />
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-ice-white/50" />
         </div>
 
         {/* Right - Stats & Copy */}
@@ -37,9 +37,25 @@ export function MacroContext() {
             <h2 className="font-heading text-2xl md:text-4xl lg:text-5xl font-bold text-deep-navy mb-3 md:mb-4">
               Global Seafood
             </h2>
-            <p className="font-body text-base md:text-xl text-deep-navy/60 mb-8 md:mb-12 max-w-lg">
+            <p className="font-body text-base md:text-xl text-deep-navy/60 mb-8 max-w-lg">
               Demand expands. Wild supply is capped. Value shifts to scalable systems.
             </p>
+          </FadeIn>
+
+          {/* Mobile Video - Shows between copy and stats */}
+          <FadeIn delay={0.15} className="lg:hidden mb-8">
+            <div className="relative aspect-video rounded-lg overflow-hidden">
+              <video
+                src="/assets/dolphin-underwater-animated.mp4"
+                autoPlay
+                loop
+                muted
+                playsInline
+                poster="/assets/dolphin-underwater.png"
+                className="w-full h-full object-cover"
+                aria-label="Dolphin swimming underwater - the future of sustainable marine protein"
+              />
+            </div>
           </FadeIn>
 
           {/* Hero Stats */}
