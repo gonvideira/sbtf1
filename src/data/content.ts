@@ -6,20 +6,54 @@
 // =============================================================================
 
 export const macroContext = {
-  headline: "Global Food Systems & The Seafood Opportunity",
+  headline: "Global Food Systems",
+  subheadline: "Demand Growth, Resource Constraints, and Inefficiency",
 
+  // Long-form copy for left column
+  copy: {
+    intro:
+      "GLOBAL FOOD systems are entering a structural pressure cycle. The United Nations projects world population will reach ~9.7bn by 2050. FAO estimates that to meet demand, agriculture in 2050 will need to produce almost 50% more food, feed and biofuel than in 2012.",
+    constraints:
+      "This growth must occur under tighter constraints. Land and freshwater competition are rising, and FAO's long-term outlook stresses that climate volatility requires system-level productivity and resilience gains rather than \"business as usual\".",
+    inefficiency:
+      "The system also leaks value at scale. The World Bank estimates 30–40% of food produced is lost or goes uneaten, with economic costs often cited around ~US$1 trillion per year. Global prices remain shock-sensitive. FAO reports the Food Price Index averaged 13.7% lower in 2023 vs 2022, after the post-2022 spike.",
+    implication:
+      "The investment implication is clear. Food security is increasingly a productivity and resilience problem. Scalable protein systems that can grow output without expanding land and freshwater use are structurally advantaged.",
+  },
+
+  // Production gap table data (from slide)
   productionGap: {
-    title: "Production Gap by 2050",
-    subtitle: "Required increase to meet population growth",
+    title: "Global Food Supply Gap",
+    subtitle: "Increase in agricultural production required to match projected demand, 2005–2050 (percent)",
     data: [
-      { region: "World", value: 48.6, fill: "#001F3F" },
-      { region: "Sub-Saharan Africa", value: 112.4, fill: "#00A8A8" },
+      { region: "World", value2050: 159.6, growth0507: 14.8, growth1350: 48.6 },
+      { region: "Sub-Saharan Africa & South Asia", value2050: 232.4, growth0507: 20.0, growth1350: 112.4 },
+      { region: "Rest of World", value2050: 147.9, growth0507: 13.8, growth1350: 34.2 },
     ],
+    source: "FAO Global Perspectives Studies, based on UN, 2015",
+  },
+
+  // Seafood section
+  seafood: {
+    headline: "Global Seafood",
+    subheadline: "Demand Expands, Wild Supply is Capped, Value Shifts to Scalable Systems",
+    copy: {
+      intro:
+        "SEAFOOD is already a core pillar of global nutrition and trade. FAO reports that total fisheries and aquaculture production reached a record 223.2m tons in 2022 (including aquatic animals and algae), valued at USD 472bn.",
+      consumption:
+        "Consumption continues to rise. FAO estimates apparent consumption of aquatic animal foods at ~165m tons in 2022, and projects it will reach ~184m tons by 2032.",
+      supply:
+        "On the supply side, the growth frontier is constrained in wild capture. FAO estimates that only 62.3% of marine fish stocks were within biologically sustainable levels in 2021, while 37.7% were fished at biologically unsustainable levels.",
+      aquaculture:
+        "As a result, scalable aquaculture and modern value chains become the primary path to meeting incremental demand. FAO notes aquaculture now provides over 57% of aquatic animal products used for direct human consumption.",
+      value:
+        "Value capture increasingly concentrates downstream. Reliability, processing yield, cold chain performance, and audit-ready traceability are becoming commercial requirements as the sector scales.",
+    },
   },
 
   consumptionTrend: {
-    title: "Global Seafood Consumption",
-    subtitle: "Per capita consumption (kg/year)",
+    title: "Global Per-Capita Seafood Consumption",
+    subtitle: "kg per year",
     data: [
       { year: 1990, value: 14 },
       { year: 1995, value: 15.2 },
@@ -31,15 +65,18 @@ export const macroContext = {
     ],
   },
 
-  aquacultureVsCaptures: {
-    title: "The Great Divergence",
-    subtitle: "Captures vs Aquaculture growth (million tonnes)",
+  // Captures vs Aquaculture table (from slide)
+  capturesVsAquaculture: {
+    title: "Captures vs Aquaculture Projections",
+    subtitle: "Thousand tons",
     data: [
-      { year: "2022", captures: 92, aquaculture: 94 },
-      { year: "2032 (Proj.)", captures: 101, aquaculture: 110 },
+      { region: "World", captures2022: 185442, captures2032: 204678, capturesVar: 10.4, aqua2022: 94413, aqua2032: 110827, aquaVar: 17.4 },
+      { region: "Africa", captures2022: 12936, captures2032: 14165, capturesVar: 9.5, aqua2022: 2317, aqua2032: 2813, aquaVar: 21.4 },
+      { region: "America", captures2022: 23023, captures2032: 24914, capturesVar: 8.2, aqua2022: 4958, aqua2032: 5569, aquaVar: 12.3 },
+      { region: "Asia", captures2022: 130461, captures2032: 145790, capturesVar: 11.7, aqua2022: 83399, aqua2032: 98350, aquaVar: 17.9 },
+      { region: "Europe", captures2022: 17173, captures2032: 18010, capturesVar: 4.9, aqua2022: 3503, aqua2032: 3819, aquaVar: 9.0 },
     ],
-    capturesGrowth: "10.4%",
-    aquacultureGrowth: "17.4%",
+    source: "FAO SOFIA 2024; European Commission BlueInvest Investor Report (2023)",
   },
 
   copyPoints: [
