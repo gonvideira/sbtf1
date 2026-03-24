@@ -251,7 +251,7 @@ export const leadership = {
   team: [
     {
       name: "António Castel-Branco",
-      role: "Managing Partner",
+      role: "Operating Partner",
       image: "/assets/team/antonio.png",
       highlights: [
         "8+ years investment in Blue Economy",
@@ -262,7 +262,7 @@ export const leadership = {
     },
     {
       name: "João Reis",
-      role: "Operating Partner",
+      role: "Fund Advisor",
       image: "/assets/team/joao-reis.png",
       highlights: [
         "20+ years in Blue Economy",
