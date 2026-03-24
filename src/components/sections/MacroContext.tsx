@@ -1,5 +1,3 @@
-import { macroContext } from "@/data/content"
-
 export function MacroContext() {
   return (
     <section id="macro-context" className="relative">
