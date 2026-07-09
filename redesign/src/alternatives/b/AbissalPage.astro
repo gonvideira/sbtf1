@@ -97,14 +97,14 @@ const allocSegments = t.fund.verticals.items.map((v, i) => ({
   <Fragment slot="head">
     <link rel="preload" href={spaceGroteskUrl} as="font" type="font/woff2" crossorigin />
     <link rel="preload" href={plexUrl} as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href="/media/fish-vortex-poster.jpg" as="image" />
+    <link rel="preload" href="/media/fish-vortex-poster.jpg" as="image" fetchpriority="high" />
   </Fragment>
   <a href="#main" class="skip-link">{t.a11y.skipToContent}</a>
 
   <header class="site-header">
     <div class="shell header-inner">
       <a class="logo-link" href={path} aria-label="Blue Transformation Fund">
-        <Image src={brand.logoWhite} alt="STAG | btf. — blue transformation fund" width={180} densities={[1, 2]} loading="eager" />
+        <Image src={brand.logoWhite} alt="STAG | btf. — blue transformation fund" width={180} densities={[1, 2]} loading="eager" fetchpriority="high" />
       </a>
       <nav class="main-nav" aria-label={L.navLabel}>
         <button class="nav-toggle" aria-expanded="false" aria-controls="nav-list">
@@ -138,14 +138,14 @@ const allocSegments = t.fund.verticals.items.map((v, i) => ({
           muted
           loop
           playsinline
-          preload="metadata"
+          preload="none"
           poster="/media/fish-vortex-poster.jpg"
-          width="1600"
-          height="898"
+          width="1920"
+          height="1078"
           aria-hidden="true"
         >
-          <source src="/media/fish-vortex.av1.mp4" type='video/mp4; codecs="av01.0.08M.08"' />
-          <source src="/media/fish-vortex.mp4" type="video/mp4" />
+          <source data-src="/media/fish-vortex.av1.mp4" type='video/mp4; codecs="av01.0.08M.08"' />
+          <source data-src="/media/fish-vortex.mp4" type="video/mp4" />
         </video>
         <button
           class="video-toggle"
@@ -203,7 +203,7 @@ const allocSegments = t.fund.verticals.items.map((v, i) => ({
           loop
           playsinline
           preload="none"
-          poster="/media/dolphin-deep-poster.jpg"
+          data-poster="/media/dolphin-deep-poster.jpg"
           width="1600"
           height="900"
         >
@@ -559,18 +559,20 @@ const allocSegments = t.fund.verticals.items.map((v, i) => ({
 
   <footer class="site-footer">
     <div class="shell footer-grid">
-      <div class="footer-brand">
-        <Image src={brand.logoWhite} alt="STAG | btf. — blue transformation fund" width={200} densities={[1, 2]} loading="lazy" />
+      <div class="footer-info">
+        <nav class="footer-links" aria-label={L.legalNav}>
+          <ul>
+            {t.footer.links.map((l) => (
+              <li><a href={l.href} rel={l.external ? 'noopener' : undefined}>{l.label}</a></li>
+            ))}
+          </ul>
+        </nav>
         <p class="footer-address">{t.footer.address}</p>
         <p class="footer-address">{t.footer.contactLine}</p>
       </div>
-      <nav class="footer-links" aria-label={L.legalNav}>
-        <ul>
-          {t.footer.links.map((l) => (
-            <li><a href={l.href} rel={l.external ? 'noopener' : undefined}>{l.label}</a></li>
-          ))}
-        </ul>
-      </nav>
+      <div class="footer-logo-wrap">
+        <Image src={brand.logoWhite} alt="STAG | btf. — blue transformation fund" width={120} densities={[1, 2]} loading="lazy" />
+      </div>
     </div>
     <div class="shell">
       <p class="footer-disclaimer">{t.footer.disclaimer}</p>
@@ -586,6 +588,7 @@ const allocSegments = t.fund.verticals.items.map((v, i) => ({
     --deep: #021d3b;
     --deeper: #011528;
     --abyss: #000a14;
+    --shelf: #0a3a6c;
     --panel-bg: rgba(4, 63, 127, 0.28);
     --panel-line: rgba(111, 165, 220, 0.26);
     --ink: #e6f0fa;
@@ -1051,6 +1054,7 @@ const allocSegments = t.fund.verticals.items.map((v, i) => ({
   .dive {
     position: relative;
     background: var(--deeper);
+    border-top: 1px solid rgba(111, 165, 220, 0.35);
   }
   .dive-media {
     position: sticky;
@@ -1374,9 +1378,23 @@ const allocSegments = t.fund.verticals.items.map((v, i) => ({
     }
   }
 
-  /* ===== Fund (sea floor) ===== */
+  /* ===== Fund — a lit shelf after the abyss, hard cut ===== */
   .fund {
-    background: linear-gradient(var(--deeper), var(--deep) 22%, var(--deeper) 78%, var(--abyss));
+    background: var(--shelf);
+    border-top: 4px solid var(--pale);
+    --panel-bg: rgba(1, 21, 40, 0.5);
+    --panel-line: rgba(169, 202, 236, 0.35);
+    --ink-muted: #a3c2e2;
+    --chart-ink-muted: #a3c2e2;
+  }
+  /* marked section heading: short pale bar above every display heading */
+  .fund .display::before {
+    content: '';
+    display: block;
+    width: 56px;
+    height: 4px;
+    background: var(--pale);
+    margin-bottom: 1.1rem;
   }
   .fund-subnav {
     position: sticky;
@@ -1417,6 +1435,12 @@ const allocSegments = t.fund.verticals.items.map((v, i) => ({
     padding-block: clamp(3.2rem, 7vw, 5.5rem) clamp(2.6rem, 6vw, 4.2rem);
     scroll-margin-top: 60px;
   }
+  .verticals,
+  .terms,
+  .team,
+  .process {
+    border-top: 1px solid rgba(169, 202, 236, 0.28);
+  }
 
   /* Eras with giant watermarks */
   .eras {
@@ -1428,7 +1452,7 @@ const allocSegments = t.fund.verticals.items.map((v, i) => ({
     padding-block: clamp(2.4rem, 6vw, 4.2rem);
   }
   .era + .era {
-    border-top: 1px solid rgba(111, 165, 220, 0.12);
+    border-top: 1px solid rgba(169, 202, 236, 0.26);
   }
   .era-mark {
     position: absolute;
@@ -1439,7 +1463,7 @@ const allocSegments = t.fund.verticals.items.map((v, i) => ({
     font-weight: 700;
     font-size: clamp(6rem, 18vw, 15rem);
     line-height: 1;
-    color: rgba(111, 165, 220, 0.09);
+    color: rgba(169, 202, 236, 0.14);
     letter-spacing: -0.04em;
     pointer-events: none;
     white-space: nowrap;
@@ -1589,7 +1613,7 @@ const allocSegments = t.fund.verticals.items.map((v, i) => ({
     font-family: var(--font-display);
     font-size: 2.2rem;
     font-weight: 700;
-    color: rgba(169, 202, 236, 0.3);
+    color: rgba(169, 202, 236, 0.55);
     line-height: 1;
   }
   .v-titles h3 {
@@ -1672,7 +1696,7 @@ const allocSegments = t.fund.verticals.items.map((v, i) => ({
   .band-veil {
     position: absolute;
     inset: 0;
-    background: linear-gradient(180deg, var(--deeper) 0%, rgba(1, 21, 40, 0.22) 32%, rgba(1, 21, 40, 0.3) 68%, var(--deeper) 100%);
+    background: linear-gradient(180deg, var(--shelf) 0%, rgba(1, 21, 40, 0.18) 30%, rgba(1, 21, 40, 0.26) 70%, var(--shelf) 100%);
   }
   .portfolio-content {
     position: relative;
@@ -1941,7 +1965,7 @@ const allocSegments = t.fund.verticals.items.map((v, i) => ({
     font-weight: 600;
     letter-spacing: 0.1em;
     text-transform: uppercase;
-    color: var(--sky);
+    color: var(--pale);
     margin-top: 0.3rem;
   }
   .contact-line {
@@ -1974,7 +1998,8 @@ const allocSegments = t.fund.verticals.items.map((v, i) => ({
 
   /* Partners */
   .partners {
-    background: var(--abyss);
+    background: var(--deep);
+    border-top: 2px solid rgba(169, 202, 236, 0.4);
     padding-block: clamp(2.4rem, 5vw, 3.6rem);
   }
   .partner-strip {
@@ -1984,7 +2009,7 @@ const allocSegments = t.fund.verticals.items.map((v, i) => ({
     flex-wrap: wrap;
     align-items: center;
     gap: clamp(1.8rem, 4vw, 3.2rem);
-    border-top: 1px solid rgba(111, 165, 220, 0.14);
+    border-top: 1px solid rgba(111, 165, 220, 0.2);
   }
   .partner-strip img {
     height: clamp(28px, 3.6vw, 40px);
@@ -1996,22 +2021,25 @@ const allocSegments = t.fund.verticals.items.map((v, i) => ({
     filter: grayscale(0) brightness(1.4) opacity(1);
   }
 
-  /* Footer */
+  /* Footer — logo small, right-aligned */
   .site-footer {
-    background: var(--abyss);
+    background: var(--deep);
     color: rgba(230, 240, 250, 0.85);
     padding-block: clamp(2.6rem, 6vw, 4rem) 2rem;
-    border-top: 1px solid rgba(111, 165, 220, 0.12);
+    border-top: 4px solid var(--pale);
   }
   .footer-grid {
     display: grid;
-    grid-template-columns: 1.4fr 1fr;
+    grid-template-columns: 1fr auto;
     gap: 2.5rem;
     padding-bottom: 2.4rem;
     border-bottom: 1px solid rgba(111, 165, 220, 0.14);
   }
-  .footer-brand img {
-    width: 200px;
+  .footer-logo-wrap {
+    justify-self: end;
+  }
+  .footer-logo-wrap img {
+    width: 120px;
     height: auto;
   }
   .footer-address {
@@ -2023,8 +2051,8 @@ const allocSegments = t.fund.verticals.items.map((v, i) => ({
     list-style: none;
     padding: 0;
     display: flex;
-    flex-direction: column;
-    gap: 0.6rem;
+    flex-wrap: wrap;
+    gap: 0.4rem 1.6rem;
   }
   .footer-links a {
     font-size: 0.9rem;

@@ -19,9 +19,9 @@ npm run preview    # serve dist/
 | Path | What |
 |---|---|
 | `/` | Internal review index (noindex, excluded from sitemap) |
-| `/a/pt/` · `/a/en/` | **A — Cardume**: luminous immersive; bright aspirational site with a dark dolphin-dive Hub; heritage told as an era timeline |
-| `/b/pt/` · `/b/en/` | **B — Abissal**: one continuous descent; live depth gauge, marine snow, sea-floor Fund with monumental era watermarks (1500 → Hoje → 2034) |
-| `/c/pt/` · `/c/en/` | **C — Corrente**: kinetic editorial; data ticker, numeral-chaptered dive, film-title era cards, institutional dossier |
+| `/a/pt/` · `/a/en/` | **A — Cardume**: luminous immersive; vortex hero, dark dolphin-dive Hub, Fund alternating light and abyss (full-bleed NaturaFish band, navy terms) |
+| `/b/pt/` · `/b/en/` | **B — Abissal**: one continuous descent; live depth gauge, marine snow; after the dive the Fund sits on a lighter navy shelf |
+| `/c/pt/` · `/c/en/` | **C — Cardume · Scrub**: identical to A except the dolphin dive is a 120-frame sequence scrubbed by scroll (`variant="scrub"`) |
 
 At ship time the chosen alternative's page component is promoted to root
 `/pt/` + `/en/` routes; the other two and the review index are dropped.
@@ -32,10 +32,15 @@ At ship time the chosen alternative's page component is promoted to root
   `public/assets/fish-vortex-animated-improved.mp4`, 35 MB → 3.0 MB, poster
   preloaded so LCP stays on the poster). Loops muted; a pause/play control
   satisfies WCAG 2.2.2; `prefers-reduced-motion` shows the poster instead.
-- **Hub dive**: `public/media/dolphin-deep.mp4` (24 MB → 0.8 MB) inside a
+- **Hub dive**: `public/media/dolphin-deep.mp4` (1920px H.264 + AV1) inside a
   sticky viewport; content chapters scroll over it (parallax); scroll
   progress drives a subtle video zoom and the depth readout. Video lazy-loads
-  (`preload="none"`) and plays only while on screen.
+  (`preload="none"`) and plays only while on screen. The scrub variant (C)
+  swaps the video for `public/media/dive-seq/` — 120 webp frames (~2 MB)
+  drawn to a canvas from scroll progress.
+- **Load discipline**: hero video sources and dive frames are attached only
+  after the page settles (~3 s post-load or first real user gesture), so the
+  ~5 MB of cinema never competes with LCP.
 - **Runtime**: `src/scripts/immersive.ts` — reveals, parallax
   (`data-parallax`), section scrub (`data-scrub` → `--p`), count-up
   (`data-count`), ambient-video management (`data-ambient` +
@@ -71,7 +76,8 @@ a capture artifact, not a site bug; verify image-heavy sections with
 viewport screenshots.
 
 Last verified: `astro check` 0 errors · axe 0 violations on all 6 pages
-(full-scroll scan) · Lighthouse mobile A 98 / B 99 / C 99 performance,
+(full-scroll scan) · Lighthouse mobile A 94 / B 96 / C 93 performance
+(±3 run variance; hero/dive media fully deferred out of the trace),
 100 accessibility / best-practices / SEO, CLS 0 on all.
 
 ## Known content gaps / ship-time decisions

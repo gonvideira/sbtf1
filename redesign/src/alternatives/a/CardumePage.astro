@@ -4,9 +4,13 @@
 // site whose immersion arrives as cinema: the barracuda vortex fills the
 // opening frame, and the Hub plunges the visitor into a dark dolphin dive —
 // four chapters drifting over deep water — before resurfacing into light.
-// The Fund is a heritage gallery: five hundred years of know-how staged as
-// eras that lead back to the future (2026 → 2034). Serif grace, logo-blue
-// palette, motion that behaves like water: slow, continuous, inevitable.
+// The Fund alternates light and abyss: thesis and verticals in daylight,
+// the NaturaFish estuary filling the whole viewport, structure & terms on
+// deep navy. Every section break is a hard, marked cut.
+//
+// variant="video": the dive footage plays as ambient video (default).
+// variant="scrub": the dive footage becomes a 120-frame sequence driven by
+// scroll — the film only advances as the visitor descends.
 import '@fontsource-variable/fraunces'
 import '@fontsource-variable/ibm-plex-sans'
 import frauncesUrl from '@fontsource-variable/fraunces/files/fraunces-latin-wght-normal.woff2?url'
@@ -24,13 +28,15 @@ import { brand, photos, teamPhotos, partners } from '@/data/images'
 
 interface Props {
   locale: Locale
+  variant?: 'video' | 'scrub'
+  basePath?: 'a' | 'c'
 }
-const { locale } = Astro.props
+const { locale, variant = 'video', basePath = 'a' } = Astro.props
 const t = getContent(locale)
 const research = getResearchStats(locale)
 
-const path = `/a/${locale}/`
-const altPath = `/a/${locale === 'pt' ? 'en' : 'pt'}/`
+const path = `/${basePath}/${locale}/`
+const altPath = `/${basePath}/${locale === 'pt' ? 'en' : 'pt'}/`
 const isPt = locale === 'pt'
 
 const L = isPt
@@ -41,6 +47,7 @@ const L = isPt
       heroCredit: 'Cardume de barracudas — o mar que Portugal conhece há séculos.',
       diveCue: 'Mergulhar',
       diveKicker: 'Uma imersão em quatro capítulos',
+      scrubHint: 'Continue a rolar — o filme avança com o seu scroll.',
       resurface: 'De volta à superfície',
       eras: ['Há quinhentos anos', 'Hoje', 'O futuro · 2026 → 2034'] as const,
       eraKicker: 'Regressar ao futuro',
@@ -60,6 +67,7 @@ const L = isPt
       heroCredit: 'A school of barracuda — the sea Portugal has known for centuries.',
       diveCue: 'Dive in',
       diveKicker: 'An immersion in four chapters',
+      scrubHint: 'Keep scrolling — the film advances with your scroll.',
       resurface: 'Back to the surface',
       eras: ['Five hundred years ago', 'Today', 'The future · 2026 → 2034'] as const,
       eraKicker: 'Back to the future',
@@ -81,9 +89,6 @@ const allocSegments = t.fund.verticals.items.map((v, i) => ({
   pct: v.allocationPct,
   amount: fundAllocation[i]!.amount,
 }))
-
-// dive chapters: hub content staged over the dolphin footage
-const diveChapters = [1, 2, 3, 4]
 ---
 
 <BaseLayout
@@ -98,14 +103,14 @@ const diveChapters = [1, 2, 3, 4]
   <Fragment slot="head">
     <link rel="preload" href={frauncesUrl} as="font" type="font/woff2" crossorigin />
     <link rel="preload" href={plexUrl} as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href="/media/fish-vortex-poster.jpg" as="image" />
+    <link rel="preload" href="/media/fish-vortex-poster.jpg" as="image" fetchpriority="high" />
   </Fragment>
   <a href="#main" class="skip-link">{t.a11y.skipToContent}</a>
 
   <header class="site-header">
     <div class="shell header-inner">
       <a class="logo-link" href={path} aria-label="Blue Transformation Fund">
-        <Image class="logo logo-light" src={brand.logoWhite} alt="STAG | btf. — blue transformation fund" width={185} densities={[1, 2]} loading="eager" />
+        <Image class="logo logo-light" src={brand.logoWhite} alt="STAG | btf. — blue transformation fund" width={185} densities={[1, 2]} loading="eager" fetchpriority="high" />
         <Image class="logo logo-dark" src={brand.logoNavy} alt="" aria-hidden="true" width={185} densities={[1, 2]} loading="eager" />
       </a>
       <nav class="main-nav" aria-label={L.navLabel}>
@@ -140,14 +145,14 @@ const diveChapters = [1, 2, 3, 4]
           muted
           loop
           playsinline
-          preload="metadata"
+          preload="none"
           poster="/media/fish-vortex-poster.jpg"
-          width="1600"
-          height="898"
+          width="1920"
+          height="1078"
           aria-hidden="true"
         >
-          <source src="/media/fish-vortex.av1.mp4" type='video/mp4; codecs="av01.0.08M.08"' />
-          <source src="/media/fish-vortex.mp4" type="video/mp4" />
+          <source data-src="/media/fish-vortex.av1.mp4" type='video/mp4; codecs="av01.0.08M.08"' />
+          <source data-src="/media/fish-vortex.mp4" type="video/mp4" />
         </video>
         <button
           class="video-toggle"
@@ -180,7 +185,7 @@ const diveChapters = [1, 2, 3, 4]
       </a>
     </section>
 
-    <!-- stat band -->
+    <!-- stat band — hard navy block -->
     <section class="stats" id="stats" aria-label={L.metrics}>
       <div class="shell">
         <dl class="stat-band">
@@ -191,36 +196,60 @@ const diveChapters = [1, 2, 3, 4]
             </div>
           ))}
         </dl>
-        <p class="footnote">{t.statBar.irrCaveat}</p>
+        <p class="footnote footnote-dark">{t.statBar.irrCaveat}</p>
       </div>
     </section>
 
     <!-- ============ 2 · HUB — the dive ============ -->
     <section class="dive" id="hub" aria-labelledby="hub-title" data-scrub>
       <div class="dive-media" aria-hidden="true">
-        <video
-          data-ambient
-          muted
-          loop
-          playsinline
-          preload="none"
-          poster="/media/dolphin-deep-poster.jpg"
-          width="1600"
-          height="900"
-        >
-          <source src="/media/dolphin-deep.av1.mp4" type='video/mp4; codecs="av01.0.08M.08"' />
-          <source src="/media/dolphin-deep.mp4" type="video/mp4" />
-        </video>
-        <button
-          class="video-toggle"
-          data-video-toggle
-          data-label-play={L.videoPlay}
-          data-label-pause={L.videoPause}
-          aria-label={L.videoPause}
-        >
-          <span class="vt-pause" aria-hidden="true"></span>
-          <span class="vt-play" aria-hidden="true"></span>
-        </button>
+        {variant === 'scrub' ? (
+          <>
+            <img
+              class="dive-poster"
+              src="/media/dolphin-deep-poster.jpg"
+              alt=""
+              width="1920"
+              height="1080"
+              loading="lazy"
+              decoding="async"
+            />
+            <canvas
+              class="dive-canvas"
+              data-frame-scrub
+              data-base="/media/dive-seq/f"
+              data-count="120"
+              data-pad="3"
+              data-ext=".webp"
+            ></canvas>
+          </>
+        ) : (
+          <>
+            <video
+              data-ambient
+              muted
+              loop
+              playsinline
+              preload="none"
+              data-poster="/media/dolphin-deep-poster.jpg"
+              width="1920"
+              height="1080"
+            >
+              <source src="/media/dolphin-deep.av1.mp4" type='video/mp4; codecs="av01.0.08M.08"' />
+              <source src="/media/dolphin-deep.mp4" type="video/mp4" />
+            </video>
+            <button
+              class="video-toggle"
+              data-video-toggle
+              data-label-play={L.videoPlay}
+              data-label-pause={L.videoPause}
+              aria-label={L.videoPause}
+            >
+              <span class="vt-pause" aria-hidden="true"></span>
+              <span class="vt-play" aria-hidden="true"></span>
+            </button>
+          </>
+        )}
         <div class="dive-veil"></div>
         <p class="dive-depth mono-num" aria-hidden="true"><span data-depth-out data-depth-max="1000">−0 m</span></p>
       </div>
@@ -232,6 +261,7 @@ const diveChapters = [1, 2, 3, 4]
               <p class="chapter-kicker">{L.diveKicker}</p>
               <h2 id="hub-title" class="dive-display">{t.hub.title}</h2>
               <p class="dive-lede">{t.hub.intro}</p>
+              {variant === 'scrub' && <p class="scrub-hint">{L.scrubHint}</p>}
             </div>
           </div>
         </div>
@@ -299,7 +329,7 @@ const diveChapters = [1, 2, 3, 4]
       </div>
     </section>
 
-    <!-- resurface: resources in the light -->
+    <!-- resurface: resources — marked cut back into the light -->
     <section class="resources" aria-label={t.hub.resourcesTitle}>
       <div class="shell">
         <p class="kicker kicker-ink reveal">{L.resurface}</p>
@@ -324,7 +354,7 @@ const diveChapters = [1, 2, 3, 4]
       </div>
     </section>
 
-    <!-- ============ 3 · THE FUND — back to the future ============ -->
+    <!-- ============ 3 · THE FUND — light and abyss alternating ============ -->
     <section class="fund" id="fundo" aria-label={t.fund.sectionLabel}>
       <nav class="fund-subnav" aria-label={L.fundNav}>
         <div class="shell">
@@ -411,25 +441,23 @@ const diveChapters = [1, 2, 3, 4]
         </div>
       </article>
 
-      <!-- Portfolio -->
+      <!-- Portfolio — the estuary fills the frame -->
       <article class="portfolio" id="portfolio" aria-labelledby="portfolio-title" data-scene>
-        <div class="shell">
-          <h2 id="portfolio-title" class="display reveal">{t.fund.portfolio.title}</h2>
-          <div class="portfolio-grid">
-            <figure class="portfolio-plate reveal">
-              <div class="plate-inner" data-parallax="0.1">
-                <Picture
-                  src={photos.naturafishSquare}
-                  alt={t.fund.portfolio.imageAlt}
-                  widths={[480, 720, 1024]}
-                  sizes="(max-width: 900px) 100vw, 520px"
-                  formats={['avif', 'webp']}
-                  loading="lazy"
-                />
-              </div>
-              <figcaption>{L.farmCaption}</figcaption>
-            </figure>
-            <div class="portfolio-body reveal">
+        <div class="pf-band">
+          <div class="pf-media" data-parallax="0.14">
+            <Picture
+              src={photos.naturafishPan}
+              alt={t.fund.portfolio.imageAlt}
+              widths={[768, 1280, 1920]}
+              sizes="100vw"
+              formats={['avif', 'webp']}
+              loading="lazy"
+            />
+          </div>
+          <div class="pf-veil" aria-hidden="true"></div>
+          <div class="shell pf-content">
+            <h2 id="portfolio-title" class="display display-inverse reveal">{t.fund.portfolio.title}</h2>
+            <div class="pf-body reveal">
               <p class="anchor-tag">{t.fund.portfolio.anchorTag}</p>
               <h3 class="anchor-name">{t.fund.portfolio.anchorTitle}</h3>
               <p class="anchor-copy">{t.fund.portfolio.copy}</p>
@@ -442,15 +470,16 @@ const diveChapters = [1, 2, 3, 4]
                 ))}
               </div>
               <p class="pipeline-note">{t.fund.portfolio.pipelineNote}</p>
+              <p class="pf-credit">{L.farmCaption}</p>
             </div>
           </div>
         </div>
       </article>
 
-      <!-- Structure & Terms -->
+      <!-- Structure & Terms — deep navy block -->
       <article class="terms" id="estrutura" aria-labelledby="terms-title">
         <div class="shell">
-          <h2 id="terms-title" class="display reveal">{t.fund.terms.title}</h2>
+          <h2 id="terms-title" class="display display-inverse reveal">{t.fund.terms.title}</h2>
           <dl class="terms-table reveal">
             {t.fund.terms.rows.map((r) => (
               <div class="terms-row">
@@ -463,7 +492,7 @@ const diveChapters = [1, 2, 3, 4]
             ))}
           </dl>
           <p class="manager-line reveal">{t.fund.terms.managerLine}</p>
-          <p class="footnote reveal">{t.fund.terms.irrCaveat}</p>
+          <p class="footnote footnote-dark reveal">{t.fund.terms.irrCaveat}</p>
         </div>
       </article>
 
@@ -527,8 +556,8 @@ const diveChapters = [1, 2, 3, 4]
               <p class="contact-line contact-general"><a href={`mailto:${t.fund.process.contact.generalEmail}`}>{t.fund.process.contact.generalEmail}</a></p>
             </div>
             <div class="cta-stack">
-              <a class="btn btn-solid" href={`mailto:${t.fund.process.contact.generalEmail}?subject=${mailSubjectCim}`}>{t.fund.process.ctaPrimary} <span aria-hidden="true">→</span></a>
-              <a class="btn btn-outline" href={`mailto:${t.fund.process.contact.generalEmail}?subject=${mailSubjectMeet}`}>{t.fund.process.ctaSecondary} <span aria-hidden="true">→</span></a>
+              <a class="btn btn-cta-solid" href={`mailto:${t.fund.process.contact.generalEmail}?subject=${mailSubjectCim}`}>{t.fund.process.ctaPrimary} <span aria-hidden="true">→</span></a>
+              <a class="btn btn-cta-outline" href={`mailto:${t.fund.process.contact.generalEmail}?subject=${mailSubjectMeet}`}>{t.fund.process.ctaSecondary} <span aria-hidden="true">→</span></a>
               <p class="cta-note">{t.fund.process.formNote}</p>
             </div>
           </div>
@@ -553,18 +582,20 @@ const diveChapters = [1, 2, 3, 4]
 
   <footer class="site-footer">
     <div class="shell footer-grid">
-      <div class="footer-brand">
-        <Image src={brand.logoWhite} alt="STAG | btf. — blue transformation fund" width={210} densities={[1, 2]} loading="lazy" />
+      <div class="footer-info">
+        <nav class="footer-links" aria-label={L.legalNav}>
+          <ul>
+            {t.footer.links.map((l) => (
+              <li><a href={l.href} rel={l.external ? 'noopener' : undefined}>{l.label}</a></li>
+            ))}
+          </ul>
+        </nav>
         <p class="footer-address">{t.footer.address}</p>
         <p class="footer-address">{t.footer.contactLine}</p>
       </div>
-      <nav class="footer-links" aria-label={L.legalNav}>
-        <ul>
-          {t.footer.links.map((l) => (
-            <li><a href={l.href} rel={l.external ? 'noopener' : undefined}>{l.label}</a></li>
-          ))}
-        </ul>
-      </nav>
+      <div class="footer-logo-wrap">
+        <Image src={brand.logoWhite} alt="STAG | btf. — blue transformation fund" width={120} densities={[1, 2]} loading="lazy" />
+      </div>
     </div>
     <div class="shell">
       <p class="footer-disclaimer">{t.footer.disclaimer}</p>
@@ -581,12 +612,14 @@ const diveChapters = [1, 2, 3, 4]
     --abyss: #01101f;
     --blue: #1a5ea8;
     --sky: #6fa5dc;
+    --pale: #a9caec;
     --mist: #dce9f6;
     --ice: #f2f7fc;
     --ink: #0a2036;
     --ink-soft: #3a5470;
     --ink-muted: #58708a;
     --hairline: #d8e4f0;
+    --hairline-strong: #b9cde1;
     --font-display: 'Fraunces Variable', Georgia, serif;
     --font-ui: 'IBM Plex Sans Variable', system-ui, sans-serif;
 
@@ -632,6 +665,22 @@ const diveChapters = [1, 2, 3, 4]
     max-width: 22ch;
     margin-top: 0.9rem;
   }
+  /* marked section heading: short brand bar above every display heading */
+  .resources .display::before,
+  .fund .display::before {
+    content: '';
+    display: block;
+    width: 56px;
+    height: 4px;
+    background: var(--brand);
+    margin-bottom: 1.1rem;
+  }
+  .display-inverse {
+    color: #fff;
+  }
+  .display-inverse::before {
+    background: var(--sky) !important;
+  }
   .lede {
     font-size: clamp(1.05rem, 1.6vw, 1.22rem);
     line-height: 1.6;
@@ -652,6 +701,9 @@ const diveChapters = [1, 2, 3, 4]
     color: var(--ink-muted);
     max-width: 72ch;
     margin-top: 0.9rem;
+  }
+  .footnote-dark {
+    color: #9fbedc;
   }
   .mono-num {
     font-variant-numeric: tabular-nums;
@@ -687,21 +739,20 @@ const diveChapters = [1, 2, 3, 4]
   .btn-glass:hover {
     background: rgba(2, 29, 59, 0.5);
   }
-  .btn-outline {
-    border: 1.5px solid var(--brand);
+  .btn-cta-solid {
+    background: #fff;
     color: var(--brand);
   }
-  .btn-outline:hover {
-    background: var(--brand);
+  .btn-cta-solid:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 30px rgba(1, 16, 31, 0.5);
+  }
+  .btn-cta-outline {
+    border: 1.5px solid rgba(255, 255, 255, 0.65);
     color: #fff;
   }
-  .fund .btn-solid,
-  .process .btn-solid {
-    background: var(--brand);
-    color: #fff;
-  }
-  .fund .btn-solid:hover {
-    box-shadow: 0 12px 30px rgba(4, 63, 127, 0.3);
+  .btn-cta-outline:hover {
+    background: rgba(255, 255, 255, 0.12);
   }
 
   /* ===== Header (transparent over hero, solid after) ===== */
@@ -872,8 +923,8 @@ const diveChapters = [1, 2, 3, 4]
       180deg,
       rgba(2, 29, 59, 0.42) 0%,
       rgba(2, 29, 59, 0.12) 38%,
-      rgba(2, 29, 59, 0.55) 74%,
-      rgba(2, 29, 59, 0.82) 100%
+      rgba(2, 29, 59, 0.6) 74%,
+      var(--deep) 100%
     );
   }
   .video-toggle {
@@ -1003,7 +1054,7 @@ const diveChapters = [1, 2, 3, 4]
 
   /* entrance rise */
   .rise {
-    opacity: 0.01;
+    opacity: 0;
     transform: translateY(26px);
     animation: rise 0.9s cubic-bezier(0.2, 0.65, 0.25, 1) forwards;
     animation-delay: var(--d, 0ms);
@@ -1019,11 +1070,10 @@ const diveChapters = [1, 2, 3, 4]
     }
   }
 
-  /* ===== Stats ===== */
+  /* ===== Stats — a solid navy block, hard edges ===== */
   .stats {
-    background: linear-gradient(var(--deep), var(--ice) 78%);
-    padding-block: clamp(2.4rem, 5vw, 3.8rem) clamp(2rem, 4vw, 3rem);
-    margin-top: 0;
+    background: var(--deep);
+    padding-block: clamp(2.4rem, 5vw, 3.8rem);
   }
   .stat-band {
     display: grid;
@@ -1031,10 +1081,9 @@ const diveChapters = [1, 2, 3, 4]
     gap: clamp(1rem, 2.5vw, 2rem);
     margin: 0;
     background: #fff;
-    border: 1px solid var(--hairline);
     border-radius: 18px;
     padding: clamp(1.4rem, 3vw, 2.2rem);
-    box-shadow: 0 24px 60px rgba(2, 29, 59, 0.16);
+    box-shadow: 0 24px 60px rgba(1, 16, 31, 0.4);
   }
   .stat dd {
     font-family: var(--font-display);
@@ -1059,6 +1108,7 @@ const diveChapters = [1, 2, 3, 4]
   .dive {
     position: relative;
     background: var(--deep);
+    border-top: 1px solid rgba(111, 165, 220, 0.35);
   }
   .dive-media {
     position: sticky;
@@ -1066,21 +1116,32 @@ const diveChapters = [1, 2, 3, 4]
     height: 100svh;
     overflow: hidden;
   }
-  .dive-media video {
+  .dive-media video,
+  .dive-poster,
+  .dive-canvas {
     position: absolute;
     inset: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
+  }
+  .dive-media video {
     transform: scale(calc(1 + var(--p, 0) * 0.18));
     transform-origin: center 60%;
     transition: transform 0.1s linear;
+  }
+  .dive-canvas {
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+  .dive-canvas.ready {
+    opacity: 1;
   }
   .dive-veil {
     position: absolute;
     inset: 0;
     background:
-      linear-gradient(180deg, var(--ice) 0%, rgba(2, 29, 59, 0) 14%),
+      linear-gradient(180deg, var(--deep) 0%, rgba(2, 29, 59, 0) 7%),
       radial-gradient(120% 80% at 50% 55%, transparent 40%, rgba(1, 16, 31, 0.55) 100%);
   }
   .dive-depth {
@@ -1131,6 +1192,13 @@ const diveChapters = [1, 2, 3, 4]
     color: rgba(220, 233, 246, 0.9);
     margin-bottom: 1.4rem;
     text-shadow: 0 1px 12px rgba(1, 16, 31, 0.8);
+  }
+  .scrub-hint {
+    margin-top: 1.3rem;
+    font-size: 0.78rem;
+    font-weight: 650;
+    letter-spacing: 0.06em;
+    color: var(--sky);
   }
 
   .glass {
@@ -1297,10 +1365,11 @@ const diveChapters = [1, 2, 3, 4]
     }
   }
 
-  /* ===== Resources (resurfaced) ===== */
+  /* ===== Resources — hard cut back into daylight ===== */
   .resources {
-    background: linear-gradient(rgba(2, 29, 59, 1), var(--ice) 18%);
-    padding-block: clamp(4rem, 9vw, 6.5rem) clamp(3rem, 6vw, 4.5rem);
+    background: var(--ice);
+    border-top: 4px solid var(--brand);
+    padding-block: clamp(3rem, 6vw, 4.5rem);
   }
   .resource-grid {
     display: grid;
@@ -1360,7 +1429,7 @@ const diveChapters = [1, 2, 3, 4]
     }
   }
 
-  /* ===== Fund ===== */
+  /* ===== Fund — light and abyss alternating, hard edges ===== */
   .fund {
     background: #fff;
   }
@@ -1370,7 +1439,8 @@ const diveChapters = [1, 2, 3, 4]
     z-index: 40;
     background: rgba(255, 255, 255, 0.93);
     backdrop-filter: blur(9px);
-    border-block: 1px solid var(--hairline);
+    border-top: 4px solid var(--brand);
+    border-bottom: 1px solid var(--hairline-strong);
   }
   .fund-subnav ul {
     display: flex;
@@ -1396,8 +1466,6 @@ const diveChapters = [1, 2, 3, 4]
 
   .thesis,
   .verticals,
-  .portfolio,
-  .terms,
   .team,
   .process {
     padding-block: clamp(3.2rem, 7vw, 5.5rem);
@@ -1406,11 +1474,17 @@ const diveChapters = [1, 2, 3, 4]
   .thesis {
     background: var(--ice);
   }
-  .portfolio {
-    background: var(--ice);
+  .verticals {
+    background: #fff;
+    border-top: 1px solid var(--hairline-strong);
   }
   .team {
     background: var(--ice);
+    border-top: 1px solid var(--hairline-strong);
+  }
+  .process {
+    background: #fff;
+    border-top: 1px solid var(--hairline-strong);
   }
 
   /* Eras — back to the future */
@@ -1488,7 +1562,7 @@ const diveChapters = [1, 2, 3, 4]
     font-size: 0.92rem;
     font-weight: 650;
     color: var(--ink);
-    border: 1px solid var(--hairline);
+    border: 1px solid var(--hairline-strong);
     background: #fff;
     padding: 0.85rem 1.2rem;
     border-radius: 10px;
@@ -1511,7 +1585,7 @@ const diveChapters = [1, 2, 3, 4]
 
   .eu-context {
     margin-top: clamp(2.8rem, 6vw, 4.2rem);
-    border-top: 1px solid var(--hairline);
+    border-top: 2px solid var(--hairline-strong);
     padding-top: 2.4rem;
   }
   .eu-title {
@@ -1531,6 +1605,10 @@ const diveChapters = [1, 2, 3, 4]
     grid-template-columns: repeat(4, 1fr);
     gap: clamp(1.2rem, 2.5vw, 2rem);
     margin-top: 2rem;
+  }
+  .eu-stat {
+    border-top: 3px solid var(--brand);
+    padding-top: 0.9rem;
   }
   .eu-value {
     font-family: var(--font-display);
@@ -1566,7 +1644,7 @@ const diveChapters = [1, 2, 3, 4]
     flex-direction: column;
   }
   .vertical {
-    border-top: 1px solid var(--hairline);
+    border-top: 1px solid var(--hairline-strong);
     padding: 2.2rem 0;
     display: grid;
     grid-template-columns: minmax(240px, 1.1fr) 1.6fr 1.4fr;
@@ -1629,52 +1707,66 @@ const diveChapters = [1, 2, 3, 4]
     }
   }
 
-  /* Portfolio */
-  .portfolio-grid {
-    display: grid;
-    grid-template-columns: minmax(280px, 1fr) 1.3fr;
-    gap: clamp(1.8rem, 4vw, 3.2rem);
-    margin-top: 2.2rem;
-    align-items: start;
+  /* Portfolio — full-bleed estuary */
+  .portfolio {
+    scroll-margin-top: 70px;
   }
-  .portfolio-plate {
-    margin: 0;
-    border-radius: 16px;
+  .pf-band {
+    position: relative;
+    min-height: 100svh;
+    display: flex;
+    align-items: flex-end;
     overflow: hidden;
-    box-shadow: 0 24px 60px rgba(4, 63, 127, 0.18);
+    border-top: 4px solid var(--brand);
   }
-  .plate-inner {
-    margin: -6% 0;
+  .pf-media {
+    position: absolute;
+    inset: -12% 0;
   }
-  .portfolio-plate img {
+  .pf-media :global(img) {
     width: 100%;
-    height: auto;
+    height: 100%;
+    object-fit: cover;
   }
-  .portfolio-plate figcaption {
-    font-size: 0.72rem;
-    color: var(--ink-muted);
-    padding: 0.7rem 1rem;
-    background: #fff;
+  .pf-veil {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      180deg,
+      rgba(2, 29, 59, 0.5) 0%,
+      rgba(2, 29, 59, 0.18) 34%,
+      rgba(2, 29, 59, 0.62) 70%,
+      rgba(1, 16, 31, 0.88) 100%
+    );
+  }
+  .pf-content {
     position: relative;
     z-index: 1;
+    width: 100%;
+    padding-block: clamp(3rem, 8vh, 5rem);
+  }
+  .pf-body {
+    max-width: 46rem;
+    margin-top: 1.6rem;
   }
   .anchor-tag {
     font-size: 0.75rem;
     font-weight: 700;
     letter-spacing: 0.16em;
     text-transform: uppercase;
-    color: var(--blue);
+    color: var(--sky);
   }
   .anchor-name {
     font-family: var(--font-display);
     font-size: clamp(1.7rem, 3vw, 2.3rem);
     font-weight: 600;
     margin-top: 0.5rem;
+    color: #fff;
   }
   .anchor-copy {
     margin-top: 1rem;
     line-height: 1.65;
-    color: var(--ink-soft);
+    color: rgba(234, 242, 251, 0.92);
     max-width: 56ch;
   }
   .farm-cards {
@@ -1685,8 +1777,9 @@ const diveChapters = [1, 2, 3, 4]
     max-width: 34rem;
   }
   .farm-card {
-    border: 1px solid var(--hairline);
-    background: #fff;
+    border: 1px solid rgba(111, 165, 220, 0.4);
+    background: rgba(2, 29, 59, 0.62);
+    backdrop-filter: blur(8px);
     border-radius: 12px;
     padding: 1rem 1.1rem;
   }
@@ -1694,32 +1787,44 @@ const diveChapters = [1, 2, 3, 4]
     font-family: var(--font-display);
     font-weight: 600;
     font-size: 1.15rem;
-    color: var(--brand);
+    color: var(--pale);
   }
   .farm-specs {
     font-size: 0.83rem;
-    color: var(--ink-muted);
+    color: rgba(220, 233, 246, 0.85);
     margin-top: 0.3rem;
   }
   .pipeline-note {
     font-style: italic;
-    color: var(--ink-soft);
+    color: rgba(234, 242, 251, 0.9);
     margin-top: 1.6rem;
     max-width: 58ch;
     line-height: 1.6;
     border-left: 2px solid var(--sky);
     padding-left: 1rem;
   }
-  @media (max-width: 880px) {
-    .portfolio-grid {
+  .pf-credit {
+    margin-top: 1.8rem;
+    font-size: 0.72rem;
+    letter-spacing: 0.05em;
+    color: rgba(220, 233, 246, 0.6);
+  }
+  @media (max-width: 560px) {
+    .farm-cards {
       grid-template-columns: 1fr;
     }
   }
 
-  /* Terms */
+  /* Terms — deep navy block */
+  .terms {
+    background: var(--deep);
+    color: #eaf2fb;
+    padding-block: clamp(3.2rem, 7vw, 5.5rem);
+    scroll-margin-top: 70px;
+  }
   .terms-table {
     margin-top: 2rem;
-    border-top: 2px solid var(--brand);
+    border-top: 2px solid var(--sky);
     max-width: 46rem;
   }
   .terms-row {
@@ -1727,11 +1832,11 @@ const diveChapters = [1, 2, 3, 4]
     grid-template-columns: 1fr 1.2fr;
     gap: 1rem;
     padding: 1.1rem 0;
-    border-bottom: 1px solid var(--hairline);
+    border-bottom: 1px solid rgba(111, 165, 220, 0.24);
   }
   .terms-row dt {
     font-size: 0.9rem;
-    color: var(--ink-muted);
+    color: #9fbedc;
   }
   .terms-row dd {
     margin: 0;
@@ -1744,16 +1849,17 @@ const diveChapters = [1, 2, 3, 4]
     font-family: var(--font-display);
     font-size: 1.3rem;
     font-weight: 600;
-    color: var(--brand);
+    color: var(--pale);
+    text-shadow: 0 0 24px rgba(111, 165, 220, 0.35);
   }
   .terms-caveat {
     font-size: 0.8rem;
-    color: var(--ink-muted);
+    color: #9fbedc;
   }
   .manager-line {
     font-size: 0.92rem;
-    font-weight: 650;
-    color: var(--ink-soft);
+    font-weight: 600;
+    color: #c6daee;
     margin-top: 1.6rem;
     max-width: 60ch;
   }
@@ -1862,27 +1968,30 @@ const diveChapters = [1, 2, 3, 4]
     }
   }
 
+  /* Invest CTA — deep navy plate */
   .invest-cta {
     display: grid;
     grid-template-columns: 1.2fr 1fr;
     gap: clamp(1.8rem, 4vw, 3rem);
     margin-top: clamp(2.5rem, 5vw, 3.6rem);
-    border: 1px solid var(--hairline);
-    background: var(--ice);
+    background: var(--deep);
+    color: #eaf2fb;
     border-radius: 18px;
     padding: clamp(1.5rem, 3.5vw, 2.5rem);
+    box-shadow: 0 24px 60px rgba(2, 29, 59, 0.3);
   }
   .contact-name {
     font-family: var(--font-display);
     font-size: 1.4rem;
     font-weight: 600;
+    color: #fff;
   }
   .contact-role {
     font-size: 0.78rem;
     font-weight: 650;
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: var(--blue);
+    color: var(--sky);
     margin-top: 0.25rem;
   }
   .contact-line {
@@ -1890,11 +1999,14 @@ const diveChapters = [1, 2, 3, 4]
     margin-top: 0.6rem;
   }
   .contact-line a {
-    color: var(--blue);
-    text-decoration-color: var(--hairline);
+    color: var(--pale);
+    text-decoration-color: rgba(111, 165, 220, 0.4);
+  }
+  .contact-line a:hover {
+    color: #fff;
   }
   .contact-general {
-    color: var(--ink-muted);
+    color: #9fbedc;
   }
   .cta-stack {
     display: flex;
@@ -1904,7 +2016,7 @@ const diveChapters = [1, 2, 3, 4]
   }
   .cta-note {
     font-size: 0.78rem;
-    color: var(--ink-muted);
+    color: #9fbedc;
     text-align: center;
   }
   @media (max-width: 760px) {
@@ -1915,7 +2027,8 @@ const diveChapters = [1, 2, 3, 4]
 
   /* Partners */
   .partners {
-    background: #fff;
+    background: var(--ice);
+    border-top: 1px solid var(--hairline-strong);
     padding-block: clamp(2.5rem, 5vw, 4rem);
   }
   .partner-strip {
@@ -1937,21 +2050,25 @@ const diveChapters = [1, 2, 3, 4]
     filter: grayscale(0) opacity(1);
   }
 
-  /* Footer */
+  /* Footer — logo small, right-aligned */
   .site-footer {
     background: var(--deep);
     color: rgba(255, 255, 255, 0.86);
+    border-top: 4px solid var(--brand);
     padding-block: clamp(2.6rem, 6vw, 4rem) 2rem;
   }
   .footer-grid {
     display: grid;
-    grid-template-columns: 1.4fr 1fr;
+    grid-template-columns: 1fr auto;
     gap: 2.5rem;
     padding-bottom: 2.4rem;
     border-bottom: 1px solid rgba(255, 255, 255, 0.16);
   }
-  .footer-brand img {
-    width: 210px;
+  .footer-logo-wrap {
+    justify-self: end;
+  }
+  .footer-logo-wrap img {
+    width: 120px;
     height: auto;
   }
   .footer-address {
@@ -1963,8 +2080,8 @@ const diveChapters = [1, 2, 3, 4]
     list-style: none;
     padding: 0;
     display: flex;
-    flex-direction: column;
-    gap: 0.6rem;
+    flex-wrap: wrap;
+    gap: 0.4rem 1.6rem;
   }
   .footer-links a {
     font-size: 0.9rem;
@@ -1989,6 +2106,9 @@ const diveChapters = [1, 2, 3, 4]
   @media (max-width: 760px) {
     .footer-grid {
       grid-template-columns: 1fr;
+    }
+    .footer-logo-wrap {
+      justify-self: end;
     }
   }
 

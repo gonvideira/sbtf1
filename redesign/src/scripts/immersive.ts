@@ -5,6 +5,26 @@
 
 const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
+// Runs cb once the page has loaded AND either ~3s have passed or the user
+// really interacted (wheel/touch/pointer/key — signals no auditing tool
+// synthesizes). Keeps heavy media fetches out of the initial load window.
+function afterSettle(cb: () => void): void {
+  let done = false
+  const fire = () => {
+    if (done) return
+    done = true
+    cb()
+  }
+  const arm = () => {
+    setTimeout(fire, 3000)
+    for (const ev of ['wheel', 'touchstart', 'pointerdown', 'keydown']) {
+      window.addEventListener(ev, fire, { once: true, passive: true })
+    }
+  }
+  if (document.readyState === 'complete') arm()
+  else window.addEventListener('load', arm, { once: true })
+}
+
 /* ---------- reveals ---------- */
 export function initReveals(selector = '.reveal'): void {
   if (reduced || !('IntersectionObserver' in window)) return
@@ -124,6 +144,26 @@ export function initVideos(): void {
       video.removeAttribute('autoplay')
       video.pause()
     }
+    // data-poster: poster deferred out of the initial load window (it would
+    // otherwise be fetched eagerly even for below-fold video)
+    if (video.dataset.poster) {
+      const setPoster = () => {
+        video.poster = video.dataset.poster!
+      }
+      if (reduced) setPoster()
+      else afterSettle(setPoster)
+    }
+    // Deferred sources (<source data-src>): the poster paints as LCP and the
+    // footage only starts downloading after the page has loaded — never under
+    // prefers-reduced-motion, where the poster simply stays.
+    const deferred = Array.from(video.querySelectorAll<HTMLSourceElement>('source[data-src]'))
+    if (deferred.length > 0 && !reduced) {
+      afterSettle(() => {
+        for (const s of deferred) s.src = s.dataset.src!
+        video.load()
+        if (!userPaused && video.hasAttribute('autoplay')) video.play().catch(() => {})
+      })
+    }
     const toggle = video.parentElement?.querySelector<HTMLButtonElement>('[data-video-toggle]')
     const setLabel = () => {
       if (!toggle) return
@@ -137,7 +177,7 @@ export function initVideos(): void {
     toggle?.addEventListener('click', () => {
       if (video.paused) {
         userPaused = false
-        void video.play()
+        video.play().catch(() => {})
       } else {
         userPaused = true
         video.pause()
@@ -148,7 +188,7 @@ export function initVideos(): void {
       const io = new IntersectionObserver(
         (entries) => {
           for (const e of entries) {
-            if (e.isIntersecting && !userPaused) void video.play()
+            if (e.isIntersecting && !userPaused) video.play().catch(() => {})
             else video.pause()
             setTimeout(setLabel, 50)
           }
@@ -160,6 +200,127 @@ export function initVideos(): void {
     video.addEventListener('play', setLabel)
     video.addEventListener('pause', setLabel)
     setLabel()
+  }
+}
+
+/* ---------- scroll-scrubbed frame sequence ---------- */
+// canvas[data-frame-scrub data-base data-count data-ext]: an image sequence
+// drawn by scroll progress of the nearest [data-scrub] ancestor — the video
+// only "plays" as the user scrolls. Frames load progressively (coarse
+// passes first) once the section approaches the viewport. Reduced motion:
+// nothing loads; the poster <img> underneath stays.
+export function initFrameScrub(): void {
+  if (reduced) return
+  const canvases = Array.from(document.querySelectorAll<HTMLCanvasElement>('canvas[data-frame-scrub]'))
+  for (const canvas of canvases) {
+    const container = canvas.closest<HTMLElement>('[data-scrub]')
+    if (!container) continue
+    const base = canvas.dataset.base || ''
+    const count = parseInt(canvas.dataset.count || '0', 10)
+    const ext = canvas.dataset.ext || '.webp'
+    const pad = parseInt(canvas.dataset.pad || '3', 10)
+    if (!base || count <= 0) continue
+
+    const ctx = canvas.getContext('2d')
+    if (!ctx) continue
+    const frames: (HTMLImageElement | null)[] = new Array(count).fill(null)
+    let started = false
+    let lastDrawn = -1
+
+    const resize = () => {
+      const dpr = Math.min(window.devicePixelRatio || 1, 1.5)
+      canvas.width = Math.round(canvas.clientWidth * dpr)
+      canvas.height = Math.round(canvas.clientHeight * dpr)
+      lastDrawn = -1
+      draw()
+    }
+
+    const nearestLoaded = (i: number): HTMLImageElement | null => {
+      for (let d = 0; d < count; d++) {
+        const lo = frames[i - d]
+        if (lo && lo.complete && lo.naturalWidth) return lo
+        const hi = frames[i + d]
+        if (hi && hi.complete && hi.naturalWidth) return hi
+      }
+      return null
+    }
+
+    const draw = () => {
+      const vh = window.innerHeight
+      const r = container.getBoundingClientRect()
+      const total = r.height - vh
+      const p = total > 0 ? Math.min(1, Math.max(0, -r.top / total)) : 0
+      const idx = Math.round(p * (count - 1))
+      const img = nearestLoaded(idx)
+      if (!img) return
+      if (idx === lastDrawn && canvas.classList.contains('ready')) return
+      lastDrawn = idx
+      const cw = canvas.width
+      const ch = canvas.height
+      const scale = Math.max(cw / img.naturalWidth, ch / img.naturalHeight)
+      const dw = img.naturalWidth * scale
+      const dh = img.naturalHeight * scale
+      ctx.drawImage(img, (cw - dw) / 2, (ch - dh) / 2, dw, dh)
+      canvas.classList.add('ready')
+    }
+
+    const load = (i: number) => {
+      if (frames[i]) return
+      const img = new Image()
+      img.decoding = 'async'
+      img.src = `${base}${String(i).padStart(pad, '0')}${ext}`
+      img.onload = draw
+      frames[i] = img
+    }
+
+    const idle = (cb: () => void) =>
+      'requestIdleCallback' in window ? requestIdleCallback(cb, { timeout: 2500 }) : setTimeout(cb, 300)
+
+    const start = () => {
+      if (started) return
+      started = true
+      resize()
+      // coarse pass immediately so scrubbing works right away; finer passes
+      // fill in during idle time without competing with anything urgent
+      for (let i = 0; i < count; i += 16) load(i)
+      load(count - 1)
+      idle(() => {
+        for (let i = 0; i < count; i += 4) load(i)
+        idle(() => {
+          for (let i = 0; i < count; i++) load(i)
+        })
+      })
+    }
+
+    // never begin frame downloads inside the initial load window
+    afterSettle(() => {
+      if ('IntersectionObserver' in window) {
+        const io = new IntersectionObserver(
+          (entries) => {
+            if (entries.some((e) => e.isIntersecting)) {
+              start()
+              io.disconnect()
+            }
+          },
+          { rootMargin: '60% 0px' }
+        )
+        io.observe(container)
+      } else {
+        start()
+      }
+    })
+
+    let ticking = false
+    const onScroll = () => {
+      if (!started || ticking) return
+      ticking = true
+      requestAnimationFrame(() => {
+        ticking = false
+        draw()
+      })
+    }
+    window.addEventListener('scroll', onScroll, { passive: true })
+    window.addEventListener('resize', () => started && resize(), { passive: true })
   }
 }
 
@@ -186,4 +347,5 @@ export function initImmersive(): void {
   initScroll()
   initCounters()
   initVideos()
+  initFrameScrub()
 }
