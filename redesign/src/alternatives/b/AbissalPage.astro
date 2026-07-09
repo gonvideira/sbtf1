@@ -8,9 +8,9 @@
 // lighting the way to 2034. The most cinematic of the three — data glows
 // like bioluminescence against logo-navy depths.
 import '@fontsource-variable/space-grotesk'
-import '@fontsource-variable/inter'
+import '@fontsource-variable/ibm-plex-sans'
 import spaceGroteskUrl from '@fontsource-variable/space-grotesk/files/space-grotesk-latin-wght-normal.woff2?url'
-import interUrl from '@fontsource-variable/inter/files/inter-latin-wght-normal.woff2?url'
+import plexUrl from '@fontsource-variable/ibm-plex-sans/files/ibm-plex-sans-latin-wght-normal.woff2?url'
 import '@/styles/base.css'
 
 import { Image, Picture } from 'astro:assets'
@@ -96,7 +96,7 @@ const allocSegments = t.fund.verticals.items.map((v, i) => ({
 >
   <Fragment slot="head">
     <link rel="preload" href={spaceGroteskUrl} as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href={interUrl} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={plexUrl} as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/media/fish-vortex-poster.jpg" as="image" />
   </Fragment>
   <a href="#main" class="skip-link">{t.a11y.skipToContent}</a>
@@ -144,6 +144,7 @@ const allocSegments = t.fund.verticals.items.map((v, i) => ({
           height="898"
           aria-hidden="true"
         >
+          <source src="/media/fish-vortex.av1.mp4" type='video/mp4; codecs="av01.0.08M.08"' />
           <source src="/media/fish-vortex.mp4" type="video/mp4" />
         </video>
         <button
@@ -206,6 +207,7 @@ const allocSegments = t.fund.verticals.items.map((v, i) => ({
           width="1600"
           height="900"
         >
+          <source src="/media/dolphin-deep.av1.mp4" type='video/mp4; codecs="av01.0.08M.08"' />
           <source src="/media/dolphin-deep.mp4" type="video/mp4" />
         </video>
         <button
@@ -592,7 +594,7 @@ const allocSegments = t.fund.verticals.items.map((v, i) => ({
     --sky: #6fa5dc;
     --pale: #a9caec;
     --font-display: 'Space Grotesk Variable', system-ui, sans-serif;
-    --font-body: 'Inter Variable', system-ui, sans-serif;
+    --font-body: 'IBM Plex Sans Variable', system-ui, sans-serif;
 
     --chart-line: #6fa5dc;
     --chart-c1: #a9caec;
@@ -993,7 +995,7 @@ const allocSegments = t.fund.verticals.items.map((v, i) => ({
   }
 
   .rise {
-    opacity: 0;
+    opacity: 0.01;
     transform: translateY(26px);
     animation: rise 0.9s cubic-bezier(0.2, 0.65, 0.25, 1) forwards;
     animation-delay: var(--d, 0ms);

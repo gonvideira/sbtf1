@@ -7,9 +7,9 @@
 // followed by an institutional dossier (value-chain schematic, spec-sheet
 // portfolio). Light and dark alternate like surfacing between dives. The
 // most typographically aggressive of the three — all of it in logo blue.
-import '@fontsource-variable/archivo'
+import '@fontsource-variable/ibm-plex-sans'
 import '@fontsource-variable/jetbrains-mono'
-import archivoUrl from '@fontsource-variable/archivo/files/archivo-latin-wght-normal.woff2?url'
+import plexUrl from '@fontsource-variable/ibm-plex-sans/files/ibm-plex-sans-latin-wght-normal.woff2?url'
 import jbMonoUrl from '@fontsource-variable/jetbrains-mono/files/jetbrains-mono-latin-wght-normal.woff2?url'
 import '@/styles/base.css'
 
@@ -134,7 +134,7 @@ const tickerStats = t.hub.statCards.map((s) => ({ value: s.value, label: s.label
   bodyClass="alt-c"
 >
   <Fragment slot="head">
-    <link rel="preload" href={archivoUrl} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={plexUrl} as="font" type="font/woff2" crossorigin />
     <link rel="preload" href={jbMonoUrl} as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/media/fish-vortex-poster.jpg" as="image" />
   </Fragment>
@@ -183,6 +183,7 @@ const tickerStats = t.hub.statCards.map((s) => ({ value: s.value, label: s.label
           height="898"
           aria-hidden="true"
         >
+          <source src="/media/fish-vortex.av1.mp4" type='video/mp4; codecs="av01.0.08M.08"' />
           <source src="/media/fish-vortex.mp4" type="video/mp4" />
         </video>
         <button
@@ -253,6 +254,7 @@ const tickerStats = t.hub.statCards.map((s) => ({ value: s.value, label: s.label
           width="1600"
           height="900"
         >
+          <source src="/media/dolphin-deep.av1.mp4" type='video/mp4; codecs="av01.0.08M.08"' />
           <source src="/media/dolphin-deep.mp4" type="video/mp4" />
         </video>
         <button
@@ -652,7 +654,7 @@ const tickerStats = t.hub.statCards.map((s) => ({ value: s.value, label: s.label
     --ink-muted: #57708a;
     --line: #d8e4f0;
     --line-strong: #b9cde1;
-    --font-head: 'Archivo Variable', system-ui, sans-serif;
+    --font-head: 'IBM Plex Sans Variable', system-ui, sans-serif;
     --font-mono: 'JetBrains Mono Variable', ui-monospace, monospace;
 
     --chart-line: #1a5ea8;
@@ -712,7 +714,7 @@ const tickerStats = t.hub.statCards.map((s) => ({ value: s.value, label: s.label
   }
   .display {
     font-family: var(--font-head);
-    font-weight: 780;
+    font-weight: 700;
     font-size: clamp(1.8rem, 4vw, 2.8rem);
     line-height: 1.06;
     letter-spacing: -0.02em;
@@ -864,7 +866,7 @@ const tickerStats = t.hub.statCards.map((s) => ({ value: s.value, label: s.label
     color: var(--brand) !important;
     padding: 0.55rem 1.05rem;
     border-radius: 3px;
-    font-weight: 750;
+    font-weight: 700;
   }
   .nav-toggle {
     display: none;
@@ -1016,7 +1018,7 @@ const tickerStats = t.hub.statCards.map((s) => ({ value: s.value, label: s.label
   .hero-headline {
     margin-top: 1.4rem;
     font-family: var(--font-head);
-    font-weight: 800;
+    font-weight: 700;
     font-size: clamp(2rem, 5.2vw, 3.9rem);
     line-height: 1.04;
     letter-spacing: -0.025em;
@@ -1036,7 +1038,7 @@ const tickerStats = t.hub.statCards.map((s) => ({ value: s.value, label: s.label
     color: var(--pale);
   }
   .slide {
-    opacity: 0;
+    opacity: 0.01;
     transform: translateY(105%);
     animation: slide-up 0.85s cubic-bezier(0.16, 0.8, 0.24, 1) forwards;
     animation-delay: var(--d, 0ms);
@@ -1045,7 +1047,7 @@ const tickerStats = t.hub.statCards.map((s) => ({ value: s.value, label: s.label
     to { opacity: 1; transform: none; }
   }
   .rise {
-    opacity: 0;
+    opacity: 0.01;
     transform: translateY(24px);
     animation: rise 0.85s cubic-bezier(0.2, 0.65, 0.25, 1) forwards;
     animation-delay: var(--d, 0ms);
@@ -1235,7 +1237,7 @@ const tickerStats = t.hub.statCards.map((s) => ({ value: s.value, label: s.label
   .chapter-no text {
     font-family: var(--font-mono);
     font-size: 132px;
-    font-weight: 800;
+    font-weight: 700;
     letter-spacing: -0.05em;
     fill: rgba(169, 202, 236, 0.16);
   }
@@ -1269,7 +1271,7 @@ const tickerStats = t.hub.statCards.map((s) => ({ value: s.value, label: s.label
     padding: clamp(1.8rem, 4vw, 2.8rem);
   }
   .dive-display {
-    font-weight: 800;
+    font-weight: 700;
     font-size: clamp(1.9rem, 4.2vw, 3rem);
     line-height: 1.06;
     letter-spacing: -0.02em;
@@ -1355,7 +1357,7 @@ const tickerStats = t.hub.statCards.map((s) => ({ value: s.value, label: s.label
   }
   .p-title {
     font-size: 1.1rem;
-    font-weight: 750;
+    font-weight: 700;
     color: #fff;
   }
   .p-sub {
@@ -1382,7 +1384,7 @@ const tickerStats = t.hub.statCards.map((s) => ({ value: s.value, label: s.label
   }
   .obs-head h3 {
     font-size: 1.25rem;
-    font-weight: 780;
+    font-weight: 700;
     color: #fff;
   }
   .obs-updated {
@@ -1441,7 +1443,7 @@ const tickerStats = t.hub.statCards.map((s) => ({ value: s.value, label: s.label
   }
   .resource-card h3 {
     font-size: 0.95rem;
-    font-weight: 750;
+    font-weight: 700;
     margin-top: 0.5rem;
   }
   .resource-card p {
@@ -1555,7 +1557,7 @@ const tickerStats = t.hub.statCards.map((s) => ({ value: s.value, label: s.label
   }
   .era-date {
     font-size: clamp(2.6rem, 6vw, 4rem);
-    font-weight: 800;
+    font-weight: 700;
     letter-spacing: -0.04em;
     color: var(--brand);
     line-height: 1;
@@ -1607,7 +1609,7 @@ const tickerStats = t.hub.statCards.map((s) => ({ value: s.value, label: s.label
     display: inline-flex;
     align-items: center;
     font-size: 0.88rem;
-    font-weight: 750;
+    font-weight: 700;
     background: var(--brand);
     color: #fff;
     padding: 0.8rem 1.2rem;
@@ -1620,7 +1622,7 @@ const tickerStats = t.hub.statCards.map((s) => ({ value: s.value, label: s.label
   }
   .eu-title {
     font-size: clamp(1.25rem, 2.2vw, 1.6rem);
-    font-weight: 780;
+    font-weight: 700;
     max-width: 32ch;
   }
   .eu-intro {
@@ -1707,7 +1709,7 @@ const tickerStats = t.hub.statCards.map((s) => ({ value: s.value, label: s.label
   }
   .node-body h3 {
     font-size: 1.15rem;
-    font-weight: 780;
+    font-weight: 700;
   }
   .v-copy {
     font-size: 0.88rem;
@@ -1771,7 +1773,7 @@ const tickerStats = t.hub.statCards.map((s) => ({ value: s.value, label: s.label
   }
   .anchor-name {
     font-size: clamp(1.5rem, 2.8vw, 2.1rem);
-    font-weight: 800;
+    font-weight: 700;
     margin-top: 0.5rem;
   }
   .anchor-copy {
@@ -1941,7 +1943,7 @@ const tickerStats = t.hub.statCards.map((s) => ({ value: s.value, label: s.label
   }
   .member-name {
     font-size: 1.02rem;
-    font-weight: 780;
+    font-weight: 700;
     margin-top: 0.85rem;
   }
   .member-name a {
@@ -1988,7 +1990,7 @@ const tickerStats = t.hub.statCards.map((s) => ({ value: s.value, label: s.label
   }
   .step-title {
     font-size: 0.95rem;
-    font-weight: 780;
+    font-weight: 700;
     margin-top: 0.5rem;
   }
   .step-desc {
@@ -2014,7 +2016,7 @@ const tickerStats = t.hub.statCards.map((s) => ({ value: s.value, label: s.label
   }
   .contact-name {
     font-size: 1.35rem;
-    font-weight: 800;
+    font-weight: 700;
   }
   .contact-role {
     font-size: 0.66rem;

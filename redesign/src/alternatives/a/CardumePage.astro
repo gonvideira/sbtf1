@@ -8,9 +8,9 @@
 // eras that lead back to the future (2026 → 2034). Serif grace, logo-blue
 // palette, motion that behaves like water: slow, continuous, inevitable.
 import '@fontsource-variable/fraunces'
-import '@fontsource-variable/inter'
+import '@fontsource-variable/ibm-plex-sans'
 import frauncesUrl from '@fontsource-variable/fraunces/files/fraunces-latin-wght-normal.woff2?url'
-import interUrl from '@fontsource-variable/inter/files/inter-latin-wght-normal.woff2?url'
+import plexUrl from '@fontsource-variable/ibm-plex-sans/files/ibm-plex-sans-latin-wght-normal.woff2?url'
 import '@/styles/base.css'
 
 import { Image, Picture } from 'astro:assets'
@@ -97,7 +97,7 @@ const diveChapters = [1, 2, 3, 4]
 >
   <Fragment slot="head">
     <link rel="preload" href={frauncesUrl} as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href={interUrl} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={plexUrl} as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/media/fish-vortex-poster.jpg" as="image" />
   </Fragment>
   <a href="#main" class="skip-link">{t.a11y.skipToContent}</a>
@@ -146,6 +146,7 @@ const diveChapters = [1, 2, 3, 4]
           height="898"
           aria-hidden="true"
         >
+          <source src="/media/fish-vortex.av1.mp4" type='video/mp4; codecs="av01.0.08M.08"' />
           <source src="/media/fish-vortex.mp4" type="video/mp4" />
         </video>
         <button
@@ -207,6 +208,7 @@ const diveChapters = [1, 2, 3, 4]
           width="1600"
           height="900"
         >
+          <source src="/media/dolphin-deep.av1.mp4" type='video/mp4; codecs="av01.0.08M.08"' />
           <source src="/media/dolphin-deep.mp4" type="video/mp4" />
         </video>
         <button
@@ -586,7 +588,7 @@ const diveChapters = [1, 2, 3, 4]
     --ink-muted: #58708a;
     --hairline: #d8e4f0;
     --font-display: 'Fraunces Variable', Georgia, serif;
-    --font-ui: 'Inter Variable', system-ui, sans-serif;
+    --font-ui: 'IBM Plex Sans Variable', system-ui, sans-serif;
 
     --chart-line: #1a5ea8;
     --chart-c1: #6fa5dc;
@@ -756,7 +758,7 @@ const diveChapters = [1, 2, 3, 4]
     color: var(--sky) !important;
   }
   .nav-lang a {
-    font-weight: 750;
+    font-weight: 700;
     letter-spacing: 0.08em;
   }
   .nav-cta {
@@ -1001,7 +1003,7 @@ const diveChapters = [1, 2, 3, 4]
 
   /* entrance rise */
   .rise {
-    opacity: 0;
+    opacity: 0.01;
     transform: translateY(26px);
     animation: rise 0.9s cubic-bezier(0.2, 0.65, 0.25, 1) forwards;
     animation-delay: var(--d, 0ms);
@@ -1319,7 +1321,7 @@ const diveChapters = [1, 2, 3, 4]
   }
   .resource-card h3 {
     font-size: 0.82rem;
-    font-weight: 750;
+    font-weight: 700;
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--brand);
@@ -1499,7 +1501,7 @@ const diveChapters = [1, 2, 3, 4]
   }
   .eq-result {
     font-size: 0.92rem;
-    font-weight: 750;
+    font-weight: 700;
     background: var(--brand);
     color: #fff;
     padding: 0.9rem 1.3rem;
@@ -1829,7 +1831,7 @@ const diveChapters = [1, 2, 3, 4]
   }
   .step-title {
     font-size: 0.95rem;
-    font-weight: 750;
+    font-weight: 700;
     margin-top: 0.4rem;
   }
   .step-desc {

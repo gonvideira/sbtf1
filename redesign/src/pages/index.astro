@@ -1,7 +1,7 @@
 ---
 // Internal design-review index — compares the three immersive alternatives.
 // noindex: this page is a review artifact, not part of the public site.
-import '@fontsource-variable/inter'
+import '@fontsource-variable/ibm-plex-sans'
 import '@/styles/base.css'
 import { Image } from 'astro:assets'
 import BaseLayout from '@/layouts/BaseLayout.astro'
@@ -17,7 +17,7 @@ const alts = [
     ink: '#0a2036',
     thesis:
       'O museu luminoso do mar. Um site claro e aspiracional cuja imersão chega como cinema: o vórtice abre a página, o Hub mergulha em quatro capítulos sobre o canhão do golfinho, e regressa-se à luz. O Fundo é uma galeria de herança — cinco séculos encenados como eras que conduzem de volta ao futuro (2026 → 2034).',
-    traits: ['Luminoso · serif (Fraunces)', 'Mergulho escuro dentro de site claro', 'Herança: linha de eras com nós', 'Movimento: água — lento e contínuo'],
+    traits: ['Luminoso · Fraunces + IBM Plex Sans', 'Mergulho escuro dentro de site claro', 'Herança: linha de eras com nós', 'Movimento: água — lento e contínuo'],
   },
   {
     id: 'B',
@@ -28,7 +28,7 @@ const alts = [
     ink: '#e6f0fa',
     thesis:
       'Um mergulho contínuo. Entra-se à superfície no vórtice e nunca mais se emerge: um manómetro de profundidade acompanha a descida, neve marinha à deriva, o canhão do golfinho transporta o Hub, e o Fundo conta-se no leito do mar em eras gigantes (1500 → Hoje → 2034). O mais cinematográfico dos três.',
-    traits: ['Escuro total · Space Grotesk', 'Manómetro de profundidade ao vivo', 'Herança: marcas de água monumentais', 'Movimento: descida, brilho, contadores'],
+    traits: ['Escuro total · Space Grotesk + IBM Plex Sans', 'Manómetro de profundidade ao vivo', 'Herança: marcas de água monumentais', 'Movimento: descida, brilho, contadores'],
   },
   {
     id: 'C',
@@ -39,7 +39,7 @@ const alts = [
     ink: '#0a2036',
     thesis:
       'Uma corrente de dados. Energia editorial cinética — o herói corta para um ticker de indicadores; o Hub é um mergulho capitulado por numerais gigantes; o Fundo abre como genérico de filme: 1500 → HOJE → 2034 em datas monumentais, seguido do dossier institucional (cadeia de valor, ficha técnica). Claro e escuro alternam como subidas entre mergulhos.',
-    traits: ['Cinético · Archivo + JetBrains Mono', 'Ticker de indicadores em movimento', 'Herança: cartões-genérico 1500/HOJE/2034', 'Movimento: preciso e enérgico'],
+    traits: ['Cinético · IBM Plex Sans + JetBrains Mono', 'Ticker de indicadores em movimento', 'Herança: cartões-genérico 1500/HOJE/2034', 'Movimento: preciso e enérgico'],
   },
 ]
 ---
@@ -95,7 +95,7 @@ const alts = [
   :global(body.review) {
     background: #eef2f6;
     color: #16233b;
-    font-family: 'Inter Variable', system-ui, sans-serif;
+    font-family: 'IBM Plex Sans Variable', system-ui, sans-serif;
   }
   .review-main {
     max-width: 1100px;
@@ -108,7 +108,7 @@ const alts = [
   }
   .review-head h1 {
     font-size: clamp(1.6rem, 3.4vw, 2.4rem);
-    font-weight: 750;
+    font-weight: 700;
     letter-spacing: -0.01em;
     margin-top: 1.6rem;
     max-width: 26ch;
@@ -152,7 +152,7 @@ const alts = [
   }
   .alt-letter {
     font-size: 4rem;
-    font-weight: 800;
+    font-weight: 700;
     color: var(--ink);
     opacity: 0.9;
   }
@@ -165,7 +165,7 @@ const alts = [
   }
   .alt-body h2 {
     font-size: 1.25rem;
-    font-weight: 750;
+    font-weight: 700;
   }
   .alt-thesis {
     font-size: 0.88rem;
