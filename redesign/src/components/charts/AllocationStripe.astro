@@ -1,0 +1,101 @@
+---
+// Proportional single-bar allocation (50 / 35 / 15) with 2px surface gaps
+// between segments and direct labels below — the labels are the legend.
+// Segment colors: --chart-c1 / --chart-c2 / --chart-c3 (validated triple).
+
+interface Segment {
+  label: string
+  pct: number
+  amount: string
+}
+interface Props {
+  segments: Segment[]
+  summary: string
+  class?: string
+}
+
+const { segments, summary, class: className } = Astro.props
+---
+
+<figure class={`alloc ${className ?? ''}`} role="img" aria-label={summary}>
+  <div class="alloc-bar" aria-hidden="true">
+    {segments.map((s, i) => (
+      <div class={`alloc-seg alloc-seg--${i + 1}`} style={`flex-grow:${s.pct}`}></div>
+    ))}
+  </div>
+  <div class="alloc-labels" aria-hidden="true">
+    {segments.map((s, i) => (
+      <div class={`alloc-key alloc-key--${i + 1}`} style={`flex-grow:${s.pct}`}>
+        <span class="alloc-swatch"></span>
+        <span class="alloc-name">{s.label}</span>
+        <span class="alloc-nums">{s.pct}% · {s.amount}</span>
+      </div>
+    ))}
+  </div>
+</figure>
+
+<style>
+  .alloc {
+    margin: 0;
+    width: 100%;
+  }
+  .alloc-bar {
+    display: flex;
+    gap: 2px;
+    height: 20px;
+    border-radius: 5px;
+    overflow: hidden;
+  }
+  .alloc-seg {
+    flex-basis: 0;
+  }
+  .alloc-seg--1 { background: var(--chart-c1); border-radius: 4px 0 0 4px; }
+  .alloc-seg--2 { background: var(--chart-c2); }
+  .alloc-seg--3 { background: var(--chart-c3); border-radius: 0 4px 4px 0; }
+  .alloc-labels {
+    display: flex;
+    gap: 2px;
+    margin-top: 0.65rem;
+  }
+  .alloc-key {
+    flex-basis: 0;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+    font-size: 0.8rem;
+    line-height: 1.35;
+  }
+  .alloc-swatch {
+    width: 10px;
+    height: 10px;
+    border-radius: 3px;
+    margin-bottom: 0.25rem;
+  }
+  .alloc-key--1 .alloc-swatch { background: var(--chart-c1); }
+  .alloc-key--2 .alloc-swatch { background: var(--chart-c2); }
+  .alloc-key--3 .alloc-swatch { background: var(--chart-c3); }
+  .alloc-name {
+    color: var(--chart-ink);
+    font-weight: 600;
+  }
+  .alloc-nums {
+    color: var(--chart-ink-muted);
+    font-variant-numeric: tabular-nums;
+  }
+  @media (max-width: 560px) {
+    .alloc-labels {
+      flex-direction: column;
+      gap: 0.45rem;
+    }
+    .alloc-key {
+      flex-direction: row;
+      align-items: baseline;
+      gap: 0.5rem;
+    }
+    .alloc-swatch {
+      margin-bottom: 0;
+      flex-shrink: 0;
+    }
+  }
+</style>

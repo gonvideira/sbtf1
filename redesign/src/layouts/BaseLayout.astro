@@ -1,0 +1,117 @@
+---
+import type { Locale } from '@/content/types'
+
+interface Props {
+  locale: Locale
+  title: string
+  description: string
+  /** Current path, e.g. "/a/pt/" */
+  path: string
+  /** Same page in the other locale, e.g. "/a/en/" */
+  altPath: string
+  themeColor?: string
+  /** Set on internal review pages so crawlers skip them */
+  noindex?: boolean
+  bodyClass?: string
+}
+
+const { locale, title, description, path, altPath, themeColor = '#0D3B6E', noindex = false, bodyClass } = Astro.props
+
+const site = Astro.site!.href.replace(/\/$/, '')
+const canonical = site + path
+const altUrl = site + altPath
+const htmlLang = locale === 'pt' ? 'pt-PT' : 'en'
+const ogLocale = locale === 'pt' ? 'pt_PT' : 'en_GB'
+const ogLocaleAlt = locale === 'pt' ? 'en_GB' : 'pt_PT'
+
+const ptUrl = locale === 'pt' ? canonical : altUrl
+const enUrl = locale === 'en' ? canonical : altUrl
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Organization',
+      '@id': 'https://www.stagfundmanagement.com/#org',
+      name: 'STAG Fund Management, Lda.',
+      url: 'https://www.stagfundmanagement.com',
+      description:
+        locale === 'pt'
+          ? 'Entidade gestora de organismos de investimento colectivo regulada e supervisionada pela CMVM.'
+          : 'Collective investment management company regulated and supervised by the CMVM (Portuguese Securities Market Commission).',
+      address: {
+        '@type': 'PostalAddress',
+        streetAddress: 'Rua Serpa Pinto 14A, 1º andar',
+        postalCode: '1200-445',
+        addressLocality: 'Lisboa',
+        addressCountry: 'PT',
+      },
+      contactPoint: {
+        '@type': 'ContactPoint',
+        contactType: 'Investor Relations',
+        email: 'investor.relations@stagfundmanagement.com',
+        telephone: '+351218530236',
+      },
+    },
+    {
+      '@type': 'WebSite',
+      '@id': site + '/#website',
+      url: site + '/',
+      name: 'Blue Transformation Fund',
+      alternateName: 'STAG Blue Transformation Fund 1',
+      inLanguage: ['pt-PT', 'en'],
+      publisher: { '@id': 'https://www.stagfundmanagement.com/#org' },
+    },
+    {
+      '@type': 'WebPage',
+      '@id': canonical + '#webpage',
+      url: canonical,
+      name: title,
+      description,
+      inLanguage: htmlLang,
+      isPartOf: { '@id': site + '/#website' },
+    },
+  ],
+}
+---
+
+<!doctype html>
+<html lang={htmlLang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+    <link rel="canonical" href={canonical} />
+    <link rel="alternate" hreflang="pt-PT" href={ptUrl} />
+    <link rel="alternate" hreflang="en" href={enUrl} />
+    <link rel="alternate" hreflang="x-default" href={enUrl} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <meta name="theme-color" content={themeColor} />
+    <meta name="generator" content={Astro.generator} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Blue Transformation Fund" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={site + '/og.jpg'} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:locale" content={ogLocale} />
+    <meta property="og:locale:alternate" content={ogLocaleAlt} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={site + '/og.jpg'} />
+
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+    <slot name="head" />
+  </head>
+  <body class={bodyClass}>
+    <slot />
+  </body>
+</html>

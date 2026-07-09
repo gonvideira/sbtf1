@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- **BTF redesign — three complete design alternatives** in `redesign/` (Astro 5 static app, SEO-first, bilingual PT/EN with hreflang + JSON-LD + sitemap): A "Atlântico" (light editorial), B "Corrente Profunda" (dark cinematic scroll-descent), C "Sistema Azul" (Swiss technical); shared typed content layer with the redesign brief's PT copy verbatim and professional EN localization; Blue Ocean Hub with sourced stat cards, EU self-sufficiency chart and a swappable research-slot module seeded from `/research` PDFs (FAO SOFIA 2026, EUMOFA 2025, EU Blue Economy 2025); validated chart palettes (CVD-safe), CMVM disclaimer and IRR risk caveats; internal review index at `/`. Verified: axe 0 violations, Lighthouse A 97 / B 99 / C 99 perf with 100 a11y/BP/SEO, CLS 0
 - LinkedIn profile links for all team members in Section 06
 - `AGENTS.md` as the tool-agnostic source of truth for repo workflow, architecture, and conventions
 

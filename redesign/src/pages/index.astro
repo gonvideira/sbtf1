@@ -1,0 +1,206 @@
+---
+// Internal design-review index — compares the three alternatives.
+// noindex: this page is a review artifact, not part of the public site.
+import '@fontsource-variable/inter'
+import '@/styles/base.css'
+import { Image } from 'astro:assets'
+import BaseLayout from '@/layouts/BaseLayout.astro'
+import { brand } from '@/data/images'
+
+const alts = [
+  {
+    id: 'A',
+    slug: 'a',
+    name: 'Atlântico',
+    accent: '#8a5a04',
+    surface: '#fbf8f2',
+    ink: '#16233b',
+    thesis:
+      'A confiança tranquila de uma instituição centenária. Papel quente, tinta navy, dourado do Algarve; tipografia serifada editorial; o ritmo de um relatório anual impresso. Movimento contido — nada que destoasse em papel.',
+    traits: ['Editorial · claro', 'Serif (Fraunces + Newsreader)', 'Densidade: alta, em registo de prospecto', 'Movimento: revelações subtis'],
+  },
+  {
+    id: 'B',
+    slug: 'b',
+    name: 'Corrente Profunda',
+    accent: '#2ec4ce',
+    surface: '#071a33',
+    ink: '#eaf3fb',
+    thesis:
+      'Uma descida. A página começa à superfície — o estuário real, ao sol — e afunda por água progressivamente mais profunda à medida que se lê. Marcadores de profundidade, luz cáustica, dados luminosos. Cinemático e institucional.',
+    traits: ['Cinemático · escuro', 'Space Grotesk + Inter', 'Densidade: média, com encenação', 'Movimento: scroll-storytelling, contadores'],
+  },
+  {
+    id: 'C',
+    slug: 'c',
+    name: 'Sistema Azul',
+    accent: '#c4830a',
+    surface: '#f4f8fb',
+    ink: '#0a1e38',
+    thesis:
+      'O fundo como sistema de engenharia. Grelha estrutural visível, códigos de secção, numeração mono em cada quantidade, cadeia de valor desenhada como esquema técnico. O âmbar é caneta marcadora — só assinala o que importa.',
+    traits: ['Técnico · suíço · claro', 'Archivo + JetBrains Mono', 'Densidade: máxima, dossier técnico', 'Movimento: micro-interacções precisas'],
+  },
+]
+---
+
+<BaseLayout
+  locale="pt"
+  title="BTF Redesign — Revisão das 3 Alternativas"
+  description="Página interna de revisão das três alternativas de design do site Blue Transformation Fund."
+  path="/"
+  altPath="/"
+  noindex={true}
+  bodyClass="review"
+>
+  <main class="review-main">
+    <header class="review-head">
+      <Image src={brand.logoNavy} alt="STAG | btf." width={200} densities={[1, 2]} loading="eager" />
+      <h1>Redesign — três alternativas para revisão</h1>
+      <p>
+        As três direcções entregam o mesmo conteúdo, fluxo (Hero → Blue Ocean Hub → O Fundo) e requisitos de
+        plataforma — bilingue PT/EN, SEO estático, WCAG AA. Diferem em linguagem visual, personalidade de
+        interacção e densidade de informação. Cada cartão liga às versões PT e EN.
+      </p>
+      <p class="review-note">Página interna de revisão — excluída do sitemap e marcada noindex.</p>
+    </header>
+
+    <div class="alt-grid">
+      {alts.map((a) => (
+        <article class="alt-card" style={`--surface:${a.surface};--ink:${a.ink};--accent:${a.accent}`}>
+          <div class="alt-preview" aria-hidden="true">
+            <span class="alt-letter">{a.id}</span>
+          </div>
+          <div class="alt-body">
+            <h2>{a.name}</h2>
+            <p class="alt-thesis">{a.thesis}</p>
+            <ul class="alt-traits">
+              {a.traits.map((tr) => (
+                <li>{tr}</li>
+              ))}
+            </ul>
+            <div class="alt-links">
+              <a class="alt-link" href={`/${a.slug}/pt/`}>Ver em Português →</a>
+              <a class="alt-link" href={`/${a.slug}/en/`}>View in English →</a>
+            </div>
+          </div>
+        </article>
+      ))}
+    </div>
+  </main>
+</BaseLayout>
+
+<style>
+  :global(body.review) {
+    background: #eef2f6;
+    color: #16233b;
+    font-family: 'Inter Variable', system-ui, sans-serif;
+  }
+  .review-main {
+    max-width: 1100px;
+    margin-inline: auto;
+    padding: clamp(2rem, 6vw, 4rem) clamp(1.25rem, 4vw, 2.5rem) 4rem;
+  }
+  .review-head img {
+    width: 200px;
+    height: auto;
+  }
+  .review-head h1 {
+    font-size: clamp(1.6rem, 3.4vw, 2.4rem);
+    font-weight: 750;
+    letter-spacing: -0.01em;
+    margin-top: 1.6rem;
+    max-width: 24ch;
+  }
+  .review-head p {
+    margin-top: 1rem;
+    max-width: 70ch;
+    line-height: 1.6;
+    color: #44536b;
+  }
+  .review-note {
+    font-size: 0.8rem;
+    color: #64798f;
+  }
+  .alt-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.4rem;
+    margin-top: 2.6rem;
+  }
+  .alt-card {
+    background: #fff;
+    border: 1px solid #d7e2ec;
+    border-radius: 10px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .alt-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 40px rgba(13, 59, 110, 0.12);
+  }
+  .alt-preview {
+    background: var(--surface);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 150px;
+    border-bottom: 3px solid var(--accent);
+  }
+  .alt-letter {
+    font-size: 4rem;
+    font-weight: 800;
+    color: var(--ink);
+    opacity: 0.9;
+  }
+  .alt-body {
+    padding: 1.4rem 1.4rem 1.6rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+    flex: 1;
+  }
+  .alt-body h2 {
+    font-size: 1.25rem;
+    font-weight: 750;
+  }
+  .alt-thesis {
+    font-size: 0.88rem;
+    line-height: 1.55;
+    color: #44536b;
+  }
+  .alt-traits {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    font-size: 0.78rem;
+    color: #64798f;
+  }
+  .alt-traits li::before {
+    content: '· ';
+  }
+  .alt-links {
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+  .alt-link {
+    font-size: 0.88rem;
+    font-weight: 650;
+    color: #0d3b6e;
+    text-decoration-color: #d7e2ec;
+  }
+  .alt-link:hover {
+    color: #1a5b9a;
+  }
+  @media (max-width: 880px) {
+    .alt-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

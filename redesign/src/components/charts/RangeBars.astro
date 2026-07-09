@@ -1,0 +1,119 @@
+---
+// Horizontal min–max range bars (e.g. feed-conversion ratio by protein).
+// The story row wears the accent (--chart-c2); the rest wear the de-emphasis tone.
+// Direct labels at bar tips carry the values (bars → value at the tip).
+import type { Locale } from '@/content/types'
+
+interface Row {
+  label: string
+  min: number
+  max: number
+  highlight?: boolean
+}
+interface Props {
+  rows: Row[]
+  locale: Locale
+  xMax: number
+  summary: string
+  unitNote?: string
+  class?: string
+}
+
+const { rows, locale, xMax, summary, unitNote, class: className } = Astro.props
+
+const W = 640
+const ROW_H = 44
+const PAD = { top: 8, right: 84, bottom: 26, left: 130 }
+const H = PAD.top + rows.length * ROW_H + PAD.bottom
+const iw = W - PAD.left - PAD.right
+
+const x = (v: number) => PAD.left + (v / xMax) * iw
+const fmt = (v: number) => {
+  const s = v % 1 === 0 ? v.toFixed(0) : v.toFixed(1)
+  return locale === 'pt' ? s.replace('.', ',') : s
+}
+
+const ticks = [0, 2, 4, 6, 8, 10].filter((t) => t <= xMax)
+const BAR = 14
+---
+
+<figure class={`range-bars ${className ?? ''}`}>
+  <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label={summary} preserveAspectRatio="xMidYMid meet">
+    {ticks.map((t) => (
+      <>
+        <line class="rb-grid" x1={x(t)} x2={x(t)} y1={PAD.top} y2={H - PAD.bottom} />
+        <text class="rb-tick" x={x(t)} y={H - PAD.bottom + 18} text-anchor="middle">{t}</text>
+      </>
+    ))}
+    {rows.map((r, i) => {
+      const cy = PAD.top + i * ROW_H + ROW_H / 2
+      const x0 = x(r.min)
+      const x1 = x(r.max)
+      return (
+        <>
+          <text class="rb-label" x={PAD.left - 12} y={cy + 4} text-anchor="end">{r.label}</text>
+          <rect
+            class={`rb-bar ${r.highlight ? 'rb-bar--hl' : ''}`}
+            x={x0}
+            y={cy - BAR / 2}
+            width={Math.max(x1 - x0, 6)}
+            height={BAR}
+            rx="4"
+          >
+            <title>{r.label}: {fmt(r.min)}–{fmt(r.max)}</title>
+          </rect>
+          <text class="rb-value" x={x1 + 10} y={cy + 4} text-anchor="start">
+            {fmt(r.min)}–{fmt(r.max)}
+          </text>
+        </>
+      )
+    })}
+  </svg>
+  {unitNote && <figcaption class="rb-caption">{unitNote}</figcaption>}
+</figure>
+
+<style>
+  .range-bars {
+    margin: 0;
+    width: 100%;
+  }
+  .range-bars svg {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .rb-grid {
+    stroke: var(--chart-grid);
+    stroke-width: 1;
+  }
+  .rb-tick {
+    fill: var(--chart-ink-muted);
+    font-size: 12px;
+    font-family: var(--chart-font, inherit);
+  }
+  .rb-label {
+    fill: var(--chart-ink);
+    font-size: 13px;
+    font-family: var(--chart-font, inherit);
+  }
+  .rb-value {
+    fill: var(--chart-ink);
+    font-size: 12.5px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    font-family: var(--chart-font, inherit);
+  }
+  .rb-bar {
+    fill: var(--chart-deemph, var(--chart-ink-muted));
+    opacity: 0.55;
+  }
+  .rb-bar--hl {
+    fill: var(--chart-c2);
+    opacity: 1;
+  }
+  .rb-caption {
+    font-size: 0.78rem;
+    color: var(--chart-ink-muted);
+    margin-top: 0.4rem;
+  }
+</style>
