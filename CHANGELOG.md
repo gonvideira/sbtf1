@@ -9,15 +9,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - LinkedIn profile links for all team members in Section 06
+- `AGENTS.md` as the tool-agnostic source of truth for repo workflow, architecture, and conventions
 
 ### Changed
 - Section 02: Dolphin video now appears below copy on mobile (side-by-side on desktop)
 - Section 04: Chart containers now have consistent heights
 - Section 05: Chart containers now have consistent heights
 - Section 05: KPI boxes are more transparent for better background visibility
+- `CLAUDE.md` is now tracked in git and trimmed to a short pointer to `AGENTS.md`
 
 ### Fixed
 - Recharts ResponsiveContainer console warnings (added minWidth={0})
+
+### Removed
+- `documents/CONTRIBUTING.md` — its workflow content was merged into `AGENTS.md`
 
 ## [0.2.0] - 2026-03-24
 
