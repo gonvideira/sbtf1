@@ -20,6 +20,17 @@ let totalViolations = 0
 for (const p of pagePaths) {
   const page = await context.newPage()
   await page.goto(`http://localhost:${PORT}${p}`, { waitUntil: 'networkidle' })
+  // scroll through so reveal animations complete and all text is visible
+  await page.evaluate(async () => {
+    const step = window.innerHeight * 0.8
+    for (let y = 0; y < document.body.scrollHeight; y += step) {
+      window.scrollTo(0, y)
+      await new Promise((r) => setTimeout(r, 90))
+    }
+    window.scrollTo(0, 0)
+    document.querySelectorAll('.will-reveal').forEach((el) => el.classList.add('in-view'))
+  })
+  await page.waitForTimeout(900)
   const results = await new AxeBuilder({ page })
     .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])
     .analyze()

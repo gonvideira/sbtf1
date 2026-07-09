@@ -1,8 +1,8 @@
-# BTF Redesign — three design alternatives
+# BTF Redesign — three immersive design alternatives
 
-Full rebuild of the Blue Transformation Fund site (Astro 5, static output),
-delivering three complete, tested design alternatives over one shared
-bilingual content layer.
+Full rebuild of the Blue Transformation Fund site (Astro 5, static output):
+three highly immersive, animated alternatives over one shared bilingual
+content layer, all drawn from the logo palette (#043F7F navy + white).
 
 ## Run
 
@@ -19,72 +19,66 @@ npm run preview    # serve dist/
 | Path | What |
 |---|---|
 | `/` | Internal review index (noindex, excluded from sitemap) |
-| `/a/pt/` · `/a/en/` | **Alternative A — Atlântico** (light editorial, serif, annual-report register) |
-| `/b/pt/` · `/b/en/` | **Alternative B — Corrente Profunda** (dark cinematic, scroll descent) |
-| `/c/pt/` · `/c/en/` | **Alternative C — Sistema Azul** (Swiss-technical, dossier density) |
+| `/a/pt/` · `/a/en/` | **A — Cardume**: luminous immersive; bright aspirational site with a dark dolphin-dive Hub; heritage told as an era timeline |
+| `/b/pt/` · `/b/en/` | **B — Abissal**: one continuous descent; live depth gauge, marine snow, sea-floor Fund with monumental era watermarks (1500 → Hoje → 2034) |
+| `/c/pt/` · `/c/en/` | **C — Corrente**: kinetic editorial; data ticker, numeral-chaptered dive, film-title era cards, institutional dossier |
 
 At ship time the chosen alternative's page component is promoted to root
-`/pt/` + `/en/` routes (move the two files in `src/pages/<x>/` to
-`src/pages/{pt,en}/`, update `path`/`altPath` in the component, drop the
-other two alternatives and the review index).
+`/pt/` + `/en/` routes; the other two and the review index are dropped.
 
-## Architecture
+## Shared immersive machinery
 
-- **Platform**: Astro 5 static output — zero-JS by default, tiny progressive-
-  enhancement scripts only (nav toggle, chart hover, reveals/counters).
-  SEO-first: crawlable `/pt/`+`/en/` HTML, hreflang pairs + canonical +
-  OG/Twitter + JSON-LD in `src/layouts/BaseLayout.astro`, sitemap via
-  `@astrojs/sitemap`, `public/robots.txt`.
-- **Content**: single typed bilingual layer in `src/content/` (`pt.ts` is the
-  brief's copy verbatim; `en.ts` is the institutional localization). All three
-  alternatives render the same `SiteContent` contract — copy edits happen once.
-- **Charts**: server-rendered SVG components in `src/components/charts/`
-  (line chart with hover layer + data-table fallback, range bars, allocation
-  stripe), themed per alternative via CSS custom properties. Palettes
-  validated with the dataviz six-checks validator (CVD-safe on each surface).
-- **Assets**: processed images in `src/assets/` (brand lockups trimmed from
-  the 5500px masters; NaturaFish aerial crops; team photos 4:5). Rendered
-  responsive AVIF/WebP at build by `astro:assets`.
+- **Hero video**: `public/media/fish-vortex.mp4` (compressed from
+  `public/assets/fish-vortex-animated-improved.mp4`, 35 MB → 3.0 MB, poster
+  preloaded so LCP stays on the poster). Loops muted; a pause/play control
+  satisfies WCAG 2.2.2; `prefers-reduced-motion` shows the poster instead.
+- **Hub dive**: `public/media/dolphin-deep.mp4` (24 MB → 0.8 MB) inside a
+  sticky viewport; content chapters scroll over it (parallax); scroll
+  progress drives a subtle video zoom and the depth readout. Video lazy-loads
+  (`preload="none"`) and plays only while on screen.
+- **Runtime**: `src/scripts/immersive.ts` — reveals, parallax
+  (`data-parallax`), section scrub (`data-scrub` → `--p`), count-up
+  (`data-count`), ambient-video management (`data-ambient` +
+  `data-video-toggle`). Everything is progressive enhancement and fully
+  gated on `prefers-reduced-motion`.
+- **Palette**: sampled from the logo (#043F7F); all UI hues are tints/depths
+  of it. Chart ramps validated (dataviz ordinal checks) per surface:
+  light `#6FA5DC → #2E6CB5 → #043F7F`, dark `#A9CAEC → #6FA5DC → #3D7EC6`.
 
-## Blue Ocean Hub — research slot
+## Content & SEO (unchanged foundations)
 
-The Hub's "Observatório" grid is a swappable data module:
-
-- **Data**: `src/data/research-stats.json` — edit this file to refresh the
-  figures; no code changes needed. Each entry carries value, PT/EN labels,
-  exact report edition, source URL, reference year, and date added.
-- Seeded from the PDFs in `/research` (FAO SOFIA 2026, EUMOFA EU Fish Market
-  2025, EU Blue Economy Report 2025).
-- The interim stat cards (from the current live site's content) live in
-  `src/content/{pt,en}.ts` under `hub.statCards`.
+- Typed bilingual content layer in `src/content/` — PT verbatim from the
+  redesign brief; EN professional localization. All three alternatives render
+  the same contract.
+- The Fund's thesis is staged as a "back to the future" heritage narrative
+  (era labels only — the brief's copy is untouched).
+- SEO: hreflang pairs, canonicals, OG/Twitter, JSON-LD, sitemap, robots.txt
+  via `src/layouts/BaseLayout.astro`.
+- **Hub research slot**: `src/data/research-stats.json` — swappable data
+  module seeded from the PDFs in `/research` (FAO SOFIA 2026, EUMOFA 2025,
+  EU Blue Economy Report 2025). Edit the JSON to refresh; no code changes.
 
 ## Verification tooling
 
 ```bash
 node scripts/shots.mjs <outDir> /a/pt/ ...   # full-page screenshots @390/1440
-node scripts/a11y.mjs /a/pt/ /b/pt/ ...      # axe-core WCAG 2.1 AA scan
-node scripts/verify.mjs                       # functional checks (nav, lang, EN)
+node scripts/a11y.mjs /a/pt/ /b/pt/ ...      # axe WCAG 2.1 AA (scrolls first)
+node scripts/verify2.mjs                      # immersion checks (dive, toggles)
 ```
 
-Note: Chromium *full-page* captures rasterize some offscreen images blank
-(filters/lazy interplay) — a capture artifact, not a site bug; use viewport
-screenshots to verify image-heavy sections.
+Note: Chromium *full-page* captures rasterize some offscreen images blank —
+a capture artifact, not a site bug; verify image-heavy sections with
+viewport screenshots.
 
-Last verified results: `astro check` 0 errors · axe 0 violations (all 6
-pages) · Lighthouse (mobile, preview server): A 97/100/100/100 ·
-B 99/100/100/100 · C 99/100/100/100, CLS 0 on all.
+Last verified: `astro check` 0 errors · axe 0 violations on all 6 pages
+(full-scroll scan) · Lighthouse mobile A 98 / B 99 / C 99 performance,
+100 accessibility / best-practices / SEO, CLS 0 on all.
 
 ## Known content gaps / ship-time decisions
 
 - **Missing team photos**: Diogo Saraiva Ponte, António Pereira, Gisela
-  Martins — the designs render an explicit placeholder treatment; real
-  photography needed before launch.
-- **Contact form**: CTAs are `mailto:` to investor.relations@ with prefilled
-  subjects. If a hosted form is wanted (name/organisation/e-mail/indicative
-  amount/message per the brief), wire a provider (e.g. Formspree/Basin) or a
-  serverless endpoint at deploy time.
-- **Privacy / Terms pages**: footer links point at `/pt/privacidade/`,
-  `/pt/termos/` (and EN equivalents) — legal copy needed.
-- **Hub deep-page**: at ship time the Hub section can be given a dedicated
-  `/pt/hub/` route (its sections are already componentizable) to rank
-  independently for sector queries.
+  Martins — explicit placeholder treatments; real photography needed.
+- **Contact form**: CTAs are `mailto:` with prefilled subjects; wire a form
+  provider or serverless endpoint at deploy time if wanted.
+- **Privacy / Terms pages**: footer links expect `/pt/privacidade/`,
+  `/pt/termos/` (+ EN) — legal copy needed.

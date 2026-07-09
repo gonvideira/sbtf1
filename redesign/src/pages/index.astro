@@ -1,5 +1,5 @@
 ---
-// Internal design-review index — compares the three alternatives.
+// Internal design-review index — compares the three immersive alternatives.
 // noindex: this page is a review artifact, not part of the public site.
 import '@fontsource-variable/inter'
 import '@/styles/base.css'
@@ -11,43 +11,43 @@ const alts = [
   {
     id: 'A',
     slug: 'a',
-    name: 'Atlântico',
-    accent: '#8a5a04',
-    surface: '#fbf8f2',
-    ink: '#16233b',
+    name: 'Cardume',
+    accent: '#6fa5dc',
+    surface: '#f2f7fc',
+    ink: '#0a2036',
     thesis:
-      'A confiança tranquila de uma instituição centenária. Papel quente, tinta navy, dourado do Algarve; tipografia serifada editorial; o ritmo de um relatório anual impresso. Movimento contido — nada que destoasse em papel.',
-    traits: ['Editorial · claro', 'Serif (Fraunces + Newsreader)', 'Densidade: alta, em registo de prospecto', 'Movimento: revelações subtis'],
+      'O museu luminoso do mar. Um site claro e aspiracional cuja imersão chega como cinema: o vórtice abre a página, o Hub mergulha em quatro capítulos sobre o canhão do golfinho, e regressa-se à luz. O Fundo é uma galeria de herança — cinco séculos encenados como eras que conduzem de volta ao futuro (2026 → 2034).',
+    traits: ['Luminoso · serif (Fraunces)', 'Mergulho escuro dentro de site claro', 'Herança: linha de eras com nós', 'Movimento: água — lento e contínuo'],
   },
   {
     id: 'B',
     slug: 'b',
-    name: 'Corrente Profunda',
-    accent: '#2ec4ce',
-    surface: '#071a33',
-    ink: '#eaf3fb',
+    name: 'Abissal',
+    accent: '#a9caec',
+    surface: '#021d3b',
+    ink: '#e6f0fa',
     thesis:
-      'Uma descida. A página começa à superfície — o estuário real, ao sol — e afunda por água progressivamente mais profunda à medida que se lê. Marcadores de profundidade, luz cáustica, dados luminosos. Cinemático e institucional.',
-    traits: ['Cinemático · escuro', 'Space Grotesk + Inter', 'Densidade: média, com encenação', 'Movimento: scroll-storytelling, contadores'],
+      'Um mergulho contínuo. Entra-se à superfície no vórtice e nunca mais se emerge: um manómetro de profundidade acompanha a descida, neve marinha à deriva, o canhão do golfinho transporta o Hub, e o Fundo conta-se no leito do mar em eras gigantes (1500 → Hoje → 2034). O mais cinematográfico dos três.',
+    traits: ['Escuro total · Space Grotesk', 'Manómetro de profundidade ao vivo', 'Herança: marcas de água monumentais', 'Movimento: descida, brilho, contadores'],
   },
   {
     id: 'C',
     slug: 'c',
-    name: 'Sistema Azul',
-    accent: '#c4830a',
-    surface: '#f4f8fb',
-    ink: '#0a1e38',
+    name: 'Corrente',
+    accent: '#043f7f',
+    surface: '#ffffff',
+    ink: '#0a2036',
     thesis:
-      'O fundo como sistema de engenharia. Grelha estrutural visível, códigos de secção, numeração mono em cada quantidade, cadeia de valor desenhada como esquema técnico. O âmbar é caneta marcadora — só assinala o que importa.',
-    traits: ['Técnico · suíço · claro', 'Archivo + JetBrains Mono', 'Densidade: máxima, dossier técnico', 'Movimento: micro-interacções precisas'],
+      'Uma corrente de dados. Energia editorial cinética — o herói corta para um ticker de indicadores; o Hub é um mergulho capitulado por numerais gigantes; o Fundo abre como genérico de filme: 1500 → HOJE → 2034 em datas monumentais, seguido do dossier institucional (cadeia de valor, ficha técnica). Claro e escuro alternam como subidas entre mergulhos.',
+    traits: ['Cinético · Archivo + JetBrains Mono', 'Ticker de indicadores em movimento', 'Herança: cartões-genérico 1500/HOJE/2034', 'Movimento: preciso e enérgico'],
   },
 ]
 ---
 
 <BaseLayout
   locale="pt"
-  title="BTF Redesign — Revisão das 3 Alternativas"
-  description="Página interna de revisão das três alternativas de design do site Blue Transformation Fund."
+  title="BTF Redesign — Revisão das 3 Alternativas Imersivas"
+  description="Página interna de revisão das três alternativas imersivas de design do site Blue Transformation Fund."
   path="/"
   altPath="/"
   noindex={true}
@@ -56,11 +56,12 @@ const alts = [
   <main class="review-main">
     <header class="review-head">
       <Image src={brand.logoNavy} alt="STAG | btf." width={200} densities={[1, 2]} loading="eager" />
-      <h1>Redesign — três alternativas para revisão</h1>
+      <h1>Redesign — três alternativas imersivas para revisão</h1>
       <p>
-        As três direcções entregam o mesmo conteúdo, fluxo (Hero → Blue Ocean Hub → O Fundo) e requisitos de
-        plataforma — bilingue PT/EN, SEO estático, WCAG AA. Diferem em linguagem visual, personalidade de
-        interacção e densidade de informação. Cada cartão liga às versões PT e EN.
+        As três direcções entregam o mesmo conteúdo e fluxo (Hero em vídeo — vórtice · Blue Ocean Hub — mergulho
+        parallax com o golfinho · O Fundo — herança, regressar ao futuro), a mesma paleta derivada do azul do
+        logótipo, e os mesmos requisitos de plataforma: bilingue PT/EN, SEO estático, WCAG AA, vídeo com controlo
+        de pausa e fallback para movimento reduzido. Diferem na personalidade da imersão.
       </p>
       <p class="review-note">Página interna de revisão — excluída do sitemap e marcada noindex.</p>
     </header>
@@ -110,11 +111,11 @@ const alts = [
     font-weight: 750;
     letter-spacing: -0.01em;
     margin-top: 1.6rem;
-    max-width: 24ch;
+    max-width: 26ch;
   }
   .review-head p {
     margin-top: 1rem;
-    max-width: 70ch;
+    max-width: 72ch;
     line-height: 1.6;
     color: #44536b;
   }
@@ -139,7 +140,7 @@ const alts = [
   }
   .alt-card:hover {
     transform: translateY(-4px);
-    box-shadow: 0 16px 40px rgba(13, 59, 110, 0.12);
+    box-shadow: 0 16px 40px rgba(4, 63, 127, 0.12);
   }
   .alt-preview {
     background: var(--surface);
@@ -192,11 +193,11 @@ const alts = [
   .alt-link {
     font-size: 0.88rem;
     font-weight: 650;
-    color: #0d3b6e;
+    color: #043f7f;
     text-decoration-color: #d7e2ec;
   }
   .alt-link:hover {
-    color: #1a5b9a;
+    color: #1a5ea8;
   }
   @media (max-width: 880px) {
     .alt-grid {
