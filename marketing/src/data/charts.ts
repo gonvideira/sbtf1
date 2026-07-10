@@ -40,9 +40,11 @@ export const carbonFootprint = [
   { key: 'beef', value: 27 },
 ]
 
-/** Fund allocation by vertical, % */
+/** Fund allocation by vertical, % of the €126M target fund size.
+ *  `amount` is PT-formatted, `amountEn` EN — same convention as research-stats.json.
+ *  The three amounts must always sum to the fund size quoted in content/{pt,en}.ts. */
 export const fundAllocation = [
-  { key: 'aquaculture', pct: 50, amount: '€62,5M' },
-  { key: 'processing', pct: 35, amount: '€43,75M' },
-  { key: 'bluetech', pct: 15, amount: '€18,75M' },
+  { key: 'aquaculture', pct: 50, amount: '€63M', amountEn: '€63M' },
+  { key: 'processing', pct: 35, amount: '€44,1M', amountEn: '€44.1M' },
+  { key: 'bluetech', pct: 15, amount: '€18,9M', amountEn: '€18.9M' },
 ]

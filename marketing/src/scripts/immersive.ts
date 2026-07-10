@@ -25,6 +25,28 @@ function afterSettle(cb: () => void): void {
   else window.addEventListener('load', arm, { once: true })
 }
 
+/* ---------- sticky offsets ---------- */
+// The site header is fixed and its height tracks the fluid logo, so the height
+// the fund subnav must clear is only known at runtime. Published as --header-h
+// / --subnav-h on <html>; CSS falls back to the desktop values without JS.
+export function initStickyOffsets(): void {
+  const header = document.querySelector<HTMLElement>('.site-header')
+  const subnav = document.querySelector<HTMLElement>('.fund-subnav')
+  const root = document.documentElement
+  const set = () => {
+    if (header) root.style.setProperty('--header-h', `${Math.round(header.getBoundingClientRect().height)}px`)
+    // offsetParent is null exactly when the subnav is display:none (mobile)
+    const shown = subnav !== null && subnav.offsetParent !== null
+    root.style.setProperty('--subnav-h', shown ? `${Math.round(subnav.getBoundingClientRect().height)}px` : '0px')
+  }
+  set()
+  if ('ResizeObserver' in window && header) {
+    // the logo loads async — its height lands after first paint
+    new ResizeObserver(set).observe(header)
+  }
+  window.addEventListener('resize', set, { passive: true })
+}
+
 /* ---------- reveals ---------- */
 export function initReveals(selector = '.reveal'): void {
   if (reduced || !('IntersectionObserver' in window)) return
@@ -93,6 +115,10 @@ export function initScroll(): void {
 /* ---------- count-up ---------- */
 export function initCounters(): void {
   if (reduced || !('IntersectionObserver' in window)) return
+  // Separators are locale-fixed, never inferred from the string: "37.5" is a
+  // decimal in EN and "1.200" a thousands group in PT — the same character.
+  const decimalSep = document.documentElement.lang.toLowerCase().startsWith('pt') ? ',' : '.'
+  const groupSep = decimalSep === ',' ? '.' : ','
   const io = new IntersectionObserver(
     (entries) => {
       for (const e of entries) {
@@ -103,18 +129,14 @@ export function initCounters(): void {
         const m = finalText.match(/^([^0-9]*)([\d.,]+)(.*)$/)
         if (!m) continue
         const [, prefix, numStr, suffix] = m
-        const decimalComma = numStr!.includes(',') && !numStr!.includes('.')
-        const target = parseFloat(numStr!.replace(/\./g, '').replace(',', '.'))
+        const target = parseFloat(numStr!.split(groupSep).join('').replace(decimalSep, '.'))
         if (!isFinite(target)) continue
-        const decimals = decimalComma
-          ? (numStr!.split(',')[1]?.length ?? 0)
-          : (numStr!.split('.')[1]?.length ?? 0)
+        const decimals = numStr!.split(decimalSep)[1]?.length ?? 0
         const t0 = performance.now()
         const dur = 1300
         const fmt = (v: number) => {
-          let s = v.toFixed(decimals)
-          if (decimalComma) s = s.replace('.', ',')
-          return s
+          const s = v.toFixed(decimals)
+          return decimalSep === ',' ? s.replace('.', ',') : s
         }
         const tick = (now: number) => {
           const p = Math.min(1, (now - t0) / dur)
@@ -416,6 +438,7 @@ export function initNav(): void {
 }
 
 export function initImmersive(): void {
+  initStickyOffsets()
   initNav()
   initReveals()
   initScroll()

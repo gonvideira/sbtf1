@@ -60,11 +60,11 @@ export const en: SiteContent = {
         asOf: '2022',
       },
       {
-        value: '€22B',
-        label: 'EU seafood trade deficit',
+        value: '€21.6B',
+        label: 'EU seafood trade deficit — the EU remains a structural net importer',
         source: 'EUMOFA',
         sourceUrl: 'https://www.eumofa.eu/',
-        asOf: '2023',
+        asOf: '2024',
       },
       {
         value: '57%',
@@ -81,11 +81,11 @@ export const en: SiteContent = {
         asOf: '2022',
       },
       {
-        value: '223.2 Mt',
-        label: 'record global fisheries and aquaculture production in 2022',
-        source: 'FAO SOFIA 2024',
+        value: '235 Mt',
+        label: 'record global fisheries and aquaculture production in 2024',
+        source: 'FAO SOFIA 2026',
         sourceUrl: 'https://www.fao.org/publications/home/fao-flagship-publications/the-state-of-world-fisheries-and-aquaculture/',
-        asOf: '2022',
+        asOf: '2024',
       },
       {
         value: '1.2–1.5',
@@ -192,7 +192,7 @@ export const en: SiteContent = {
       title: 'The know-how already exists. What’s missing is scale.',
       paragraphs: [
         "Portugal's blue economy carries centuries of working knowledge: estuary aquaculture, world-class canning, cod-processing techniques with 500 years of history. This is not an emerging sector — it is a mature, under-capitalised one.",
-        "Europe imports €22 billion of seafood every year, and EU self-sufficiency has fallen to 37.5%. Portugal has the assets, the climate and the premium species that Nordic and Central European markets cannot produce. The opportunity is not to invent something new — it is to modernise, certify and export what already exists.",
+        "Europe runs a €21.6 billion seafood trade deficit, and EU self-sufficiency has fallen to 37.5%. Portugal has the assets, the climate and the premium species that Nordic and Central European markets cannot produce. The opportunity is not to invent something new — it is to modernise, certify and export what already exists.",
         'SBTF 1 is the vehicle for that transformation: institutional capital, vertical integration and technology in service of the product — not the other way around.',
       ],
       equation: {
@@ -212,13 +212,13 @@ export const en: SiteContent = {
           source: 'EUMOFA 2022',
         },
         {
-          value: '€22B',
-          label: 'EU seafood trade deficit in 2023.',
+          value: '€21.6B',
+          label: 'EU seafood trade deficit in 2024.',
           source: 'EUMOFA',
         },
         {
           value: '57%',
-          label: 'of global seafood production now comes from aquaculture, not wild capture.',
+          label: 'of global seafood for human consumption now comes from aquaculture, not wild capture.',
           source: 'FAO SOFIA 2024',
         },
         {
@@ -239,7 +239,7 @@ export const en: SiteContent = {
           number: '01',
           title: 'Sustainable Aquaculture',
           allocationPct: 50,
-          allocationLabel: '50% of the fund · €62.5M',
+          allocationLabel: '50% of the fund · €63M',
           copy: 'An estuary aquaculture platform anchored by NaturaFish (Alvor + Arade, Algarve). European seabass and gilthead seabream raised in a natural environment, with certifiable traceability and bolt-on capacity. Growth through selective acquisition of adjacent assets — not multiple speculation.',
           bullets: [
             'Premium species with growing demand across European markets',
@@ -252,7 +252,7 @@ export const en: SiteContent = {
           number: '02',
           title: 'Seafood Processing',
           allocationPct: 35,
-          allocationLabel: '35% of the fund · €43.75M',
+          allocationLabel: '35% of the fund · €44.1M',
           copy: 'Consolidation of the downstream industrial layer: canning, cod processing, cold chain and distribution. The objective is to turn commodity operators — under-scaled and under-automated — into export platforms with sustainable margins and access to premium European channels.',
           bullets: [
             'A sector dominated by family-owned SMEs with open succession questions',
@@ -265,7 +265,7 @@ export const en: SiteContent = {
           number: '03',
           title: 'BlueTech',
           allocationPct: 15,
-          allocationLabel: '15% of the fund · €18.75M',
+          allocationLabel: '15% of the fund · €18.9M',
           copy: 'Technology in service of the product. IoT, sensors, AI, automation and traceability to improve yield, energy efficiency and quality across Verticals 1 and 2. BlueTech is not a standalone technology bet — it is an operational multiplier for the portfolio.',
           bullets: [
             'Aquaculture monitoring and decision support (sensors + analytics)',
@@ -297,7 +297,7 @@ export const en: SiteContent = {
       sectionLabel: 'Structure',
       title: 'Structure & Terms',
       rows: [
-        { label: 'Total committed capital', value: '€126M', caveat: 'Class A + B + C' },
+        { label: 'Target fund size', value: '€126M', caveat: 'Class A + B + C' },
         { label: 'Target annual return', value: '20% IRR¹' },
         { label: 'Term', value: '8 years', caveat: '2026–2034' },
         { label: 'Verticals', value: '3', caveat: 'Aquaculture · Processing · BlueTech' },

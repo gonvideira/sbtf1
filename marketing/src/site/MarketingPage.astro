@@ -78,11 +78,10 @@ const L = isPt
 const mailSubjectCim = encodeURIComponent(isPt ? 'Pedido de acesso ao CIM — SBTF 1' : 'CIM access request — SBTF 1')
 const mailSubjectMeet = encodeURIComponent(isPt ? 'Pedido de reunião — SBTF 1' : 'Meeting request — SBTF 1')
 
-const allocSegments = t.fund.verticals.items.map((v, i) => ({
-  label: v.title,
-  pct: v.allocationPct,
-  amount: fundAllocation[i]!.amount,
-}))
+const allocSegments = t.fund.verticals.items.map((v, i) => {
+  const a = fundAllocation[i]!
+  return { label: v.title, pct: v.allocationPct, amount: isPt ? a.amount : a.amountEn }
+})
 ---
 
 <BaseLayout
@@ -1396,12 +1395,25 @@ const allocSegments = t.fund.verticals.items.map((v, i) => ({
   }
 
   /* ===== Fund ===== */
+  /* No-JS fallbacks; initStickyOffsets() overrides both inline on <html>. */
+  :global(:root) {
+    --header-h: 139px;
+    --subnav-h: 0px;
+  }
+  @media (min-width: 901px) {
+    :global(:root) {
+      --subnav-h: 52px;
+    }
+  }
+
   .fund {
     background: #fff;
+    /* the subnav is .fund's first child, so it only has to clear the header */
+    scroll-margin-top: var(--header-h, 139px);
   }
   .fund-subnav {
     position: sticky;
-    top: 0;
+    top: var(--header-h, 139px);
     z-index: 40;
     background: rgba(255, 255, 255, 0.93);
     backdrop-filter: blur(9px);
@@ -1445,7 +1457,7 @@ const allocSegments = t.fund.verticals.items.map((v, i) => ({
   .team,
   .process {
     padding-block: clamp(3.2rem, 7vw, 5.5rem);
-    scroll-margin-top: 70px;
+    scroll-margin-top: calc(var(--header-h, 139px) + var(--subnav-h, 0px));
   }
   .thesis {
     background: var(--ice);
@@ -1718,7 +1730,7 @@ const allocSegments = t.fund.verticals.items.map((v, i) => ({
 
   /* Portfolio — full-bleed estuary */
   .portfolio {
-    scroll-margin-top: 70px;
+    scroll-margin-top: calc(var(--header-h, 139px) + var(--subnav-h, 0px));
   }
   .pf-band {
     position: relative;
@@ -1834,7 +1846,7 @@ const allocSegments = t.fund.verticals.items.map((v, i) => ({
     background: var(--deep);
     color: #eaf2fb;
     padding-block: clamp(3.2rem, 7vw, 5.5rem);
-    scroll-margin-top: 70px;
+    scroll-margin-top: calc(var(--header-h, 139px) + var(--subnav-h, 0px));
   }
   .terms-table {
     margin-top: 2rem;

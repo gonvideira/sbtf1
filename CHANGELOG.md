@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `AGENTS.md` as the tool-agnostic source of truth for repo workflow, architecture, and conventions
 
 ### Changed
+- **`/marketing` — investor-review corrections**: Hub and European-context stats realigned to the Observatory's data vintages (EU seafood trade deficit €22B/2023 → €21.6B/2024 per EUMOFA 2025 edition; global production 223.2 Mt/2022 → 235 Mt/2024 per FAO SOFIA 2026), so the same metric no longer appears twice on the page with two different values; the 57% aquaculture share now states the same denominator ("for human consumption") in both places it appears; the thesis no longer describes the €22B trade *deficit* as seafood *imports*; Structure & Terms row relabelled "Total committed capital" → "Target fund size" (PT: "Dimensão-alvo do fundo"), since nothing is committed yet
 - Section 02: Dolphin video now appears below copy on mobile (side-by-side on desktop)
 - Section 04: Chart containers now have consistent heights
 - Section 05: Chart containers now have consistent heights
@@ -22,6 +23,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `CLAUDE.md` is now tracked in git and trimmed to a short pointer to `AGENTS.md`
 
 ### Fixed
+- **`/marketing` — count-up animation rendered wrong numbers on the EN site**: the counter stripped every `.` before parsing (correct for PT thousands groups, but it ate the EN decimal point), so decimals animated to ten times their value before snapping back — "37.5%" self-sufficiency counted up through **375.0%**, "223.2 Mt" through **2231.7 Mt**, "1.7M km²" through **17.0M km²**. Separators are now taken from the document language instead of guessed from the string
+- **`/marketing` — fund allocation did not sum to the fund size**: verticals were quoted at €62.5M + €43.75M + €18.75M = €125M against a €126M fund (the amounts were 50/35/15% of €125M). Now €63M + €44.1M + €18.9M = €126M. The allocation legend also rendered PT decimal commas ("€62,5M") on the EN page next to EN body copy ("€62.5M"); `fundAllocation` now carries `amount`/`amountEn` like `research-stats.json`
+- **`/marketing` — the fund subnav was unreachable everywhere**: `position: sticky; top: 0` parked it behind the 139px fixed header once stuck, so clicking Thesis/Verticals/Portfolio/Structure/Team/Invest hit the site logo instead; it is `display:none` on mobile, so the nav worked on no screen size. The header and subnav heights are now published as `--header-h`/`--subnav-h` at runtime and drive both the subnav offset and the anchor `scroll-margin-top` (previously a hardcoded 70px, less than the header)
 - Recharts ResponsiveContainer console warnings (added minWidth={0})
 
 ### Removed

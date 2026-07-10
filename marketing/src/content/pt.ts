@@ -60,11 +60,11 @@ export const pt: SiteContent = {
         asOf: '2022',
       },
       {
-        value: '€22B',
-        label: 'Défice comercial da UE em seafood',
+        value: '€21,6B',
+        label: 'Défice comercial da UE em seafood — a UE continua importadora líquida estrutural',
         source: 'EUMOFA',
         sourceUrl: 'https://www.eumofa.eu/',
-        asOf: '2023',
+        asOf: '2024',
       },
       {
         value: '57%',
@@ -81,11 +81,11 @@ export const pt: SiteContent = {
         asOf: '2022',
       },
       {
-        value: '223,2 Mt',
-        label: 'produção mundial recorde de pescas e aquacultura em 2022',
-        source: 'FAO SOFIA 2024',
+        value: '235 Mt',
+        label: 'produção mundial recorde de pescas e aquacultura em 2024',
+        source: 'FAO SOFIA 2026',
         sourceUrl: 'https://www.fao.org/publications/home/fao-flagship-publications/the-state-of-world-fisheries-and-aquaculture/',
-        asOf: '2022',
+        asOf: '2024',
       },
       {
         value: '1,2–1,5',
@@ -192,7 +192,7 @@ export const pt: SiteContent = {
       title: 'O know-how já existe. Falta escala.',
       paragraphs: [
         'A economia azul portuguesa tem séculos de know-how artesanal: aquacultura em estuário, conservas de classe mundial, técnicas de processamento de bacalhau com 500 anos de história. Não é um sector emergente — é um sector maduro, sub-capitalizado.',
-        'A Europa importa €22 mil milhões em seafood por ano e a auto-suficiência da UE caiu para 37,5%. Portugal tem os activos, o clima e as espécies premium que os mercados nórdicos e centro-europeus não conseguem produzir. A oportunidade não é inventar algo novo — é modernizar, certificar e exportar o que já existe.',
+        'A Europa tem um défice comercial de €21,6 mil milhões em seafood por ano e a auto-suficiência da UE caiu para 37,5%. Portugal tem os activos, o clima e as espécies premium que os mercados nórdicos e centro-europeus não conseguem produzir. A oportunidade não é inventar algo novo — é modernizar, certificar e exportar o que já existe.',
         'O SBTF 1 é o veículo para essa transformação: capital institucional, integração vertical e tecnologia ao serviço do produto — não o contrário.',
       ],
       equation: {
@@ -212,13 +212,13 @@ export const pt: SiteContent = {
           source: 'EUMOFA 2022',
         },
         {
-          value: '€22B',
-          label: 'Défice comercial da UE em seafood em 2023.',
+          value: '€21,6B',
+          label: 'Défice comercial da UE em seafood em 2024.',
           source: 'EUMOFA',
         },
         {
           value: '57%',
-          label: 'da produção mundial de seafood já vem de aquacultura, não de capturas.',
+          label: 'da produção mundial de seafood para consumo humano já vem de aquacultura, não de capturas.',
           source: 'FAO SOFIA 2024',
         },
         {
@@ -239,7 +239,7 @@ export const pt: SiteContent = {
           number: '01',
           title: 'Aquacultura Sustentável',
           allocationPct: 50,
-          allocationLabel: '50% do fundo · €62,5M',
+          allocationLabel: '50% do fundo · €63M',
           copy: 'Plataforma de aquacultura em estuário ancorada na NaturaFish (Alvor + Arade, Algarve). Robalo europeu e dourada em ambiente natural, com rastreabilidade certificável e capacidade de bolt-on. Crescimento por aquisição selectiva de activos adjacentes, não por especulação de múltiplos.',
           bullets: [
             'Espécies premium com procura crescente nos mercados europeus',
@@ -252,7 +252,7 @@ export const pt: SiteContent = {
           number: '02',
           title: 'Transformação de Seafood',
           allocationPct: 35,
-          allocationLabel: '35% do fundo · €43,75M',
+          allocationLabel: '35% do fundo · €44,1M',
           copy: 'Consolidação da camada industrial a jusante: conservas, processamento de bacalhau, cold chain e distribuição. O objectivo é transformar operadores de commodity — sub-escalados e sub-automatizados — em plataformas de exportação com margens sustentáveis e acesso a canais premium europeus.',
           bullets: [
             'Sector dominado por PME familiares com sucessão em aberto',
@@ -265,7 +265,7 @@ export const pt: SiteContent = {
           number: '03',
           title: 'BlueTech',
           allocationPct: 15,
-          allocationLabel: '15% do fundo · €18,75M',
+          allocationLabel: '15% do fundo · €18,9M',
           copy: 'Tecnologia ao serviço do produto. IoT, sensores, IA, automação e rastreabilidade para melhorar rendimento, eficiência energética e qualidade nos Verticais 1 e 2. O BlueTech não é uma aposta tecnológica independente — é um multiplicador operacional do portfólio.',
           bullets: [
             'Monitorização e apoio à decisão em aquacultura (sensores + analytics)',
@@ -297,7 +297,7 @@ export const pt: SiteContent = {
       sectionLabel: 'Estrutura',
       title: 'Estrutura e Termos',
       rows: [
-        { label: 'Capital total comprometido', value: '€126M', caveat: 'Classe A + B + C' },
+        { label: 'Dimensão-alvo do fundo', value: '€126M', caveat: 'Classe A + B + C' },
         { label: 'Retorno anual alvo', value: '20% IRR¹' },
         { label: 'Prazo', value: '8 anos', caveat: '2026–2034' },
         { label: 'Verticais', value: '3', caveat: 'Aquacultura · Transformação · BlueTech' },
