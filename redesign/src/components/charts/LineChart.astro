@@ -1,0 +1,285 @@
+---
+// Single-series line chart, server-rendered SVG.
+// Colors come from CSS vars set by each alternative's theme:
+//   --chart-line, --chart-ink, --chart-ink-muted, --chart-grid, --chart-surface
+// Validated palette (dataviz six checks): light #1A5B9A / dark #3A87D0.
+import type { Locale } from '@/content/types'
+
+interface Point {
+  year: number
+  value: number
+}
+interface Props {
+  data: Point[]
+  locale: Locale
+  yMin: number
+  yMax: number
+  yUnit: string
+  /** Accessible one-line summary of the series */
+  summary: string
+  tableLabel: string
+  yearLabel: string
+  valueLabel: string
+  class?: string
+}
+
+const { data, locale, yMin, yMax, yUnit, summary, tableLabel, yearLabel, valueLabel, class: className } = Astro.props
+
+const W = 640
+const H = 340
+const PAD = { top: 28, right: 64, bottom: 40, left: 46 }
+const iw = W - PAD.left - PAD.right
+const ih = H - PAD.top - PAD.bottom
+
+const x = (year: number) =>
+  PAD.left + ((year - data[0]!.year) / (data[data.length - 1]!.year - data[0]!.year)) * iw
+const y = (v: number) => PAD.top + (1 - (v - yMin) / (yMax - yMin)) * ih
+
+const fmt = (v: number) => {
+  const s = v.toFixed(1)
+  return locale === 'pt' ? s.replace('.', ',') : s
+}
+
+const pathD = data.map((d, i) => `${i === 0 ? 'M' : 'L'}${x(d.year).toFixed(1)} ${y(d.value).toFixed(1)}`).join(' ')
+const areaD = `${pathD} L${x(data[data.length - 1]!.year).toFixed(1)} ${y(yMin)} L${x(data[0]!.year).toFixed(1)} ${y(yMin)} Z`
+
+const first = data[0]!
+const last = data[data.length - 1]!
+
+const gridStep = 5
+const gridVals: number[] = []
+for (let v = yMin; v <= yMax; v += gridStep) gridVals.push(v)
+
+const xTicks = data.filter((d) => (d.year - first.year) % 2 === 0).map((d) => d.year)
+
+const uid = 'lc' + Math.random().toString(36).slice(2, 8)
+const pointsAttr = data.map((d) => `${d.year}:${d.value}`).join(',')
+---
+
+<figure class={`line-chart ${className ?? ''}`}>
+  <div
+    class="lc-wrap"
+    id={uid}
+    data-points={pointsAttr}
+    data-locale={locale}
+    data-unit={yUnit}
+    data-pad={JSON.stringify(PAD)}
+    data-dims={`${W},${H}`}
+    data-range={`${yMin},${yMax}`}
+  >
+    <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label={summary} preserveAspectRatio="xMidYMid meet">
+      {gridVals.map((v) => (
+        <>
+          <line class="lc-grid" x1={PAD.left} x2={W - PAD.right} y1={y(v)} y2={y(v)} />
+          <text class="lc-tick" x={PAD.left - 8} y={y(v) + 4} text-anchor="end">
+            {v}{yUnit}
+          </text>
+        </>
+      ))}
+      {xTicks.map((yr) => (
+        <text class="lc-tick" x={x(yr)} y={H - PAD.bottom + 22} text-anchor="middle">
+          {yr}
+        </text>
+      ))}
+      <path class="lc-area" d={areaD} />
+      <path class="lc-line" d={pathD} />
+      <circle class="lc-dot lc-dot--ring" cx={x(first.year)} cy={y(first.value)} r="6.5" />
+      <circle class="lc-dot" cx={x(first.year)} cy={y(first.value)} r="4.5" />
+      <circle class="lc-dot lc-dot--ring" cx={x(last.year)} cy={y(last.value)} r="6.5" />
+      <circle class="lc-dot" cx={x(last.year)} cy={y(last.value)} r="4.5" />
+      <text class="lc-label" x={x(first.year)} y={y(first.value) - 14} text-anchor="start">
+        {fmt(first.value)}{yUnit}
+      </text>
+      <text class="lc-label lc-label--end" x={x(last.year) + 12} y={y(last.value) + 4} text-anchor="start">
+        {fmt(last.value)}{yUnit}
+      </text>
+      <g class="lc-hover" aria-hidden="true">
+        <line class="lc-crosshair" y1={PAD.top} y2={H - PAD.bottom} x1="0" x2="0" />
+        <circle class="lc-hoverdot lc-dot--ring" r="7" cx="0" cy="0" />
+        <circle class="lc-hoverdot lc-hoverdot--fill" r="5" cx="0" cy="0" />
+      </g>
+    </svg>
+    <div class="lc-tooltip" role="status" aria-live="polite" hidden></div>
+  </div>
+  <figcaption class="lc-caption"><slot name="caption" /></figcaption>
+  <details class="lc-table">
+    <summary>{tableLabel}</summary>
+    <table>
+      <thead>
+        <tr><th scope="col">{yearLabel}</th><th scope="col">{valueLabel}</th></tr>
+      </thead>
+      <tbody>
+        {data.map((d) => (
+          <tr><td>{d.year}</td><td>{fmt(d.value)}{yUnit}</td></tr>
+        ))}
+      </tbody>
+    </table>
+  </details>
+</figure>
+
+<style>
+  .line-chart {
+    margin: 0;
+    width: 100%;
+  }
+  .lc-wrap {
+    position: relative;
+    width: 100%;
+  }
+  .lc-wrap svg {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .lc-grid {
+    stroke: var(--chart-grid);
+    stroke-width: 1;
+  }
+  .lc-tick {
+    fill: var(--chart-ink-muted);
+    font-size: 12px;
+    font-family: var(--chart-font, inherit);
+  }
+  .lc-area {
+    fill: var(--chart-line);
+    opacity: 0.08;
+  }
+  .lc-line {
+    fill: none;
+    stroke: var(--chart-line);
+    stroke-width: 2;
+    stroke-linejoin: round;
+    stroke-linecap: round;
+  }
+  .lc-dot {
+    fill: var(--chart-line);
+  }
+  .lc-dot--ring {
+    fill: var(--chart-surface);
+  }
+  .lc-label {
+    fill: var(--chart-ink);
+    font-size: 13px;
+    font-weight: 600;
+    font-family: var(--chart-font, inherit);
+  }
+  .lc-hover {
+    visibility: hidden;
+  }
+  .lc-crosshair {
+    stroke: var(--chart-ink-muted);
+    stroke-width: 1;
+    stroke-dasharray: none;
+    opacity: 0.5;
+  }
+  .lc-hoverdot--fill {
+    fill: var(--chart-line);
+  }
+  .lc-tooltip {
+    position: absolute;
+    pointer-events: none;
+    background: var(--chart-tooltip-bg, rgba(10, 24, 44, 0.92));
+    color: var(--chart-tooltip-ink, #fff);
+    font-size: 0.8rem;
+    line-height: 1.3;
+    padding: 0.4rem 0.6rem;
+    border-radius: 6px;
+    transform: translate(-50%, -130%);
+    white-space: nowrap;
+    z-index: 2;
+  }
+  .lc-caption {
+    font-size: 0.78rem;
+    color: var(--chart-ink-muted);
+    margin-top: 0.5rem;
+  }
+  .lc-table {
+    margin-top: 0.5rem;
+    font-size: 0.8rem;
+    color: var(--chart-ink-muted);
+  }
+  .lc-table summary {
+    cursor: pointer;
+    width: fit-content;
+  }
+  .lc-table table {
+    margin-top: 0.5rem;
+    border-collapse: collapse;
+    font-variant-numeric: tabular-nums;
+  }
+  .lc-table th,
+  .lc-table td {
+    text-align: left;
+    padding: 0.2rem 1.2rem 0.2rem 0;
+    border-bottom: 1px solid var(--chart-grid);
+    color: var(--chart-ink);
+    font-weight: 400;
+  }
+  .lc-table th {
+    font-weight: 600;
+  }
+</style>
+
+<script>
+  // Hover layer: nearest-point crosshair + tooltip. Progressive enhancement —
+  // the chart is complete without it (labels + table view carry the values).
+  function initLineChart(wrap: HTMLElement) {
+    const svg = wrap.querySelector('svg')!
+    const tooltip = wrap.querySelector<HTMLElement>('.lc-tooltip')!
+    const hover = wrap.querySelector<SVGGElement>('.lc-hover')!
+    const crosshair = wrap.querySelector<SVGLineElement>('.lc-crosshair')!
+    const dots = wrap.querySelectorAll<SVGCircleElement>('.lc-hoverdot')
+
+    const points = (wrap.dataset.points ?? '').split(',').map((p) => {
+      const [yr, v] = p.split(':')
+      return { year: +yr!, value: +v! }
+    })
+    if (points.length < 2) return
+    const [W, H] = (wrap.dataset.dims ?? '640,340').split(',').map(Number) as [number, number]
+    const pad = JSON.parse(wrap.dataset.pad ?? '{}') as { top: number; right: number; bottom: number; left: number }
+    const [yMin, yMax] = (wrap.dataset.range ?? '0,100').split(',').map(Number) as [number, number]
+    const unit = wrap.dataset.unit ?? ''
+    const locale = wrap.dataset.locale ?? 'pt'
+
+    const iw = W - pad.left - pad.right
+    const ih = H - pad.top - pad.bottom
+    const x = (year: number) => pad.left + ((year - points[0]!.year) / (points[points.length - 1]!.year - points[0]!.year)) * iw
+    const y = (v: number) => pad.top + (1 - (v - yMin) / (yMax - yMin)) * ih
+    const fmt = (v: number) => (locale === 'pt' ? v.toFixed(1).replace('.', ',') : v.toFixed(1))
+
+    function onMove(ev: PointerEvent) {
+      const rect = svg.getBoundingClientRect()
+      const px = ((ev.clientX - rect.left) / rect.width) * W
+      let nearest = points[0]!
+      let best = Infinity
+      for (const p of points) {
+        const d = Math.abs(x(p.year) - px)
+        if (d < best) {
+          best = d
+          nearest = p
+        }
+      }
+      const cx = x(nearest.year)
+      const cy = y(nearest.value)
+      hover.style.visibility = 'visible'
+      crosshair.setAttribute('x1', String(cx))
+      crosshair.setAttribute('x2', String(cx))
+      dots.forEach((d) => {
+        d.setAttribute('cx', String(cx))
+        d.setAttribute('cy', String(cy))
+      })
+      tooltip.hidden = false
+      tooltip.textContent = `${nearest.year} — ${fmt(nearest.value)}${unit}`
+      tooltip.style.left = `${(cx / W) * rect.width}px`
+      tooltip.style.top = `${(cy / H) * rect.height}px`
+    }
+    function onLeave() {
+      hover.style.visibility = 'hidden'
+      tooltip.hidden = true
+    }
+    svg.addEventListener('pointermove', onMove)
+    svg.addEventListener('pointerleave', onLeave)
+  }
+
+  document.querySelectorAll<HTMLElement>('.lc-wrap').forEach(initLineChart)
+</script>

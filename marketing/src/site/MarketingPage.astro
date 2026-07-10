@@ -1,0 +1,2173 @@
+---
+// BLUE TRANSFORMATION FUND — final marketing site ("Cardume" direction).
+// The luminous museum of the sea: the barracuda vortex opens the page, the
+// Hub dives into the dolphin canyon, the Fund alternates daylight and abyss —
+// thesis in the light, the European context back down in the canyon, the
+// NaturaFish estuary filling the frame, structure & terms on deep navy.
+// Hero claim: "O mar já é nosso. A escala é o próximo passo."
+import '@fontsource-variable/fraunces'
+import '@fontsource-variable/ibm-plex-sans'
+import frauncesUrl from '@fontsource-variable/fraunces/files/fraunces-latin-wght-normal.woff2?url'
+import plexUrl from '@fontsource-variable/ibm-plex-sans/files/ibm-plex-sans-latin-wght-normal.woff2?url'
+import '@/styles/base.css'
+
+import { Image, Picture } from 'astro:assets'
+import BaseLayout from '@/layouts/BaseLayout.astro'
+import LineChart from '@/components/charts/LineChart.astro'
+import AllocationStripe from '@/components/charts/AllocationStripe.astro'
+import { getContent, type Locale } from '@/content'
+import { euSelfSufficiency, fundAllocation } from '@/data/charts'
+import { getResearchStats, researchUpdated } from '@/data/research'
+import { brand, photos, teamPhotos, partners } from '@/data/images'
+
+interface Props {
+  locale: Locale
+}
+const { locale } = Astro.props
+const t = getContent(locale)
+const research = getResearchStats(locale)
+
+const path = `/${locale}/`
+const altPath = `/${locale === 'pt' ? 'en' : 'pt'}/`
+const isPt = locale === 'pt'
+
+const L = isPt
+  ? {
+      chartTable: 'Ver dados',
+      chartYear: 'Ano',
+      chartValue: 'Auto-suficiência',
+      heroCredit: 'Cardume de barracudas — o mar que Portugal conhece há séculos.',
+      diveCue: 'Mergulhar',
+      diveKicker: 'Uma imersão em quatro capítulos',
+      resurface: 'De volta à superfície',
+      eras: ['Há quinhentos anos', 'Hoje', 'O futuro · 2026 → 2034'] as const,
+      eraKicker: 'Regressar ao futuro',
+      euKicker: 'Regresso à profundidade',
+      partners: 'Ecossistema & Parceiros',
+      metrics: 'Métricas do fundo',
+      videoPlay: 'Reproduzir vídeo de fundo',
+      videoPause: 'Pausar vídeo de fundo',
+      navLabel: 'Navegação principal',
+      fundNav: 'Secções do fundo',
+      legalNav: 'Links legais',
+      farmCaption: 'Instalações NaturaFish, estuário do Alvor e Arade — Algarve.',
+      canyonAlt: '',
+    }
+  : {
+      chartTable: 'View data',
+      chartYear: 'Year',
+      chartValue: 'Self-sufficiency',
+      heroCredit: 'A school of barracuda — the sea Portugal has known for centuries.',
+      diveCue: 'Dive in',
+      diveKicker: 'An immersion in four chapters',
+      resurface: 'Back to the surface',
+      eras: ['Five hundred years ago', 'Today', 'The future · 2026 → 2034'] as const,
+      eraKicker: 'Back to the future',
+      euKicker: 'Return to the deep',
+      partners: 'Ecosystem & Partners',
+      metrics: 'Fund metrics',
+      videoPlay: 'Play background video',
+      videoPause: 'Pause background video',
+      navLabel: 'Main navigation',
+      fundNav: 'Fund sections',
+      legalNav: 'Legal links',
+      farmCaption: 'NaturaFish facilities, Alvor and Arade estuaries — Algarve.',
+      canyonAlt: '',
+    }
+
+const mailSubjectCim = encodeURIComponent(isPt ? 'Pedido de acesso ao CIM — SBTF 1' : 'CIM access request — SBTF 1')
+const mailSubjectMeet = encodeURIComponent(isPt ? 'Pedido de reunião — SBTF 1' : 'Meeting request — SBTF 1')
+
+const allocSegments = t.fund.verticals.items.map((v, i) => {
+  const a = fundAllocation[i]!
+  return { label: v.title, pct: v.allocationPct, amount: isPt ? a.amount : a.amountEn }
+})
+---
+
+<BaseLayout
+  locale={locale}
+  title={t.nav.pageTitle}
+  description={t.nav.metaDescription}
+  path={path}
+  altPath={altPath}
+  themeColor="#F2F7FC"
+  bodyClass="alt-a"
+>
+  <Fragment slot="head">
+    <link rel="preload" href={frauncesUrl} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={plexUrl} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/media/fish-vortex-poster.jpg" as="image" fetchpriority="high" />
+  </Fragment>
+  <a href="#main" class="skip-link">{t.a11y.skipToContent}</a>
+
+  <header class="site-header">
+    <div class="shell header-inner">
+      <a class="logo-link" href={path} aria-label="Blue Transformation Fund">
+        <Image class="logo logo-light" src={brand.logoWhite} alt="STAG | btf. — blue transformation fund" width={185} densities={[1, 2]} loading="eager" fetchpriority="high" />
+        <Image class="logo logo-dark" src={brand.logoNavy} alt="" aria-hidden="true" width={185} densities={[1, 2]} loading="eager" />
+      </a>
+      <nav class="main-nav" aria-label={L.navLabel}>
+        <button class="nav-toggle" aria-expanded="false" aria-controls="nav-list">
+          <span class="nav-toggle-label">Menu</span>
+          <span class="nav-toggle-bars" aria-hidden="true"><i></i><i></i></span>
+        </button>
+        <ul id="nav-list" class="nav-list">
+          {t.nav.items.map((item) => (
+            <li><a href={item.anchor}>{item.label}</a></li>
+          ))}
+          <li class="nav-lang">
+            <a href={altPath} rel="alternate" hreflang={isPt ? 'en' : 'pt-PT'} aria-label={t.a11y.langSwitchLabel}>
+              {isPt ? 'EN' : 'PT'}
+            </a>
+          </li>
+          <li class="nav-cta-item">
+            <a class="nav-cta" href={t.nav.cta.anchor}>{t.nav.cta.label} <span aria-hidden="true">→</span></a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- ============ 1 · HERO — the vortex ============ -->
+    <section class="hero" id="hero" data-scene>
+      <div class="hero-media">
+        <video
+          data-ambient
+          autoplay
+          muted
+          loop
+          playsinline
+          preload="none"
+          poster="/media/fish-vortex-poster.jpg"
+          width="1920"
+          height="1078"
+          aria-hidden="true"
+        >
+          <source data-src="/media/fish-vortex.av1.mp4" type='video/mp4; codecs="av01.0.08M.08"' />
+          <source data-src="/media/fish-vortex.mp4" type="video/mp4" />
+        </video>
+        <button
+          class="video-toggle"
+          data-video-toggle
+          data-label-play={L.videoPlay}
+          data-label-pause={L.videoPause}
+          aria-label={L.videoPause}
+        >
+          <span class="vt-pause" aria-hidden="true"></span>
+          <span class="vt-play" aria-hidden="true"></span>
+        </button>
+        <div class="hero-veil" aria-hidden="true"></div>
+      </div>
+      <div class="shell hero-content">
+        <p class="kicker rise" style="--d:0ms">{t.hero.kicker}</p>
+        <h1 class="hero-headline">
+          <span class="hl-1 rise" style="--d:140ms">{t.hero.headlineLine1}</span>
+          <span class="hl-2 rise" style="--d:380ms">{t.hero.headlineLine2}</span>
+        </h1>
+        <p class="hero-sub rise" style="--d:580ms">{t.hero.subheadline}</p>
+        <div class="hero-ctas rise" style="--d:740ms">
+          <a class="btn btn-solid" href={t.hero.ctaPrimary.anchor}>{t.hero.ctaPrimary.label} <span aria-hidden="true">→</span></a>
+          <a class="btn btn-glass" href={t.hero.ctaSecondary.anchor}>{t.hero.ctaSecondary.label} <span aria-hidden="true">→</span></a>
+        </div>
+        <p class="hero-credit rise" style="--d:900ms">{L.heroCredit}</p>
+      </div>
+      <a class="scroll-cue" href="#stats" aria-label={L.diveCue}>
+        <span class="cue-ring" aria-hidden="true"></span>
+        <span class="cue-arrow" aria-hidden="true">↓</span>
+      </a>
+    </section>
+
+    <!-- stat band — hard navy block -->
+    <section class="stats" id="stats" aria-label={L.metrics}>
+      <div class="shell">
+        <dl class="stat-band">
+          {t.statBar.stats.map((s) => (
+            <div class="stat reveal">
+              <dd data-count>{s.value}</dd>
+              <dt>{s.label}</dt>
+            </div>
+          ))}
+        </dl>
+        <p class="footnote footnote-dark">{t.statBar.irrCaveat}</p>
+      </div>
+    </section>
+
+    <!-- ============ 2 · HUB — the dive ============ -->
+    <section class="dive" id="hub" aria-labelledby="hub-title" data-scrub>
+      <div class="dive-media" aria-hidden="true">
+        <video
+          data-ambient
+          muted
+          loop
+          playsinline
+          preload="none"
+          data-poster="/media/dolphin-deep-poster.jpg"
+          width="1920"
+          height="1080"
+        >
+          <source data-src="/media/dolphin-deep.av1.mp4" type='video/mp4; codecs="av01.0.08M.08"' />
+          <source data-src="/media/dolphin-deep.mp4" type="video/mp4" />
+        </video>
+        <button
+          class="video-toggle"
+          data-video-toggle
+          data-label-play={L.videoPlay}
+          data-label-pause={L.videoPause}
+          aria-label={L.videoPause}
+        >
+          <span class="vt-pause" aria-hidden="true"></span>
+          <span class="vt-play" aria-hidden="true"></span>
+        </button>
+        <div class="dive-veil"></div>
+        <p class="dive-depth mono-num" aria-hidden="true"><span data-depth-out data-depth-max="1000">−0 m</span></p>
+      </div>
+
+      <div class="dive-chapters">
+        <div class="chapter" data-scene>
+          <div class="shell chapter-inner">
+            <div class="glass glass-intro" data-parallax="0.06">
+              <p class="chapter-kicker">{L.diveKicker}</p>
+              <h2 id="hub-title" class="dive-display">{t.hub.title}</h2>
+              <p class="dive-lede">{t.hub.intro}</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="chapter" data-scene>
+          <div class="shell chapter-inner">
+            <h3 class="chapter-label" data-parallax="0.05">{t.hub.statCardsTitle}</h3>
+            <div class="glass-grid">
+              {t.hub.statCards.map((s, i) => (
+                <article class="glass glass-stat" data-parallax={String(0.02 + (i % 4) * 0.02)}>
+                  <p class="g-value" data-count>{s.value}</p>
+                  <p class="g-label">{s.label}</p>
+                  <p class="g-source">
+                    {s.sourceUrl ? <a href={s.sourceUrl} rel="noopener">{s.source}</a> : s.source}
+                    {s.asOf && <span> · {s.asOf}</span>}
+                  </p>
+                </article>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <div class="chapter" data-scene>
+          <div class="shell chapter-inner">
+            <div class="glass glass-chart" data-parallax="0.05">
+              <h3 class="g-title">{t.hub.chart.title}</h3>
+              <p class="g-sub">{t.hub.chart.subtitle}</p>
+              <LineChart
+                data={euSelfSufficiency}
+                locale={locale}
+                yMin={30}
+                yMax={50}
+                yUnit="%"
+                summary={`${t.hub.chart.title} — ${t.hub.chart.subtitle}`}
+                tableLabel={L.chartTable}
+                yearLabel={L.chartYear}
+                valueLabel={L.chartValue}
+              >
+                <span slot="caption">{t.hub.chart.sourceNote}</span>
+              </LineChart>
+            </div>
+          </div>
+        </div>
+
+        <div class="chapter" data-scene>
+          <div class="shell chapter-inner">
+            <aside class="glass glass-obs" aria-labelledby="obs-title" data-research-slot data-parallax="0.05">
+              <div class="obs-head">
+                <h3 id="obs-title">{t.hub.researchSlot.title}</h3>
+                <p class="obs-updated"><span class="obs-pulse" aria-hidden="true"></span>{t.hub.researchSlot.updatedLabel} {researchUpdated}</p>
+              </div>
+              <div class="obs-grid">
+                {research.map((s) => (
+                  <article class="obs-card">
+                    <p class="g-value g-value-sm">{s.value}</p>
+                    <p class="g-label">{s.label}</p>
+                    <p class="g-source"><a href={s.sourceUrl} rel="noopener">{s.report}</a> · {s.asOf}</p>
+                  </article>
+                ))}
+              </div>
+              <p class="obs-note">{t.hub.researchSlot.note}</p>
+            </aside>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- resurface: resources — marked cut back into the light -->
+    <section class="resources" aria-label={t.hub.resourcesTitle}>
+      <div class="shell">
+        <p class="kicker kicker-ink reveal">{L.resurface}</p>
+        <h2 class="display reveal">{t.hub.resourcesTitle}</h2>
+        <div class="resource-grid">
+          {t.hub.resourceCards.map((c) => (
+            <article class="resource-card reveal">
+              <h3>{c.title}</h3>
+              <p>{c.description}</p>
+              <ul class="resource-links">
+                {c.links.map((l) => (
+                  <li>
+                    <a href={l.href} rel={l.external ? 'noopener' : undefined}>
+                      {l.label} {l.external && <span aria-hidden="true">↗</span>}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 3 · THE FUND — daylight and abyss ============ -->
+    <section class="fund" id="fundo" aria-label={t.fund.sectionLabel}>
+      <nav class="fund-subnav" aria-label={L.fundNav}>
+        <div class="shell">
+          <ul>
+            {t.fund.subnav.map((s) => (
+              <li><a href={s.anchor}>{s.label}</a></li>
+            ))}
+          </ul>
+        </div>
+      </nav>
+
+      <!-- Thesis as three eras -->
+      <article class="thesis" id="tese" aria-labelledby="thesis-title">
+        <div class="shell">
+          <p class="kicker kicker-ink reveal">{L.eraKicker}</p>
+          <h2 id="thesis-title" class="display reveal">{t.fund.thesis.title}</h2>
+          <div class="eras">
+            {t.fund.thesis.paragraphs.map((p, i) => (
+              <div class="era reveal" data-scene>
+                <div class="era-rail" aria-hidden="true"><span class="era-node"></span></div>
+                <div class="era-body">
+                  <p class="era-label">{L.eras[i]}</p>
+                  <p class={`era-copy ${i === 0 ? 'drop-cap' : ''}`}>{p}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div class="equation reveal" role="img" aria-label={`${t.fund.thesis.equation.blocks.join(' + ')} = ${t.fund.thesis.equation.result}`}>
+            {t.fund.thesis.equation.blocks.map((b, i) => (
+              <>
+                <span class="eq-block">{b}</span>
+                <span class="eq-op" aria-hidden="true">{i < 2 ? '+' : '='}</span>
+              </>
+            ))}
+            <span class="eq-result">{t.fund.thesis.equation.result}</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- European context — the return to the canyon -->
+      <article class="eu-band" aria-labelledby="eu-title" data-scene>
+        <div class="eu-media" data-parallax="0.12">
+          <Picture
+            src={photos.canyonStill}
+            alt={L.canyonAlt}
+            widths={[768, 1280, 1920]}
+            sizes="100vw"
+            formats={['avif', 'webp']}
+            loading="lazy"
+          />
+        </div>
+        <div class="eu-veil" aria-hidden="true"></div>
+        <div class="shell eu-content">
+          <p class="kicker reveal">{L.euKicker}</p>
+          <h3 id="eu-title" class="eu-title reveal">{t.fund.euContext.title}</h3>
+          <p class="eu-intro reveal">{t.fund.euContext.intro}</p>
+          <div class="eu-grid">
+            {t.fund.euContext.stats.map((s, i) => (
+              <div class="glass eu-stat reveal" data-parallax={String(0.03 + (i % 4) * 0.02)}>
+                <p class="eu-value" data-count>{s.value}</p>
+                <p class="eu-label">{s.label}</p>
+                <p class="eu-source">{s.source}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </article>
+
+      <!-- Verticals -->
+      <article class="verticals" id="verticais" aria-labelledby="verticals-title">
+        <div class="shell">
+          <h2 id="verticals-title" class="display reveal">{t.fund.verticals.title}</h2>
+          <p class="lede reveal">{t.fund.verticals.intro}</p>
+          <div class="alloc-wrap reveal">
+            <AllocationStripe
+              segments={allocSegments}
+              summary={allocSegments.map((s) => `${s.label}: ${s.pct}% (${s.amount})`).join('; ')}
+            />
+          </div>
+          <div class="vertical-list">
+            {t.fund.verticals.items.map((v) => (
+              <section class="vertical reveal" aria-labelledby={`v-${v.number}`}>
+                <div class="v-head">
+                  <span class="v-no">{v.number}</span>
+                  <div>
+                    <h3 id={`v-${v.number}`}>{v.title}</h3>
+                    <p class="v-alloc">{v.allocationLabel}</p>
+                  </div>
+                </div>
+                <p class="v-copy">{v.copy}</p>
+                <ul class="v-bullets">
+                  {v.bullets.map((b) => (
+                    <li>{b}</li>
+                  ))}
+                </ul>
+              </section>
+            ))}
+          </div>
+        </div>
+      </article>
+
+      <!-- Portfolio — the estuary fills the frame -->
+      <article class="portfolio" id="portfolio" aria-labelledby="portfolio-title" data-scene>
+        <div class="pf-band">
+          <div class="pf-media" data-parallax="0.1">
+            <Picture
+              src={photos.naturafishBand}
+              alt={t.fund.portfolio.imageAlt}
+              widths={[768, 1280, 1720]}
+              sizes="100vw"
+              formats={['avif', 'webp']}
+              loading="lazy"
+            />
+          </div>
+          <div class="pf-veil" aria-hidden="true"></div>
+          <div class="shell pf-content">
+            <h2 id="portfolio-title" class="display display-inverse reveal">{t.fund.portfolio.title}</h2>
+            <div class="pf-body reveal">
+              <p class="anchor-tag">{t.fund.portfolio.anchorTag}</p>
+              <h3 class="anchor-name">{t.fund.portfolio.anchorTitle}</h3>
+              <p class="anchor-copy">{t.fund.portfolio.copy}</p>
+              <div class="farm-cards">
+                {t.fund.portfolio.farms.map((f) => (
+                  <div class="farm-card">
+                    <p class="farm-name">{f.name}</p>
+                    <p class="farm-specs">{f.specs}</p>
+                  </div>
+                ))}
+              </div>
+              <p class="pipeline-note">{t.fund.portfolio.pipelineNote}</p>
+              <p class="pf-credit">{L.farmCaption}</p>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Structure & Terms — deep navy block -->
+      <article class="terms" id="estrutura" aria-labelledby="terms-title">
+        <div class="shell">
+          <h2 id="terms-title" class="display display-inverse reveal">{t.fund.terms.title}</h2>
+          <dl class="terms-table reveal">
+            {t.fund.terms.rows.map((r) => (
+              <div class="terms-row">
+                <dt>{r.label}</dt>
+                <dd>
+                  <span class="terms-value" data-count>{r.value}</span>
+                  {r.caveat && <span class="terms-caveat">{r.caveat}</span>}
+                </dd>
+              </div>
+            ))}
+          </dl>
+          <p class="manager-line reveal">{t.fund.terms.managerLine}</p>
+          <p class="footnote footnote-dark reveal">{t.fund.terms.irrCaveat}</p>
+        </div>
+      </article>
+
+      <!-- Team -->
+      <article class="team" id="equipa" aria-labelledby="team-title">
+        <div class="shell">
+          <h2 id="team-title" class="display reveal">{t.fund.team.title}</h2>
+          {t.fund.team.groups.map((g) => (
+            <section class="team-group" aria-label={g.title}>
+              <h3 class="sub-label reveal">{g.title}</h3>
+              <div class="team-grid">
+                {g.members.map((m) => (
+                  <article class="member reveal">
+                    {m.photo && teamPhotos[m.photo] ? (
+                      <Image
+                        class="member-photo"
+                        src={teamPhotos[m.photo]!}
+                        alt={m.name}
+                        width={400}
+                        densities={[1, 2]}
+                        loading="lazy"
+                      />
+                    ) : (
+                      <div class="member-monogram" role="img" aria-label={`${m.name} — ${t.fund.team.photoPendingLabel}`}>
+                        <span aria-hidden="true">{m.name.split(' ').map((w) => w[0]).filter((_, i, a) => i === 0 || i === a.length - 1).join('')}</span>
+                      </div>
+                    )}
+                    <h4 class="member-name">
+                      {m.linkedIn ? <a href={m.linkedIn} rel="noopener">{m.name}</a> : m.name}
+                    </h4>
+                    <p class="member-role">{m.role}</p>
+                    <p class="member-bio">{m.bio}</p>
+                  </article>
+                ))}
+              </div>
+            </section>
+          ))}
+        </div>
+      </article>
+
+      <!-- Investment process -->
+      <article class="process" id="investir" aria-labelledby="process-title">
+        <div class="shell">
+          <h2 id="process-title" class="display reveal">{t.fund.process.title}</h2>
+          <p class="lede reveal">{t.fund.process.intro}</p>
+          <ol class="steps reveal">
+            {t.fund.process.steps.map((s, i) => (
+              <li class="step">
+                <span class="step-no">{String(i + 1).padStart(2, '0')}</span>
+                <h3 class="step-title">{s.title}</h3>
+                <p class="step-desc">{s.description}</p>
+              </li>
+            ))}
+          </ol>
+          <div class="invest-cta reveal">
+            <div class="contact-card">
+              <p class="contact-name">{t.fund.process.contact.name}</p>
+              <p class="contact-role">{t.fund.process.contact.role}</p>
+              <p class="contact-line"><a href={`mailto:${t.fund.process.contact.email}`}>{t.fund.process.contact.email}</a></p>
+              <p class="contact-line"><a href={`tel:${t.fund.process.contact.phone.replace(/\s/g, '')}`}>{t.fund.process.contact.phone}</a></p>
+              <p class="contact-line contact-general"><a href={`mailto:${t.fund.process.contact.generalEmail}`}>{t.fund.process.contact.generalEmail}</a></p>
+            </div>
+            <div class="cta-stack">
+              <a class="btn btn-cta-solid" href={`mailto:${t.fund.process.contact.generalEmail}?subject=${mailSubjectCim}`}>{t.fund.process.ctaPrimary} <span aria-hidden="true">→</span></a>
+              <a class="btn btn-cta-outline" href={`mailto:${t.fund.process.contact.generalEmail}?subject=${mailSubjectMeet}`}>{t.fund.process.ctaSecondary} <span aria-hidden="true">→</span></a>
+              <p class="cta-note">{t.fund.process.formNote}</p>
+            </div>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <!-- Partners -->
+    <section class="partners" aria-label={L.partners}>
+      <div class="shell">
+        <h2 class="sub-label reveal">{L.partners}</h2>
+        <ul class="partner-strip reveal">
+          {partners.map((p) => (
+            <li>
+              <Image src={p.image} alt={p.name} height={44} densities={[1, 2]} loading="lazy" />
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="shell footer-grid">
+      <div class="footer-info">
+        <nav class="footer-links" aria-label={L.legalNav}>
+          <ul>
+            {t.footer.links.map((l) => (
+              <li><a href={l.href} rel={l.external ? 'noopener' : undefined}>{l.label}</a></li>
+            ))}
+          </ul>
+        </nav>
+        <p class="footer-address">{t.footer.address}</p>
+        <p class="footer-address">{t.footer.contactLine}</p>
+      </div>
+      <div class="footer-logo-wrap">
+        <Image src={brand.logoWhite} alt="STAG | btf. — blue transformation fund" width={120} densities={[1, 2]} loading="lazy" />
+      </div>
+    </div>
+    <div class="shell">
+      <p class="footer-disclaimer">{t.footer.disclaimer}</p>
+      <p class="footer-copyright">{t.footer.copyright}</p>
+    </div>
+  </footer>
+</BaseLayout>
+
+<style>
+  /* ===== Tokens — every hue derived from the logo navy #043F7F ===== */
+  :global(body.alt-a) {
+    --brand: #043f7f;
+    --deep: #021d3b;
+    --abyss: #01101f;
+    --blue: #1a5ea8;
+    --sky: #6fa5dc;
+    --pale: #a9caec;
+    --mist: #dce9f6;
+    --ice: #f2f7fc;
+    --ink: #0a2036;
+    --ink-soft: #3a5470;
+    --ink-muted: #58708a;
+    --hairline: #d8e4f0;
+    --hairline-strong: #b9cde1;
+    --font-display: 'Fraunces Variable', Georgia, serif;
+    --font-ui: 'IBM Plex Sans Variable', system-ui, sans-serif;
+
+    --chart-line: #1a5ea8;
+    --chart-c1: #6fa5dc;
+    --chart-c2: #2e6cb5;
+    --chart-c3: #043f7f;
+    --chart-ink: var(--ink);
+    --chart-ink-muted: var(--ink-muted);
+    --chart-grid: #e0eaf4;
+    --chart-surface: #ffffff;
+    --chart-deemph: #9db4cb;
+    --chart-font: var(--font-ui);
+
+    background: var(--ice);
+    color: var(--ink);
+    font-family: var(--font-ui);
+    font-size: 1.02rem;
+  }
+
+  .shell {
+    max-width: 1160px;
+    margin-inline: auto;
+    padding-inline: clamp(1.25rem, 4vw, 2.5rem);
+  }
+
+  .kicker {
+    font-size: 0.78rem;
+    font-weight: 650;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    color: var(--sky);
+  }
+  .kicker-ink {
+    color: var(--blue);
+  }
+  .display {
+    font-family: var(--font-display);
+    font-weight: 560;
+    font-size: clamp(1.9rem, 4.2vw, 3rem);
+    line-height: 1.08;
+    letter-spacing: -0.01em;
+    max-width: 22ch;
+    margin-top: 0.9rem;
+  }
+  .resources .display::before,
+  .fund .display::before {
+    content: '';
+    display: block;
+    width: 56px;
+    height: 4px;
+    background: var(--brand);
+    margin-bottom: 1.1rem;
+  }
+  .display-inverse {
+    color: #fff;
+    text-shadow: 0 2px 22px rgba(1, 16, 31, 0.6);
+  }
+  .display-inverse::before {
+    background: var(--sky) !important;
+  }
+  .lede {
+    font-size: clamp(1.05rem, 1.6vw, 1.22rem);
+    line-height: 1.6;
+    color: var(--ink-soft);
+    max-width: 62ch;
+    margin-top: 1.1rem;
+  }
+  .sub-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+    margin: 3rem 0 1.2rem;
+  }
+  .footnote {
+    font-size: 0.75rem;
+    color: var(--ink-muted);
+    max-width: 72ch;
+    margin-top: 0.9rem;
+  }
+  .footnote-dark {
+    color: #9fbedc;
+  }
+  .mono-num {
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* ===== Buttons ===== */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    font-weight: 650;
+    font-size: 0.95rem;
+    text-decoration: none;
+    border-radius: 999px;
+    padding: 0.9rem 1.7rem;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease, color 0.25s ease;
+  }
+  .btn-solid {
+    background: #fff;
+    color: var(--brand);
+  }
+  .btn-solid:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 30px rgba(2, 29, 59, 0.35);
+  }
+  .btn-glass {
+    border: 1px solid rgba(255, 255, 255, 0.55);
+    color: #fff;
+    background: rgba(2, 29, 59, 0.25);
+    backdrop-filter: blur(8px);
+  }
+  .btn-glass:hover {
+    background: rgba(2, 29, 59, 0.5);
+  }
+  .btn-cta-solid {
+    background: #fff;
+    color: var(--brand);
+  }
+  .btn-cta-solid:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 30px rgba(1, 16, 31, 0.5);
+  }
+  .btn-cta-outline {
+    border: 1.5px solid rgba(255, 255, 255, 0.65);
+    color: #fff;
+  }
+  .btn-cta-outline:hover {
+    background: rgba(255, 255, 255, 0.12);
+  }
+
+  /* ===== Header ===== */
+  .site-header {
+    position: fixed;
+    inset-inline: 0;
+    top: 0;
+    z-index: 50;
+    transition: background 0.3s ease, border-color 0.3s ease;
+    border-bottom: 1px solid transparent;
+  }
+  :global(body.alt-a[data-scrolled]) .site-header {
+    background: rgba(242, 247, 252, 0.92);
+    backdrop-filter: blur(10px);
+    border-bottom-color: var(--hairline);
+  }
+  .header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-block: 0.8rem;
+  }
+  .logo {
+    width: clamp(140px, 16vw, 185px);
+    height: auto;
+  }
+  .logo-dark {
+    display: none;
+  }
+  :global(body.alt-a[data-scrolled]) .logo-light {
+    display: none;
+  }
+  :global(body.alt-a[data-scrolled]) .logo-dark {
+    display: block;
+  }
+  .nav-list {
+    display: flex;
+    align-items: center;
+    gap: clamp(0.9rem, 2vw, 1.6rem);
+    list-style: none;
+    padding: 0;
+    font-size: 0.9rem;
+    font-weight: 550;
+  }
+  .nav-list a {
+    text-decoration: none;
+    color: #fff;
+  }
+  :global(body.alt-a[data-scrolled]) .nav-list a {
+    color: var(--ink-soft);
+  }
+  .nav-list a:hover {
+    color: var(--sky) !important;
+  }
+  .nav-lang a {
+    font-weight: 700;
+    letter-spacing: 0.08em;
+  }
+  .nav-cta {
+    background: #fff;
+    color: var(--brand) !important;
+    padding: 0.55rem 1.15rem;
+    border-radius: 999px;
+    font-weight: 700;
+  }
+  :global(body.alt-a[data-scrolled]) .nav-cta {
+    background: var(--brand);
+    color: #fff !important;
+  }
+  .nav-toggle {
+    display: none;
+    background: rgba(2, 29, 59, 0.35);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 999px;
+    padding: 0.5rem 0.9rem;
+    font-size: 0.8rem;
+    font-weight: 650;
+    letter-spacing: 0.1em;
+    color: #fff;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+  }
+  :global(body.alt-a[data-scrolled]) .nav-toggle {
+    background: #fff;
+    color: var(--ink);
+    border-color: var(--hairline);
+  }
+  .nav-toggle-bars {
+    display: inline-flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .nav-toggle-bars i {
+    display: block;
+    width: 16px;
+    height: 2px;
+    background: currentColor;
+  }
+  @media (max-width: 900px) {
+    .nav-toggle {
+      display: inline-flex;
+    }
+    .nav-list {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0;
+      background: var(--ice);
+      border-bottom: 1px solid var(--hairline);
+      padding: 0.5rem 1.5rem 1.25rem;
+    }
+    .main-nav[data-open='true'] .nav-list {
+      display: flex;
+    }
+    .nav-list li {
+      border-bottom: 1px solid var(--hairline);
+    }
+    .nav-list li:last-child {
+      border-bottom: none;
+    }
+    .nav-list a {
+      display: block;
+      padding: 0.9rem 0.25rem;
+      color: var(--ink-soft) !important;
+    }
+    .nav-cta {
+      display: inline-block;
+      margin-top: 0.9rem;
+      text-align: center;
+      background: var(--brand);
+      color: #fff !important;
+    }
+    .nav-cta-item {
+      border-bottom: none !important;
+    }
+  }
+
+  /* ===== Hero — quieter, more elegant scale ===== */
+  .hero {
+    position: relative;
+    min-height: 100svh;
+    display: flex;
+    align-items: flex-end;
+    overflow: hidden;
+  }
+  .hero-media {
+    position: absolute;
+    inset: 0;
+  }
+  .hero-media video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .hero-veil {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      180deg,
+      rgba(2, 29, 59, 0.42) 0%,
+      rgba(2, 29, 59, 0.12) 38%,
+      rgba(2, 29, 59, 0.6) 74%,
+      var(--deep) 100%
+    );
+  }
+  .video-toggle {
+    position: absolute;
+    right: clamp(1rem, 3vw, 2rem);
+    bottom: clamp(1rem, 3vw, 2rem);
+    z-index: 3;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.55);
+    background: rgba(2, 29, 59, 0.45);
+    backdrop-filter: blur(6px);
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+  }
+  .video-toggle:hover {
+    background: rgba(2, 29, 59, 0.7);
+  }
+  .vt-pause,
+  .vt-play {
+    grid-area: 1 / 1;
+  }
+  .vt-pause {
+    width: 10px;
+    height: 12px;
+    border-left: 3px solid #fff;
+    border-right: 3px solid #fff;
+  }
+  .vt-play {
+    width: 0;
+    height: 0;
+    border-left: 11px solid #fff;
+    border-top: 7px solid transparent;
+    border-bottom: 7px solid transparent;
+    display: none;
+    margin-left: 2px;
+  }
+  .video-toggle[data-state='paused'] .vt-pause {
+    display: none;
+  }
+  .video-toggle[data-state='paused'] .vt-play {
+    display: block;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    padding-top: clamp(7rem, 16vh, 11rem);
+    padding-bottom: clamp(6rem, 13vh, 9rem);
+  }
+  .hero-headline {
+    margin-top: 1.3rem;
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: clamp(1.9rem, 4.3vw, 3.3rem);
+    line-height: 1.14;
+    letter-spacing: 0.002em;
+    color: #fff;
+    max-width: 24ch;
+    text-wrap: balance;
+    text-shadow: 0 2px 24px rgba(2, 29, 59, 0.45);
+  }
+  .hero-headline .hl-1,
+  .hero-headline .hl-2 {
+    display: block;
+  }
+  .hero-headline .hl-2 {
+    font-style: italic;
+    font-weight: 460;
+    color: var(--mist);
+    margin-top: 0.18em;
+  }
+  .hero-sub {
+    margin-top: 1.5rem;
+    font-size: clamp(1rem, 1.5vw, 1.18rem);
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.92);
+    max-width: 54ch;
+    text-shadow: 0 1px 14px rgba(2, 29, 59, 0.5);
+  }
+  .hero-ctas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 2.1rem;
+  }
+  .hero-credit {
+    margin-top: 2.4rem;
+    font-size: 0.72rem;
+    letter-spacing: 0.05em;
+    color: rgba(255, 255, 255, 0.65);
+  }
+  .scroll-cue {
+    position: absolute;
+    left: 50%;
+    bottom: 1.4rem;
+    transform: translateX(-50%);
+    z-index: 2;
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    text-decoration: none;
+  }
+  .cue-ring {
+    grid-area: 1/1;
+    width: 38px;
+    height: 38px;
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    border-radius: 50%;
+    animation: cue-breathe 2.6s ease-in-out infinite;
+  }
+  .cue-arrow {
+    grid-area: 1/1;
+    color: #fff;
+    font-size: 1rem;
+  }
+  @keyframes cue-breathe {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.18); opacity: 0.55; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .cue-ring { animation: none; }
+  }
+
+  .rise {
+    opacity: 0;
+    transform: translateY(26px);
+    animation: rise 0.9s cubic-bezier(0.2, 0.65, 0.25, 1) forwards;
+    animation-delay: var(--d, 0ms);
+  }
+  @keyframes rise {
+    to { opacity: 1; transform: none; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .rise {
+      opacity: 1;
+      transform: none;
+      animation: none;
+    }
+  }
+
+  /* ===== Stats — a solid navy block, hard edges ===== */
+  .stats {
+    background: var(--deep);
+    padding-block: clamp(2.4rem, 5vw, 3.8rem);
+  }
+  .stat-band {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: clamp(1rem, 2.5vw, 2rem);
+    margin: 0;
+    background: #fff;
+    border-radius: 18px;
+    padding: clamp(1.4rem, 3vw, 2.2rem);
+    box-shadow: 0 24px 60px rgba(1, 16, 31, 0.4);
+  }
+  .stat dd {
+    font-family: var(--font-display);
+    font-size: clamp(1.8rem, 3.2vw, 2.5rem);
+    font-weight: 600;
+    color: var(--brand);
+    margin: 0;
+  }
+  .stat dt {
+    font-size: 0.82rem;
+    color: var(--ink-muted);
+    margin-top: 0.4rem;
+    line-height: 1.4;
+  }
+  @media (max-width: 760px) {
+    .stat-band {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  /* ===== The dive ===== */
+  .dive {
+    position: relative;
+    background: var(--deep);
+    border-top: 1px solid rgba(111, 165, 220, 0.35);
+  }
+  .dive-media {
+    position: sticky;
+    top: 0;
+    height: 100svh;
+    overflow: hidden;
+  }
+  .dive-media video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: scale(calc(1 + var(--p, 0) * 0.18));
+    transform-origin: center 60%;
+    transition: transform 0.1s linear;
+  }
+  .dive-veil {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(180deg, var(--deep) 0%, rgba(2, 29, 59, 0) 7%),
+      radial-gradient(120% 80% at 50% 55%, transparent 40%, rgba(1, 16, 31, 0.55) 100%);
+  }
+  .dive-depth {
+    position: absolute;
+    right: clamp(1rem, 3vw, 2.2rem);
+    top: 50%;
+    transform: translateY(-50%) rotate(90deg);
+    font-size: 0.78rem;
+    font-weight: 650;
+    letter-spacing: 0.3em;
+    color: rgba(220, 233, 246, 0.75);
+  }
+  @media (max-width: 760px) {
+    .dive-depth {
+      display: none;
+    }
+  }
+  .dive .video-toggle {
+    top: clamp(4.6rem, 9vh, 6rem);
+    bottom: auto;
+  }
+  .dive-chapters {
+    position: relative;
+    margin-top: -100svh;
+    z-index: 1;
+  }
+  .chapter {
+    min-height: 100svh;
+    display: flex;
+    align-items: center;
+    padding-block: 10vh;
+  }
+  .chapter-inner {
+    width: 100%;
+  }
+  .chapter-kicker {
+    font-size: 0.75rem;
+    font-weight: 650;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    color: var(--sky);
+  }
+  .chapter-label {
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: rgba(220, 233, 246, 0.9);
+    margin-bottom: 1.4rem;
+    text-shadow: 0 1px 12px rgba(1, 16, 31, 0.8);
+  }
+
+  .glass {
+    background: rgba(2, 29, 59, 0.72);
+    border: 1px solid rgba(111, 165, 220, 0.28);
+    border-radius: 16px;
+    backdrop-filter: blur(10px);
+    color: #eaf2fb;
+    box-shadow: 0 30px 80px rgba(1, 16, 31, 0.45);
+  }
+  .glass-intro {
+    max-width: 40rem;
+    padding: clamp(1.8rem, 4vw, 2.8rem);
+  }
+  .dive-display {
+    font-family: var(--font-display);
+    font-weight: 560;
+    font-size: clamp(2rem, 4.4vw, 3.1rem);
+    line-height: 1.07;
+    margin-top: 0.9rem;
+    color: #fff;
+  }
+  .dive-lede {
+    margin-top: 1.1rem;
+    font-size: clamp(1rem, 1.5vw, 1.15rem);
+    line-height: 1.6;
+    color: rgba(220, 233, 246, 0.92);
+    max-width: 52ch;
+  }
+  .glass-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+  }
+  .glass-stat {
+    padding: 1.2rem 1.2rem 1.1rem;
+  }
+  .g-value {
+    font-family: var(--font-display);
+    font-size: 1.75rem;
+    font-weight: 600;
+    color: #fff;
+  }
+  .g-value-sm {
+    font-size: 1.45rem;
+  }
+  .g-label {
+    font-size: 0.83rem;
+    line-height: 1.45;
+    color: rgba(220, 233, 246, 0.88);
+    margin-top: 0.35rem;
+  }
+  .g-source {
+    font-size: 0.7rem;
+    color: rgba(159, 190, 220, 0.85);
+    margin-top: 0.6rem;
+  }
+  .g-source a {
+    color: inherit;
+  }
+  .g-source a:hover {
+    color: #fff;
+  }
+  @media (max-width: 980px) {
+    .glass-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  @media (max-width: 560px) {
+    .glass-grid {
+      grid-template-columns: 1fr;
+    }
+    .chapter {
+      align-items: flex-start;
+      padding-block: 14vh 8vh;
+    }
+  }
+
+  .glass-chart {
+    max-width: 56rem;
+    margin-inline: auto;
+    padding: clamp(1.6rem, 3.5vw, 2.4rem);
+    --chart-surface: rgba(2, 29, 59, 0.001);
+    --chart-ink: #eaf2fb;
+    --chart-ink-muted: #9fbedc;
+    --chart-grid: rgba(111, 165, 220, 0.22);
+    --chart-line: #6fa5dc;
+    --chart-tooltip-bg: rgba(234, 242, 251, 0.95);
+    --chart-tooltip-ink: #021d3b;
+  }
+  .g-title {
+    font-family: var(--font-display);
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: #fff;
+  }
+  .g-sub {
+    font-size: 0.85rem;
+    color: rgba(159, 190, 220, 0.95);
+    margin: 0.4rem 0 1.2rem;
+  }
+
+  .glass-obs {
+    padding: clamp(1.6rem, 3.5vw, 2.4rem);
+    border-color: rgba(111, 165, 220, 0.5);
+  }
+  .obs-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.75rem;
+  }
+  .obs-head h3 {
+    font-family: var(--font-display);
+    font-size: 1.35rem;
+    font-weight: 600;
+    color: #fff;
+  }
+  .obs-updated {
+    font-size: 0.75rem;
+    font-weight: 650;
+    letter-spacing: 0.06em;
+    color: var(--sky);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+  }
+  .obs-pulse {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--sky);
+    box-shadow: 0 0 0 0 rgba(111, 165, 220, 0.7);
+    animation: pulse 2.4s ease-out infinite;
+  }
+  @keyframes pulse {
+    from { box-shadow: 0 0 0 0 rgba(111, 165, 220, 0.7); }
+    to { box-shadow: 0 0 0 12px rgba(111, 165, 220, 0); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .obs-pulse { animation: none; }
+  }
+  .obs-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.3rem 1.8rem;
+    margin-top: 1.5rem;
+  }
+  .obs-note {
+    font-size: 0.78rem;
+    color: rgba(159, 190, 220, 0.9);
+    margin-top: 1.5rem;
+    max-width: 70ch;
+  }
+  @media (max-width: 880px) {
+    .obs-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  @media (max-width: 560px) {
+    .obs-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* ===== Resources — hard cut back into daylight ===== */
+  .resources {
+    background: var(--ice);
+    border-top: 4px solid var(--brand);
+    padding-block: clamp(3rem, 6vw, 4.5rem);
+  }
+  .resource-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: clamp(1rem, 2vw, 1.5rem);
+    margin-top: 2.2rem;
+  }
+  .resource-card {
+    background: #fff;
+    border: 1px solid var(--hairline);
+    border-radius: 14px;
+    padding: 1.3rem 1.3rem 1.5rem;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+  }
+  .resource-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 18px 40px rgba(4, 63, 127, 0.12);
+  }
+  .resource-card h3 {
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--brand);
+  }
+  .resource-card p {
+    font-size: 0.85rem;
+    line-height: 1.5;
+    color: var(--ink-soft);
+    margin-top: 0.6rem;
+  }
+  .resource-links {
+    list-style: none;
+    padding: 0;
+    margin-top: 0.9rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+  .resource-links a {
+    font-size: 0.85rem;
+    font-weight: 650;
+    color: var(--blue);
+    text-decoration-color: var(--hairline);
+  }
+  .resource-links a:hover {
+    color: var(--brand);
+  }
+  @media (max-width: 880px) {
+    .resource-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  @media (max-width: 520px) {
+    .resource-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* ===== Fund ===== */
+  /* No-JS fallbacks; initStickyOffsets() overrides both inline on <html>. */
+  :global(:root) {
+    --header-h: 139px;
+    --subnav-h: 0px;
+  }
+  @media (min-width: 901px) {
+    :global(:root) {
+      --subnav-h: 52px;
+    }
+  }
+
+  .fund {
+    background: #fff;
+    /* the subnav is .fund's first child, so it only has to clear the header */
+    scroll-margin-top: var(--header-h, 139px);
+  }
+  .fund-subnav {
+    position: sticky;
+    top: var(--header-h, 139px);
+    z-index: 40;
+    background: rgba(255, 255, 255, 0.93);
+    backdrop-filter: blur(9px);
+    border-top: 4px solid var(--brand);
+    border-bottom: 1px solid var(--hairline-strong);
+  }
+  .fund-subnav ul {
+    display: flex;
+    gap: clamp(1rem, 3vw, 2.2rem);
+    list-style: none;
+    padding: 0.7rem 0;
+    margin: 0;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .fund-subnav a {
+    font-size: 0.8rem;
+    font-weight: 650;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--ink-muted);
+    white-space: nowrap;
+  }
+  .fund-subnav a:hover {
+    color: var(--brand);
+  }
+  /* the sticky strip reads oddly on small screens — anchor nav lives in the
+     main menu there, so the subnav is desktop furniture only */
+  @media (max-width: 900px) {
+    .fund-subnav {
+      display: none;
+    }
+    .fund {
+      border-top: 4px solid var(--brand);
+    }
+  }
+
+  .thesis,
+  .verticals,
+  .team,
+  .process {
+    padding-block: clamp(3.2rem, 7vw, 5.5rem);
+    scroll-margin-top: calc(var(--header-h, 139px) + var(--subnav-h, 0px));
+  }
+  .thesis {
+    background: var(--ice);
+  }
+  .verticals {
+    background: #fff;
+  }
+  .team {
+    background: var(--ice);
+    border-top: 1px solid var(--hairline-strong);
+  }
+  .process {
+    background: #fff;
+    border-top: 1px solid var(--hairline-strong);
+  }
+
+  /* Eras — back to the future */
+  .eras {
+    margin-top: clamp(2.2rem, 5vw, 3.4rem);
+    display: flex;
+    flex-direction: column;
+  }
+  .era {
+    display: grid;
+    grid-template-columns: 48px 1fr;
+    gap: clamp(1rem, 3vw, 2rem);
+  }
+  .era-rail {
+    position: relative;
+    display: flex;
+    justify-content: center;
+  }
+  .era-rail::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: linear-gradient(var(--sky), var(--brand));
+  }
+  .era-node {
+    position: relative;
+    z-index: 1;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--ice);
+    border: 3px solid var(--brand);
+    margin-top: 0.4rem;
+  }
+  .era:last-child .era-rail::before {
+    bottom: auto;
+    height: 1.2rem;
+  }
+  .era-body {
+    padding-bottom: clamp(2.2rem, 5vw, 3.2rem);
+    max-width: 62ch;
+  }
+  .era-label {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: clamp(1.15rem, 2vw, 1.45rem);
+    color: var(--blue);
+  }
+  .era-copy {
+    margin-top: 0.7rem;
+    font-size: 1.08rem;
+    line-height: 1.75;
+    color: var(--ink-soft);
+  }
+  .drop-cap::first-letter {
+    font-family: var(--font-display);
+    font-size: 3.2em;
+    font-weight: 600;
+    float: left;
+    line-height: 0.85;
+    padding-right: 0.12em;
+    color: var(--brand);
+  }
+
+  .equation {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.9rem;
+    margin-top: 1.4rem;
+  }
+  .eq-block {
+    font-size: 0.92rem;
+    font-weight: 650;
+    color: var(--ink);
+    border: 1px solid var(--hairline-strong);
+    background: #fff;
+    padding: 0.85rem 1.2rem;
+    border-radius: 10px;
+  }
+  .eq-op {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 1.4rem;
+    color: var(--blue);
+  }
+  .eq-result {
+    font-size: 0.92rem;
+    font-weight: 700;
+    background: var(--brand);
+    color: #fff;
+    padding: 0.9rem 1.3rem;
+    border-radius: 10px;
+    box-shadow: 0 10px 26px rgba(4, 63, 127, 0.28);
+  }
+
+  /* ===== EU context — the return to the canyon ===== */
+  .eu-band {
+    position: relative;
+    overflow: hidden;
+    border-top: 4px solid var(--brand);
+    border-bottom: 4px solid var(--brand);
+    background: var(--deep);
+  }
+  .eu-media {
+    position: absolute;
+    inset: -12% 0;
+  }
+  .eu-media :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .eu-veil {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(180deg, rgba(1, 16, 31, 0.5) 0%, rgba(2, 29, 59, 0.24) 34%, rgba(1, 16, 31, 0.68) 100%),
+      radial-gradient(110% 80% at 50% 42%, transparent 40%, rgba(1, 16, 31, 0.5) 100%);
+  }
+  .eu-content {
+    position: relative;
+    z-index: 1;
+    padding-block: clamp(4rem, 10vh, 7rem);
+  }
+  .eu-title {
+    font-family: var(--font-display);
+    font-weight: 560;
+    font-size: clamp(1.7rem, 3.4vw, 2.5rem);
+    line-height: 1.12;
+    color: #fff;
+    max-width: 26ch;
+    margin-top: 0.9rem;
+    text-shadow: 0 2px 22px rgba(1, 16, 31, 0.7);
+  }
+  .eu-intro {
+    margin-top: 1rem;
+    color: rgba(234, 242, 251, 0.92);
+    max-width: 58ch;
+    line-height: 1.65;
+    text-shadow: 0 1px 12px rgba(1, 16, 31, 0.7);
+  }
+  .eu-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    margin-top: clamp(2rem, 4vw, 3rem);
+  }
+  .eu-stat {
+    padding: 1.3rem 1.3rem 1.2rem;
+  }
+  .eu-value {
+    font-family: var(--font-display);
+    font-size: clamp(1.9rem, 3.2vw, 2.5rem);
+    font-weight: 600;
+    color: #fff;
+    text-shadow: 0 0 28px rgba(111, 165, 220, 0.45);
+  }
+  .eu-label {
+    font-size: 0.85rem;
+    line-height: 1.45;
+    color: rgba(220, 233, 246, 0.9);
+    margin-top: 0.4rem;
+  }
+  .eu-source {
+    font-size: 0.7rem;
+    color: rgba(159, 190, 220, 0.85);
+    margin-top: 0.55rem;
+  }
+  @media (max-width: 880px) {
+    .eu-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  @media (max-width: 520px) {
+    .eu-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* Verticals */
+  .alloc-wrap {
+    margin-top: 2.2rem;
+    max-width: 46rem;
+  }
+  .vertical-list {
+    margin-top: clamp(2.4rem, 5vw, 3.6rem);
+    display: flex;
+    flex-direction: column;
+  }
+  .vertical {
+    border-top: 1px solid var(--hairline-strong);
+    padding: 2.2rem 0;
+    display: grid;
+    grid-template-columns: minmax(240px, 1.1fr) 1.6fr 1.4fr;
+    gap: clamp(1.4rem, 3vw, 2.6rem);
+  }
+  .v-head {
+    display: flex;
+    gap: 1rem;
+    align-items: baseline;
+  }
+  .v-no {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 1.2rem;
+    color: var(--blue);
+  }
+  .v-head h3 {
+    font-family: var(--font-display);
+    font-size: 1.45rem;
+    font-weight: 600;
+    line-height: 1.2;
+  }
+  .v-alloc {
+    font-size: 0.8rem;
+    font-weight: 650;
+    color: var(--ink-muted);
+    margin-top: 0.45rem;
+  }
+  .v-copy {
+    line-height: 1.65;
+    color: var(--ink-soft);
+  }
+  .v-bullets {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+    font-size: 0.87rem;
+    color: var(--ink-soft);
+  }
+  .v-bullets li {
+    padding-left: 1.1rem;
+    position: relative;
+    line-height: 1.45;
+  }
+  .v-bullets li::before {
+    content: '·';
+    position: absolute;
+    left: 0;
+    color: var(--blue);
+    font-weight: 700;
+    font-size: 1.3em;
+    line-height: 1;
+  }
+  @media (max-width: 880px) {
+    .vertical {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+  }
+
+  /* Portfolio — full-bleed estuary */
+  .portfolio {
+    scroll-margin-top: calc(var(--header-h, 139px) + var(--subnav-h, 0px));
+  }
+  .pf-band {
+    position: relative;
+    min-height: 100svh;
+    display: flex;
+    align-items: flex-end;
+    overflow: hidden;
+    border-top: 4px solid var(--brand);
+    /* any parallax overshoot lands on navy, never on the white page */
+    background: var(--deep);
+  }
+  .pf-media {
+    position: absolute;
+    inset: -18% 0;
+  }
+  .pf-media :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .pf-veil {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(
+        180deg,
+        rgba(2, 29, 59, 0.55) 0%,
+        rgba(2, 29, 59, 0.22) 30%,
+        rgba(2, 29, 59, 0.58) 64%,
+        rgba(1, 16, 31, 0.92) 100%
+      ),
+      linear-gradient(90deg, rgba(2, 29, 59, 0.55) 0%, rgba(2, 29, 59, 0.2) 48%, rgba(2, 29, 59, 0) 72%);
+  }
+  .pf-content {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    padding-block: clamp(3rem, 8vh, 5rem);
+  }
+  .pf-body {
+    max-width: 46rem;
+    margin-top: 1.6rem;
+  }
+  .anchor-tag {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--pale);
+    text-shadow: 0 1px 12px rgba(1, 16, 31, 0.8);
+  }
+  .anchor-name {
+    font-family: var(--font-display);
+    font-size: clamp(1.7rem, 3vw, 2.3rem);
+    font-weight: 600;
+    margin-top: 0.5rem;
+    color: #fff;
+  }
+  .anchor-copy {
+    margin-top: 1rem;
+    line-height: 1.65;
+    color: rgba(234, 242, 251, 0.92);
+    max-width: 56ch;
+  }
+  .farm-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-top: 1.6rem;
+    max-width: 34rem;
+  }
+  .farm-card {
+    border: 1px solid rgba(111, 165, 220, 0.4);
+    background: rgba(2, 29, 59, 0.62);
+    backdrop-filter: blur(8px);
+    border-radius: 12px;
+    padding: 1rem 1.1rem;
+  }
+  .farm-name {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 1.15rem;
+    color: var(--pale);
+  }
+  .farm-specs {
+    font-size: 0.83rem;
+    color: rgba(220, 233, 246, 0.85);
+    margin-top: 0.3rem;
+  }
+  .pipeline-note {
+    font-style: italic;
+    color: rgba(234, 242, 251, 0.9);
+    margin-top: 1.6rem;
+    max-width: 58ch;
+    line-height: 1.6;
+    border-left: 2px solid var(--sky);
+    padding-left: 1rem;
+  }
+  .pf-credit {
+    margin-top: 1.8rem;
+    font-size: 0.72rem;
+    letter-spacing: 0.05em;
+    color: rgba(220, 233, 246, 0.6);
+  }
+  @media (max-width: 560px) {
+    .farm-cards {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* Terms — deep navy block */
+  .terms {
+    background: var(--deep);
+    color: #eaf2fb;
+    padding-block: clamp(3.2rem, 7vw, 5.5rem);
+    scroll-margin-top: calc(var(--header-h, 139px) + var(--subnav-h, 0px));
+  }
+  .terms-table {
+    margin-top: 2rem;
+    border-top: 2px solid var(--sky);
+    max-width: 46rem;
+  }
+  .terms-row {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 1rem;
+    padding: 1.1rem 0;
+    border-bottom: 1px solid rgba(111, 165, 220, 0.24);
+  }
+  .terms-row dt {
+    font-size: 0.9rem;
+    color: #9fbedc;
+  }
+  .terms-row dd {
+    margin: 0;
+    display: flex;
+    align-items: baseline;
+    gap: 0.8rem;
+    flex-wrap: wrap;
+  }
+  .terms-value {
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--pale);
+    text-shadow: 0 0 24px rgba(111, 165, 220, 0.35);
+  }
+  .terms-caveat {
+    font-size: 0.8rem;
+    color: #9fbedc;
+  }
+  .manager-line {
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: #c6daee;
+    margin-top: 1.6rem;
+    max-width: 60ch;
+  }
+
+  /* Team */
+  .team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+    gap: clamp(1.4rem, 3vw, 2.2rem);
+  }
+  .member-photo,
+  .member-monogram {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    border-radius: 12px;
+  }
+  .member-monogram {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(160deg, var(--brand), var(--deep));
+    color: rgba(255, 255, 255, 0.9);
+    font-family: var(--font-display);
+    font-size: 2.6rem;
+    font-weight: 500;
+  }
+  .member-name {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-top: 0.9rem;
+  }
+  .member-name a {
+    color: inherit;
+    text-decoration-color: var(--hairline);
+  }
+  .member-name a:hover {
+    color: var(--blue);
+  }
+  .member-role {
+    font-size: 0.76rem;
+    font-weight: 650;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--blue);
+    margin-top: 0.25rem;
+  }
+  .member-bio {
+    font-size: 0.84rem;
+    line-height: 1.5;
+    color: var(--ink-soft);
+    margin-top: 0.5rem;
+  }
+
+  /* Process */
+  .steps {
+    list-style: none;
+    padding: 0;
+    margin-top: 2.4rem;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: clamp(1rem, 2vw, 1.6rem);
+  }
+  .step {
+    border-top: 2px solid var(--brand);
+    padding-top: 1rem;
+  }
+  .step-no {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 1.1rem;
+    color: var(--blue);
+  }
+  .step-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    margin-top: 0.4rem;
+  }
+  .step-desc {
+    font-size: 0.83rem;
+    line-height: 1.5;
+    color: var(--ink-soft);
+    margin-top: 0.45rem;
+  }
+  @media (max-width: 980px) {
+    .steps {
+      grid-template-columns: 1fr;
+      max-width: 34rem;
+    }
+    .step {
+      display: grid;
+      grid-template-columns: 3rem 1fr;
+      grid-template-rows: auto auto;
+      column-gap: 0.6rem;
+      border-top: none;
+      border-left: 2px solid var(--brand);
+      padding: 0.2rem 0 0.2rem 1.1rem;
+    }
+    .step-no {
+      grid-row: 1 / 3;
+    }
+    .step-title {
+      margin-top: 0;
+    }
+  }
+
+  /* Invest CTA — deep navy plate */
+  .invest-cta {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: clamp(1.8rem, 4vw, 3rem);
+    margin-top: clamp(2.5rem, 5vw, 3.6rem);
+    background: var(--deep);
+    color: #eaf2fb;
+    border-radius: 18px;
+    padding: clamp(1.5rem, 3.5vw, 2.5rem);
+    box-shadow: 0 24px 60px rgba(2, 29, 59, 0.3);
+  }
+  .contact-name {
+    font-family: var(--font-display);
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: #fff;
+  }
+  .contact-role {
+    font-size: 0.78rem;
+    font-weight: 650;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--sky);
+    margin-top: 0.25rem;
+  }
+  .contact-line {
+    font-size: 0.95rem;
+    margin-top: 0.6rem;
+  }
+  .contact-line a {
+    color: var(--pale);
+    text-decoration-color: rgba(111, 165, 220, 0.4);
+  }
+  .contact-line a:hover {
+    color: #fff;
+  }
+  .contact-general {
+    color: #9fbedc;
+  }
+  .cta-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+    justify-content: center;
+  }
+  .cta-note {
+    font-size: 0.78rem;
+    color: #9fbedc;
+    text-align: center;
+  }
+  @media (max-width: 760px) {
+    .invest-cta {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* Partners */
+  .partners {
+    background: var(--ice);
+    border-top: 1px solid var(--hairline-strong);
+    padding-block: clamp(2.5rem, 5vw, 4rem);
+  }
+  .partner-strip {
+    list-style: none;
+    padding: 1.6rem 0 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: clamp(1.8rem, 4vw, 3.2rem);
+    border-top: 1px solid var(--hairline);
+  }
+  .partner-strip img {
+    height: clamp(30px, 4vw, 44px);
+    width: auto;
+    filter: grayscale(1) opacity(0.6);
+    transition: filter 0.25s ease;
+  }
+  .partner-strip li:hover img {
+    filter: grayscale(0) opacity(1);
+  }
+
+  /* Footer — logo small, right-aligned */
+  .site-footer {
+    background: var(--deep);
+    color: rgba(255, 255, 255, 0.86);
+    border-top: 4px solid var(--brand);
+    padding-block: clamp(2.6rem, 6vw, 4rem) 2rem;
+  }
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 2.5rem;
+    padding-bottom: 2.4rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.16);
+  }
+  .footer-logo-wrap {
+    justify-self: end;
+  }
+  .footer-logo-wrap img {
+    width: 120px;
+    height: auto;
+  }
+  .footer-address {
+    font-size: 0.85rem;
+    margin-top: 1rem;
+    color: rgba(220, 233, 246, 0.72);
+  }
+  .footer-links ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 1.6rem;
+  }
+  .footer-links a {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.85);
+    text-decoration-color: rgba(255, 255, 255, 0.3);
+  }
+  .footer-links a:hover {
+    color: #fff;
+  }
+  .footer-disclaimer {
+    font-size: 0.78rem;
+    line-height: 1.6;
+    color: rgba(220, 233, 246, 0.65);
+    margin-top: 2rem;
+    max-width: 90ch;
+  }
+  .footer-copyright {
+    font-size: 0.78rem;
+    color: rgba(220, 233, 246, 0.75);
+    margin-top: 1.4rem;
+  }
+  @media (max-width: 760px) {
+    .footer-grid {
+      grid-template-columns: 1fr;
+    }
+    .footer-logo-wrap {
+      justify-self: end;
+    }
+  }
+
+  /* Reveal animation */
+  :global(.alt-a .will-reveal) {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.75s ease, transform 0.75s ease;
+  }
+  :global(.alt-a .will-reveal.in-view) {
+    opacity: 1;
+    transform: none;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    :global(.alt-a .will-reveal) {
+      opacity: 1 !important;
+      transform: none !important;
+    }
+    .dive-media video {
+      transform: none !important;
+    }
+  }
+</style>
+
+<script>
+  import { initImmersive } from '@/scripts/immersive'
+  initImmersive()
+
+  // header switches from over-video (light) to solid once past the hero
+  const setScrolled = () => {
+    if (window.scrollY > window.innerHeight * 0.7) document.body.dataset.scrolled = 'true'
+    else delete document.body.dataset.scrolled
+  }
+  window.addEventListener('scroll', setScrolled, { passive: true })
+  setScrolled()
+</script>

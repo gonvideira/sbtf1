@@ -1,0 +1,81 @@
+{
+  "$comment": "BLUE OCEAN HUB — RESEARCH SLOT. This file is the swappable data module behind the 'Observatório' grid in the Hub section (all three design alternatives read from it). To refresh: add/replace entries below, keeping the same fields. 'report' should name the exact edition; 'asOf' is the year the figure refers to; 'added' is when it entered this file. Figures below were extracted from the PDFs in /research.",
+  "updated": "2026-07-09",
+  "stats": [
+    {
+      "id": "global-production-2024",
+      "value": "235 Mt",
+      "label": {
+        "pt": "Produção mundial de pescas e aquacultura em 2024 — novo máximo histórico, impulsionado pela aquacultura",
+        "en": "Global fisheries and aquaculture production in 2024 — a new all-time high, driven by aquaculture"
+      },
+      "report": "FAO — The State of World Fisheries and Aquaculture 2026",
+      "sourceUrl": "https://www.fao.org/publications/home/fao-flagship-publications/the-state-of-world-fisheries-and-aquaculture/",
+      "asOf": "2024",
+      "added": "2026-07-09"
+    },
+    {
+      "id": "aquaculture-100mt",
+      "value": "100 Mt",
+      "label": {
+        "pt": "Pela primeira vez, a aquacultura ultrapassou 100 milhões de toneladas de produção animal aquática num ano",
+        "en": "For the first time, aquaculture surpassed 100 million tonnes of aquatic animal production in a single year"
+      },
+      "report": "FAO — The State of World Fisheries and Aquaculture 2026",
+      "sourceUrl": "https://www.fao.org/publications/home/fao-flagship-publications/the-state-of-world-fisheries-and-aquaculture/",
+      "asOf": "2024",
+      "added": "2026-07-09"
+    },
+    {
+      "id": "eu-trade-deficit-2024",
+      "value": "€21,6B",
+      "valueEn": "€21.6B",
+      "label": {
+        "pt": "Défice comercial da UE em produtos da pesca e aquacultura em 2024 — a UE continua importadora líquida estrutural",
+        "en": "EU trade deficit in fishery and aquaculture products in 2024 — the EU remains a structural net importer"
+      },
+      "report": "EUMOFA — The EU Fish Market, 2025 edition",
+      "sourceUrl": "https://www.eumofa.eu/the-eu-fish-market",
+      "asOf": "2024",
+      "added": "2026-07-09"
+    },
+    {
+      "id": "eu-blue-economy-gva",
+      "value": "€250,7B",
+      "valueEn": "€250.7B",
+      "label": {
+        "pt": "Valor acrescentado bruto da economia azul da UE em 2022, com 4,82 milhões de empregos directos",
+        "en": "Gross value added of the EU blue economy in 2022, with 4.82 million people directly employed"
+      },
+      "report": "European Commission — The EU Blue Economy Report 2025",
+      "sourceUrl": "https://oceans-and-fisheries.ec.europa.eu/publications_en",
+      "asOf": "2022",
+      "added": "2026-07-09"
+    },
+    {
+      "id": "per-capita-availability",
+      "value": "21,3 kg",
+      "valueEn": "21.3 kg",
+      "label": {
+        "pt": "Disponibilidade global per capita de alimentos de origem aquática em 2024 — 15% da proteína animal mundial",
+        "en": "Global per-capita availability of aquatic animal foods in 2024 — 15% of the world's animal protein"
+      },
+      "report": "FAO — The State of World Fisheries and Aquaculture 2026",
+      "sourceUrl": "https://www.fao.org/publications/home/fao-flagship-publications/the-state-of-world-fisheries-and-aquaculture/",
+      "asOf": "2024",
+      "added": "2026-07-09"
+    },
+    {
+      "id": "eu-top5-species",
+      "value": "Top 5",
+      "label": {
+        "pt": "Dourada e robalo estão entre as 5 principais espécies da aquacultura da UE (>1,0 Mt em 2023) — as espécies da NaturaFish",
+        "en": "Gilthead seabream and European seabass rank among the EU's top-5 farmed species (>1.0 Mt in 2023) — NaturaFish's species"
+      },
+      "report": "EUMOFA — The EU Fish Market, 2025 edition",
+      "sourceUrl": "https://www.eumofa.eu/the-eu-fish-market",
+      "asOf": "2023",
+      "added": "2026-07-09"
+    }
+  ]
+}

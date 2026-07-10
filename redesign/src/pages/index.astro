@@ -1,0 +1,207 @@
+---
+// Internal design-review index — compares the three immersive alternatives.
+// noindex: this page is a review artifact, not part of the public site.
+import '@fontsource-variable/ibm-plex-sans'
+import '@/styles/base.css'
+import { Image } from 'astro:assets'
+import BaseLayout from '@/layouts/BaseLayout.astro'
+import { brand } from '@/data/images'
+
+const alts = [
+  {
+    id: 'A',
+    slug: 'a',
+    name: 'Cardume',
+    accent: '#6fa5dc',
+    surface: '#f2f7fc',
+    ink: '#0a2036',
+    thesis:
+      'O museu luminoso do mar. Um site claro e aspiracional cuja imersão chega como cinema: o vórtice abre a página, o Hub mergulha em quatro capítulos sobre o canhão do golfinho, e regressa-se à luz. O Fundo é uma galeria de herança — cinco séculos encenados como eras que conduzem de volta ao futuro (2026 → 2034).',
+    traits: ['Luminoso · Fraunces + IBM Plex Sans', 'Mergulho escuro dentro de site claro', 'Herança: linha de eras com nós', 'Movimento: água — lento e contínuo'],
+  },
+  {
+    id: 'B',
+    slug: 'b',
+    name: 'Abissal',
+    accent: '#a9caec',
+    surface: '#021d3b',
+    ink: '#e6f0fa',
+    thesis:
+      'Um mergulho contínuo. Entra-se à superfície no vórtice e nunca mais se emerge: um manómetro de profundidade acompanha a descida, neve marinha à deriva, o canhão do golfinho transporta o Hub, e o Fundo conta-se no leito do mar em eras gigantes (1500 → Hoje → 2034). O mais cinematográfico dos três.',
+    traits: ['Escuro total · Space Grotesk + IBM Plex Sans', 'Manómetro de profundidade ao vivo', 'Herança: marcas de água monumentais', 'Movimento: descida, brilho, contadores'],
+  },
+  {
+    id: 'C',
+    slug: 'c',
+    name: 'Cardume · Scrub',
+    accent: '#043f7f',
+    surface: '#f2f7fc',
+    ink: '#0a2036',
+    thesis:
+      'O Cardume com parallax real no mergulho: o vídeo do golfinho torna-se uma sequência de 120 fotogramas comandada pelo scroll — o filme só avança quando o visitante desce, e recua quando ele sobe. Todo o resto é idêntico ao Cardume (A). Comparar A ↔ C é comparar apenas as duas mecânicas de mergulho.',
+    traits: ['Mesma direcção visual do Cardume', 'Mergulho: fotogramas comandados pelo scroll', 'Vídeo avança e recua com o utilizador', '~2 MB de fotogramas, carregados por aproximação'],
+  },
+]
+---
+
+<BaseLayout
+  locale="pt"
+  title="BTF Redesign — Revisão das 3 Alternativas Imersivas"
+  description="Página interna de revisão das três alternativas imersivas de design do site Blue Transformation Fund."
+  path="/"
+  altPath="/"
+  noindex={true}
+  bodyClass="review"
+>
+  <main class="review-main">
+    <header class="review-head">
+      <Image src={brand.logoNavy} alt="STAG | btf." width={200} densities={[1, 2]} loading="eager" />
+      <h1>Redesign — alternativas imersivas para revisão</h1>
+      <p>
+        As três direcções entregam o mesmo conteúdo e fluxo (Hero em vídeo — vórtice · Blue Ocean Hub — mergulho
+        parallax com o golfinho · O Fundo — herança, regressar ao futuro), a mesma paleta derivada do azul do
+        logótipo, e os mesmos requisitos de plataforma: bilingue PT/EN, SEO estático, WCAG AA, vídeo com controlo
+        de pausa e fallback para movimento reduzido. Diferem na personalidade da imersão.
+      </p>
+      <p class="review-note">Página interna de revisão — excluída do sitemap e marcada noindex.</p>
+    </header>
+
+    <div class="alt-grid">
+      {alts.map((a) => (
+        <article class="alt-card" style={`--surface:${a.surface};--ink:${a.ink};--accent:${a.accent}`}>
+          <div class="alt-preview" aria-hidden="true">
+            <span class="alt-letter">{a.id}</span>
+          </div>
+          <div class="alt-body">
+            <h2>{a.name}</h2>
+            <p class="alt-thesis">{a.thesis}</p>
+            <ul class="alt-traits">
+              {a.traits.map((tr) => (
+                <li>{tr}</li>
+              ))}
+            </ul>
+            <div class="alt-links">
+              <a class="alt-link" href={`/${a.slug}/pt/`}>Ver em Português →</a>
+              <a class="alt-link" href={`/${a.slug}/en/`}>View in English →</a>
+            </div>
+          </div>
+        </article>
+      ))}
+    </div>
+  </main>
+</BaseLayout>
+
+<style>
+  :global(body.review) {
+    background: #eef2f6;
+    color: #16233b;
+    font-family: 'IBM Plex Sans Variable', system-ui, sans-serif;
+  }
+  .review-main {
+    max-width: 1100px;
+    margin-inline: auto;
+    padding: clamp(2rem, 6vw, 4rem) clamp(1.25rem, 4vw, 2.5rem) 4rem;
+  }
+  .review-head img {
+    width: 200px;
+    height: auto;
+  }
+  .review-head h1 {
+    font-size: clamp(1.6rem, 3.4vw, 2.4rem);
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    margin-top: 1.6rem;
+    max-width: 26ch;
+  }
+  .review-head p {
+    margin-top: 1rem;
+    max-width: 72ch;
+    line-height: 1.6;
+    color: #44536b;
+  }
+  .review-note {
+    font-size: 0.8rem;
+    color: #64798f;
+  }
+  .alt-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.4rem;
+    margin-top: 2.6rem;
+  }
+  .alt-card {
+    background: #fff;
+    border: 1px solid #d7e2ec;
+    border-radius: 10px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .alt-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 40px rgba(4, 63, 127, 0.12);
+  }
+  .alt-preview {
+    background: var(--surface);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 150px;
+    border-bottom: 3px solid var(--accent);
+  }
+  .alt-letter {
+    font-size: 4rem;
+    font-weight: 700;
+    color: var(--ink);
+    opacity: 0.9;
+  }
+  .alt-body {
+    padding: 1.4rem 1.4rem 1.6rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+    flex: 1;
+  }
+  .alt-body h2 {
+    font-size: 1.25rem;
+    font-weight: 700;
+  }
+  .alt-thesis {
+    font-size: 0.88rem;
+    line-height: 1.55;
+    color: #44536b;
+  }
+  .alt-traits {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    font-size: 0.78rem;
+    color: #64798f;
+  }
+  .alt-traits li::before {
+    content: '· ';
+  }
+  .alt-links {
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+  .alt-link {
+    font-size: 0.88rem;
+    font-weight: 650;
+    color: #043f7f;
+    text-decoration-color: #d7e2ec;
+  }
+  .alt-link:hover {
+    color: #1a5ea8;
+  }
+  @media (max-width: 880px) {
+    .alt-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
