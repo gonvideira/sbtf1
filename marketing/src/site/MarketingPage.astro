@@ -428,11 +428,11 @@ const allocSegments = t.fund.verticals.items.map((v, i) => ({
       <!-- Portfolio — the estuary fills the frame -->
       <article class="portfolio" id="portfolio" aria-labelledby="portfolio-title" data-scene>
         <div class="pf-band">
-          <div class="pf-media" data-parallax="0.14">
+          <div class="pf-media" data-parallax="0.1">
             <Picture
-              src={photos.naturafishPan}
+              src={photos.naturafishBand}
               alt={t.fund.portfolio.imageAlt}
-              widths={[768, 1280, 1920]}
+              widths={[768, 1280, 1720]}
               sizes="100vw"
               formats={['avif', 'webp']}
               loading="lazy"
@@ -660,6 +660,7 @@ const allocSegments = t.fund.verticals.items.map((v, i) => ({
   }
   .display-inverse {
     color: #fff;
+    text-shadow: 0 2px 22px rgba(1, 16, 31, 0.6);
   }
   .display-inverse::before {
     background: var(--sky) !important;
@@ -1726,10 +1727,12 @@ const allocSegments = t.fund.verticals.items.map((v, i) => ({
     align-items: flex-end;
     overflow: hidden;
     border-top: 4px solid var(--brand);
+    /* any parallax overshoot lands on navy, never on the white page */
+    background: var(--deep);
   }
   .pf-media {
     position: absolute;
-    inset: -12% 0;
+    inset: -18% 0;
   }
   .pf-media :global(img) {
     width: 100%;
@@ -1739,13 +1742,15 @@ const allocSegments = t.fund.verticals.items.map((v, i) => ({
   .pf-veil {
     position: absolute;
     inset: 0;
-    background: linear-gradient(
-      180deg,
-      rgba(2, 29, 59, 0.5) 0%,
-      rgba(2, 29, 59, 0.18) 34%,
-      rgba(2, 29, 59, 0.62) 70%,
-      rgba(1, 16, 31, 0.88) 100%
-    );
+    background:
+      linear-gradient(
+        180deg,
+        rgba(2, 29, 59, 0.55) 0%,
+        rgba(2, 29, 59, 0.22) 30%,
+        rgba(2, 29, 59, 0.58) 64%,
+        rgba(1, 16, 31, 0.92) 100%
+      ),
+      linear-gradient(90deg, rgba(2, 29, 59, 0.55) 0%, rgba(2, 29, 59, 0.2) 48%, rgba(2, 29, 59, 0) 72%);
   }
   .pf-content {
     position: relative;
@@ -1762,7 +1767,8 @@ const allocSegments = t.fund.verticals.items.map((v, i) => ({
     font-weight: 700;
     letter-spacing: 0.16em;
     text-transform: uppercase;
-    color: var(--sky);
+    color: var(--pale);
+    text-shadow: 0 1px 12px rgba(1, 16, 31, 0.8);
   }
   .anchor-name {
     font-family: var(--font-display);

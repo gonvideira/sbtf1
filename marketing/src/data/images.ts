@@ -6,6 +6,7 @@ import naturafishPan from '@/assets/photos/naturafish-pan.jpg'
 import naturafishFull from '@/assets/photos/naturafish-full.jpg'
 import naturafishSquare from '@/assets/photos/naturafish-square.jpg'
 import canyonStill from '@/assets/photos/canyon-still.jpg'
+import naturafishBand from '@/assets/photos/naturafish-band.jpg'
 
 import antonioCastelBranco from '@/assets/team/antonio-castel-branco.jpg'
 import joaoReis from '@/assets/team/joao-reis.jpg'
@@ -29,6 +30,7 @@ export const photos = {
   naturafishPan,
   naturafishFull,
   naturafishSquare,
+  naturafishBand,
   canyonStill,
 }
 
