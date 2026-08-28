@@ -20,31 +20,72 @@ interface Props {
   tableLabel: string
   yearLabel: string
   valueLabel: string
+  /**
+   * 'horizontal' (default): time runs left→right, the conventional time series.
+   * 'vertical': time runs top→bottom and the value axis is horizontal — a tall,
+   * narrow chart. Same data, same scale; only the axes are transposed.
+   */
+  orientation?: 'horizontal' | 'vertical'
   class?: string
 }
 
-const { data, locale, yMin, yMax, yUnit, summary, tableLabel, yearLabel, valueLabel, class: className } = Astro.props
+const {
+  data,
+  locale,
+  yMin,
+  yMax,
+  yUnit,
+  summary,
+  tableLabel,
+  yearLabel,
+  valueLabel,
+  orientation = 'horizontal',
+  class: className,
+} = Astro.props
 
-const W = 640
-const H = 340
-const PAD = { top: 28, right: 64, bottom: 40, left: 46 }
+const vertical = orientation === 'vertical'
+
+const W = vertical ? 440 : 640
+// 460 rather than a taller box: it lands the card level with the Observatory
+// beside it, and keeps the slope from reading steeper than the data warrants.
+const H = vertical ? 460 : 340
+const PAD = vertical
+  ? { top: 30, right: 58, bottom: 44, left: 54 }
+  : { top: 28, right: 64, bottom: 40, left: 46 }
 const iw = W - PAD.left - PAD.right
 const ih = H - PAD.top - PAD.bottom
 
-const x = (year: number) =>
-  PAD.left + ((year - data[0]!.year) / (data[data.length - 1]!.year - data[0]!.year)) * iw
-const y = (v: number) => PAD.top + (1 - (v - yMin) / (yMax - yMin)) * ih
+const first = data[0]!
+const last = data[data.length - 1]!
+
+// Normalised 0..1 positions along each axis, then mapped to whichever screen
+// axis the orientation puts them on.
+const tPos = (year: number) => (year - first.year) / (last.year - first.year)
+const vPos = (v: number) => (v - yMin) / (yMax - yMin)
+
+const px = (year: number, v: number) => (vertical ? PAD.left + vPos(v) * iw : PAD.left + tPos(year) * iw)
+const py = (year: number, v: number) => (vertical ? PAD.top + tPos(year) * ih : PAD.top + (1 - vPos(v)) * ih)
+
+/** Screen position of a gridline for value `v` (the value axis). */
+const gx = (v: number) => PAD.left + vPos(v) * iw
+const gy = (v: number) => PAD.top + (1 - vPos(v)) * ih
+/** Screen position along the time axis for `year`. */
+const tx = (year: number) => PAD.left + tPos(year) * iw
+const ty = (year: number) => PAD.top + tPos(year) * ih
 
 const fmt = (v: number) => {
   const s = v.toFixed(1)
   return locale === 'pt' ? s.replace('.', ',') : s
 }
 
-const pathD = data.map((d, i) => `${i === 0 ? 'M' : 'L'}${x(d.year).toFixed(1)} ${y(d.value).toFixed(1)}`).join(' ')
-const areaD = `${pathD} L${x(data[data.length - 1]!.year).toFixed(1)} ${y(yMin)} L${x(data[0]!.year).toFixed(1)} ${y(yMin)} Z`
-
-const first = data[0]!
-const last = data[data.length - 1]!
+const pathD = data
+  .map((d, i) => `${i === 0 ? 'M' : 'L'}${px(d.year, d.value).toFixed(1)} ${py(d.year, d.value).toFixed(1)}`)
+  .join(' ')
+// Close the area back to the value-axis baseline: the left edge when vertical,
+// the bottom edge when horizontal.
+const areaD = vertical
+  ? `${pathD} L${PAD.left} ${py(last.year, last.value).toFixed(1)} L${PAD.left} ${py(first.year, first.value).toFixed(1)} Z`
+  : `${pathD} L${px(last.year, last.value).toFixed(1)} ${gy(yMin)} L${px(first.year, first.value).toFixed(1)} ${gy(yMin)} Z`
 
 const gridStep = 5
 const gridVals: number[] = []
@@ -56,7 +97,7 @@ const uid = 'lc' + Math.random().toString(36).slice(2, 8)
 const pointsAttr = data.map((d) => `${d.year}:${d.value}`).join(',')
 ---
 
-<figure class={`line-chart ${className ?? ''}`}>
+<figure class={`line-chart ${vertical ? 'is-vertical' : ''} ${className ?? ''}`}>
   <div
     class="lc-wrap"
     id={uid}
@@ -66,35 +107,68 @@ const pointsAttr = data.map((d) => `${d.year}:${d.value}`).join(',')
     data-pad={JSON.stringify(PAD)}
     data-dims={`${W},${H}`}
     data-range={`${yMin},${yMax}`}
+    data-orientation={orientation}
   >
     <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label={summary} preserveAspectRatio="xMidYMid meet">
-      {gridVals.map((v) => (
-        <>
-          <line class="lc-grid" x1={PAD.left} x2={W - PAD.right} y1={y(v)} y2={y(v)} />
-          <text class="lc-tick" x={PAD.left - 8} y={y(v) + 4} text-anchor="end">
-            {v}{yUnit}
+      {gridVals.map((v) =>
+        vertical ? (
+          <>
+            <line class="lc-grid" x1={gx(v)} x2={gx(v)} y1={PAD.top} y2={H - PAD.bottom} />
+            <text class="lc-tick" x={gx(v)} y={H - PAD.bottom + 20} text-anchor="middle">
+              {v}{yUnit}
+            </text>
+          </>
+        ) : (
+          <>
+            <line class="lc-grid" x1={PAD.left} x2={W - PAD.right} y1={gy(v)} y2={gy(v)} />
+            <text class="lc-tick" x={PAD.left - 8} y={gy(v) + 4} text-anchor="end">
+              {v}{yUnit}
+            </text>
+          </>
+        )
+      )}
+      {xTicks.map((yr) =>
+        vertical ? (
+          <text class="lc-tick" x={PAD.left - 10} y={ty(yr) + 4} text-anchor="end">
+            {yr}
           </text>
-        </>
-      ))}
-      {xTicks.map((yr) => (
-        <text class="lc-tick" x={x(yr)} y={H - PAD.bottom + 22} text-anchor="middle">
-          {yr}
-        </text>
-      ))}
+        ) : (
+          <text class="lc-tick" x={tx(yr)} y={H - PAD.bottom + 22} text-anchor="middle">
+            {yr}
+          </text>
+        )
+      )}
       <path class="lc-area" d={areaD} />
       <path class="lc-line" d={pathD} />
-      <circle class="lc-dot lc-dot--ring" cx={x(first.year)} cy={y(first.value)} r="6.5" />
-      <circle class="lc-dot" cx={x(first.year)} cy={y(first.value)} r="4.5" />
-      <circle class="lc-dot lc-dot--ring" cx={x(last.year)} cy={y(last.value)} r="6.5" />
-      <circle class="lc-dot" cx={x(last.year)} cy={y(last.value)} r="4.5" />
-      <text class="lc-label" x={x(first.year)} y={y(first.value) - 14} text-anchor="start">
-        {fmt(first.value)}{yUnit}
-      </text>
-      <text class="lc-label lc-label--end" x={x(last.year) + 12} y={y(last.value) + 4} text-anchor="start">
-        {fmt(last.value)}{yUnit}
-      </text>
+      <circle class="lc-dot lc-dot--ring" cx={px(first.year, first.value)} cy={py(first.year, first.value)} r="6.5" />
+      <circle class="lc-dot" cx={px(first.year, first.value)} cy={py(first.year, first.value)} r="4.5" />
+      <circle class="lc-dot lc-dot--ring" cx={px(last.year, last.value)} cy={py(last.year, last.value)} r="6.5" />
+      <circle class="lc-dot" cx={px(last.year, last.value)} cy={py(last.year, last.value)} r="4.5" />
+      {vertical ? (
+        <>
+          <text class="lc-label" x={px(first.year, first.value) + 12} y={py(first.year, first.value) + 4} text-anchor="start">
+            {fmt(first.value)}{yUnit}
+          </text>
+          <text class="lc-label lc-label--end" x={px(last.year, last.value) + 12} y={py(last.year, last.value) + 4} text-anchor="start">
+            {fmt(last.value)}{yUnit}
+          </text>
+        </>
+      ) : (
+        <>
+          <text class="lc-label" x={px(first.year, first.value)} y={py(first.year, first.value) - 14} text-anchor="start">
+            {fmt(first.value)}{yUnit}
+          </text>
+          <text class="lc-label lc-label--end" x={px(last.year, last.value) + 12} y={py(last.year, last.value) + 4} text-anchor="start">
+            {fmt(last.value)}{yUnit}
+          </text>
+        </>
+      )}
       <g class="lc-hover" aria-hidden="true">
-        <line class="lc-crosshair" y1={PAD.top} y2={H - PAD.bottom} x1="0" x2="0" />
+        {vertical ? (
+          <line class="lc-crosshair" x1={PAD.left} x2={W - PAD.right} y1="0" y2="0" />
+        ) : (
+          <line class="lc-crosshair" y1={PAD.top} y2={H - PAD.bottom} x1="0" x2="0" />
+        )}
         <circle class="lc-hoverdot lc-dot--ring" r="7" cx="0" cy="0" />
         <circle class="lc-hoverdot lc-hoverdot--fill" r="5" cx="0" cy="0" />
       </g>
@@ -121,6 +195,15 @@ const pointsAttr = data.map((d) => `${d.year}:${d.value}`).join(',')
   .line-chart {
     margin: 0;
     width: 100%;
+  }
+  /* A vertical chart's height scales with its width, so once it stops sharing a
+     row and goes full-width it would grow absurdly tall (~890px at 1000px wide).
+     Cap it and centre it instead. */
+  @media (max-width: 1080px) {
+    .line-chart.is-vertical {
+      max-width: 26rem;
+      margin-inline: auto;
+    }
   }
   .lc-wrap {
     position: relative;
@@ -241,29 +324,44 @@ const pointsAttr = data.map((d) => `${d.year}:${d.value}`).join(',')
     const unit = wrap.dataset.unit ?? ''
     const locale = wrap.dataset.locale ?? 'pt'
 
+    const vertical = wrap.dataset.orientation === 'vertical'
     const iw = W - pad.left - pad.right
     const ih = H - pad.top - pad.bottom
-    const x = (year: number) => pad.left + ((year - points[0]!.year) / (points[points.length - 1]!.year - points[0]!.year)) * iw
-    const y = (v: number) => pad.top + (1 - (v - yMin) / (yMax - yMin)) * ih
+    const yr0 = points[0]!.year
+    const yrN = points[points.length - 1]!.year
+    const tPos = (year: number) => (year - yr0) / (yrN - yr0)
+    const vPos = (v: number) => (v - yMin) / (yMax - yMin)
+    const x = (p: { year: number; value: number }) =>
+      vertical ? pad.left + vPos(p.value) * iw : pad.left + tPos(p.year) * iw
+    const y = (p: { year: number; value: number }) =>
+      vertical ? pad.top + tPos(p.year) * ih : pad.top + (1 - vPos(p.value)) * ih
     const fmt = (v: number) => (locale === 'pt' ? v.toFixed(1).replace('.', ',') : v.toFixed(1))
 
     function onMove(ev: PointerEvent) {
       const rect = svg.getBoundingClientRect()
-      const px = ((ev.clientX - rect.left) / rect.width) * W
+      // Track along whichever screen axis carries time.
+      const pointer = vertical
+        ? ((ev.clientY - rect.top) / rect.height) * H
+        : ((ev.clientX - rect.left) / rect.width) * W
       let nearest = points[0]!
       let best = Infinity
       for (const p of points) {
-        const d = Math.abs(x(p.year) - px)
+        const d = Math.abs((vertical ? y(p) : x(p)) - pointer)
         if (d < best) {
           best = d
           nearest = p
         }
       }
-      const cx = x(nearest.year)
-      const cy = y(nearest.value)
+      const cx = x(nearest)
+      const cy = y(nearest)
       hover.style.visibility = 'visible'
-      crosshair.setAttribute('x1', String(cx))
-      crosshair.setAttribute('x2', String(cx))
+      if (vertical) {
+        crosshair.setAttribute('y1', String(cy))
+        crosshair.setAttribute('y2', String(cy))
+      } else {
+        crosshair.setAttribute('x1', String(cx))
+        crosshair.setAttribute('x2', String(cx))
+      }
       dots.forEach((d) => {
         d.setAttribute('cx', String(cx))
         d.setAttribute('cy', String(cy))

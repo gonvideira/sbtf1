@@ -1,0 +1,612 @@
+---
+// Observatory — the resource pages opened from the "Recursos do sector" cards.
+// One template, four categories. Deliberately quieter than the marketing page:
+// no video, no dive, no scroll choreography. A slim header that gets you back,
+// a heading, and the list.
+import '@fontsource-variable/fraunces'
+import '@fontsource-variable/ibm-plex-sans'
+import frauncesUrl from '@fontsource-variable/fraunces/files/fraunces-latin-wght-normal.woff2?url'
+import plexUrl from '@fontsource-variable/ibm-plex-sans/files/ibm-plex-sans-latin-wght-normal.woff2?url'
+import '@/styles/base.css'
+
+import { Image } from 'astro:assets'
+import BaseLayout from '@/layouts/BaseLayout.astro'
+import { getContent, type Locale } from '@/content'
+import {
+  getObservatoryCategories,
+  getObservatoryCategory,
+  observatoryHref,
+  observatoryUpdated,
+  type CategoryKey,
+} from '@/data/observatory'
+import { brand } from '@/data/images'
+
+interface Props {
+  locale: Locale
+  category: CategoryKey
+}
+const { locale, category } = Astro.props
+const t = getContent(locale)
+const isPt = locale === 'pt'
+const other: Locale = isPt ? 'en' : 'pt'
+
+const isEvents = category === 'events'
+const isReports = category === 'reports'
+
+const groupLabels = isPt
+  ? { upcoming: 'Próximos eventos', past: 'Edições já realizadas' }
+  : { upcoming: 'Upcoming events', past: 'Editions already held' }
+
+const cat = getObservatoryCategory(category, locale, groupLabels)
+const all = getObservatoryCategories(locale, groupLabels)
+const path = observatoryHref(category, locale)
+const altPath = observatoryHref(category, other)
+
+const L = isPt
+  ? {
+      eyebrow: 'Observatório',
+      back: 'Voltar ao Hub',
+      count: (n: number) => (isEvents ? `${n} eventos` : isReports ? `${n} publicações` : `${n} recursos`),
+      updated: 'Actualizado',
+      open: { page: isEvents ? 'Página do evento' : 'Abrir na fonte oficial', pdf: 'Descarregar PDF', gated: 'Aceder (exige registo)' },
+      pastLabel: 'Edição realizada',
+      alsoIn: 'Outras secções do Observatório',
+      sourceNote: isEvents
+        ? 'Calendário compilado a partir das páginas oficiais de cada organizador. Datas e programas são definidos pelos organizadores e podem mudar — confirme sempre na fonte.'
+        : isReports
+          ? 'As publicações são de terceiros e permanecem alojadas nos sites oficiais dos respectivos editores, o que garante o acesso à edição mais recente.'
+          : 'Os recursos apresentados são de terceiros e permanecem alojados nos sites oficiais das entidades responsáveis, onde poderá consultar a informação mais recente.',
+      navLabel: 'Navegação do Observatório',
+    }
+  : {
+      eyebrow: 'Observatory',
+      back: 'Back to the Hub',
+      count: (n: number) => (isEvents ? `${n} events` : isReports ? `${n} publications` : `${n} resources`),
+      updated: 'Updated',
+      open: { page: isEvents ? 'Event page' : 'Open at the official source', pdf: 'Download PDF', gated: 'Access (registration required)' },
+      pastLabel: 'Already held',
+      alsoIn: 'Other Observatory sections',
+      sourceNote: isEvents
+        ? 'Calendar compiled from each organiser’s official pages. Dates and programmes are set by the organisers and may change — always confirm at the source.'
+        : isReports
+          ? 'These are third-party publications and remain hosted on their publishers’ official sites, which guarantees access to the most recent edition.'
+          : 'These third-party resources remain hosted on the responsible organisations’ official sites, where the most recent information is available.',
+      navLabel: 'Observatory navigation',
+    }
+
+// Both event groups must exist in the static HTML so the client can move entries
+// across the date boundary without requiring a new deployment.
+const displayGroups = isEvents
+  ? [
+      {
+        label: groupLabels.upcoming,
+        isPast: false,
+        entries: cat.entries.filter((entry) => !entry.isPast),
+        eventStatus: 'upcoming' as const,
+      },
+      {
+        label: groupLabels.past,
+        isPast: true,
+        entries: cat.entries.filter((entry) => entry.isPast),
+        eventStatus: 'past' as const,
+      },
+    ]
+  : cat.groups.map((group) => ({ ...group, eventStatus: undefined }))
+
+const pageTitle = `${L.eyebrow} · ${cat.title} — Blue Transformation Fund`
+const hubHref = `/${locale}/#hub`
+---
+
+<BaseLayout
+  locale={locale}
+  title={pageTitle}
+  description={cat.lede}
+  path={path}
+  altPath={altPath}
+  themeColor="#F2F7FC"
+  bodyClass="obs-page"
+>
+  <Fragment slot="head">
+    <link rel="preload" href={frauncesUrl} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={plexUrl} as="font" type="font/woff2" crossorigin />
+  </Fragment>
+  <a href="#main" class="skip-link">{t.a11y.skipToContent}</a>
+
+  <header class="obs-header">
+    <div class="shell obs-header-inner">
+      <a class="obs-logo" href={`/${locale}/`} aria-label="Blue Transformation Fund">
+        <Image src={brand.logoNavy} alt="STAG | btf. — blue transformation fund" width={150} densities={[1, 2]} loading="eager" />
+      </a>
+      <nav class="obs-nav" aria-label={L.navLabel}>
+        <a class="obs-back" href={hubHref}>
+          <span aria-hidden="true">←</span> {L.back}
+        </a>
+        <a class="obs-lang" href={altPath} rel="alternate" hreflang={isPt ? 'en' : 'pt-PT'} aria-label={t.a11y.langSwitchLabel}>
+          {isPt ? 'EN' : 'PT'}
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="obs-hero">
+      <div class="shell">
+        <p class="kicker kicker-ink">{L.eyebrow}</p>
+        <h1 class="obs-display">{cat.title}</h1>
+        <p class="obs-lede">{cat.lede}</p>
+        <p class="obs-meta">{L.count(cat.entries.length)} · {L.updated} {observatoryUpdated}</p>
+      </div>
+    </section>
+
+    <section class="obs-body" aria-label={cat.title}>
+      <div class="shell">
+        {displayGroups.map((g, gi) => (
+          <>
+            {g.label && (
+              <h2
+                class:list={['obs-group', g.isPast && 'obs-group--past', cat.groupBy === 'year' && 'obs-group--year', gi > 0 && 'obs-group--later']}
+                data-event-heading={g.eventStatus}
+                hidden={isEvents && g.entries.length === 0}
+              >
+                {g.label}
+              </h2>
+            )}
+            <ol
+              class="entry-list"
+              data-event-list={g.eventStatus}
+              hidden={isEvents && g.entries.length === 0}
+            >
+              {g.entries.map((e) => (
+                <li
+                  class:list={['entry-card', e.isPast && 'is-past']}
+                  data-event-entry={isEvents ? e.id : undefined}
+                  data-event-start={isEvents ? e.date : undefined}
+                  data-event-end={isEvents ? (e.endDate ?? e.date) : undefined}
+                >
+                  <div class="ec-main">
+                    <p class="ec-source">
+                      {e.source}
+                      {isEvents && (
+                        <span class="ec-past-tag" data-past-tag hidden={!e.isPast}>{L.pastLabel}</span>
+                      )}
+                    </p>
+                    <h3 class="ec-title">{e.title}</h3>
+                    <p class="ec-meta">{e.meta}</p>
+                    <p class="ec-summary">{e.summary}</p>
+                    {e.topics.length > 0 && (
+                      <ul class="ec-topics" data-event-topics={isEvents ? '' : undefined} hidden={isEvents && e.isPast}>
+                        {e.topics.map((topic) => (
+                          <li>{topic}</li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
+                  <div class="ec-actions">
+                    <a
+                      class:list={['ec-btn', e.isPast && 'ec-btn--quiet']}
+                      href={e.href}
+                      rel="noopener"
+                      target="_blank"
+                    >
+                      <span class="ec-btn-label">{L.open[e.linkType]}</span> <span aria-hidden="true">↗</span>
+                    </a>
+                  </div>
+                </li>
+              ))}
+            </ol>
+          </>
+        ))}
+
+        <p class="footnote">{L.sourceNote}</p>
+
+        <nav class="obs-siblings" aria-label={L.alsoIn}>
+          <p class="obs-siblings-label">{L.alsoIn}</p>
+          <ul>
+            {all
+              .filter((c) => c.key !== cat.key)
+              .map((c) => (
+                <li>
+                  <a href={observatoryHref(c.key, locale)}>
+                    {c.title} <span aria-hidden="true">→</span>
+                  </a>
+                </li>
+              ))}
+          </ul>
+        </nav>
+
+        <a class="obs-back obs-back--bottom" href={hubHref}>
+          <span aria-hidden="true">←</span> {L.back}
+        </a>
+      </div>
+    </section>
+  </main>
+</BaseLayout>
+
+<script>
+  const eventEntries = Array.from(document.querySelectorAll<HTMLElement>('[data-event-entry]'))
+
+  if (eventEntries.length > 0) {
+    const now = new Date()
+    const today = [
+      now.getFullYear(),
+      String(now.getMonth() + 1).padStart(2, '0'),
+      String(now.getDate()).padStart(2, '0'),
+    ].join('-')
+
+    const upcoming: HTMLElement[] = []
+    const past: HTMLElement[] = []
+
+    for (const entry of eventEntries) {
+      const lastDate = entry.dataset.eventEnd || entry.dataset.eventStart
+      const isPast = Boolean(lastDate && lastDate < today)
+
+      entry.classList.toggle('is-past', isPast)
+
+      const pastTag = entry.querySelector<HTMLElement>('[data-past-tag]')
+      if (pastTag) pastTag.hidden = !isPast
+
+      const topics = entry.querySelector<HTMLElement>('[data-event-topics]')
+      if (topics) topics.hidden = isPast
+
+      entry.querySelector<HTMLElement>('.ec-btn')?.classList.toggle('ec-btn--quiet', isPast)
+      ;(isPast ? past : upcoming).push(entry)
+    }
+
+    const startDate = (entry: HTMLElement) => entry.dataset.eventStart ?? ''
+    upcoming.sort((a, b) => startDate(a).localeCompare(startDate(b)))
+    past.sort((a, b) => startDate(b).localeCompare(startDate(a)))
+
+    const renderGroup = (status: 'upcoming' | 'past', entries: HTMLElement[]) => {
+      const list = document.querySelector<HTMLOListElement>(`[data-event-list="${status}"]`)
+      const heading = document.querySelector<HTMLElement>(`[data-event-heading="${status}"]`)
+      if (!list || !heading) return
+
+      for (const entry of entries) list.append(entry)
+      const isEmpty = entries.length === 0
+      list.hidden = isEmpty
+      heading.hidden = isEmpty
+    }
+
+    renderGroup('upcoming', upcoming)
+    renderGroup('past', past)
+  }
+</script>
+
+<style>
+  :global(body.obs-page) {
+    --brand: #043f7f;
+    --deep: #021d3b;
+    --blue: #1a5ea8;
+    --sky: #6fa5dc;
+    --ice: #f2f7fc;
+    --ink: #0a2036;
+    --ink-soft: #3a5470;
+    --ink-muted: #58708a;
+    --hairline: #d8e4f0;
+    --hairline-strong: #b9cde1;
+    --font-display: 'Fraunces Variable', Georgia, serif;
+    --font-ui: 'IBM Plex Sans Variable', system-ui, sans-serif;
+
+    background: var(--ice);
+    color: var(--ink);
+    font-family: var(--font-ui);
+    font-size: 1.02rem;
+  }
+
+  .shell {
+    max-width: 1160px;
+    margin-inline: auto;
+    padding-inline: clamp(1.25rem, 4vw, 2.5rem);
+  }
+
+  .obs-header {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: rgba(242, 247, 252, 0.92);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--hairline);
+  }
+  .obs-header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding-block: 0.9rem;
+  }
+  .obs-logo {
+    display: block;
+    flex-shrink: 0;
+  }
+  .obs-logo :global(img) {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .obs-nav {
+    display: flex;
+    align-items: center;
+    gap: clamp(1rem, 3vw, 2rem);
+    font-size: 0.9rem;
+    font-weight: 550;
+  }
+  .obs-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    text-decoration: none;
+    color: var(--brand);
+    white-space: nowrap;
+  }
+  .obs-back:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .obs-lang {
+    text-decoration: none;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--ink-soft);
+  }
+
+  .obs-hero {
+    padding-block: clamp(2.4rem, 6vw, 4rem) clamp(1.4rem, 3vw, 2rem);
+  }
+  .kicker {
+    font-size: 0.78rem;
+    font-weight: 650;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    color: var(--sky);
+  }
+  .kicker-ink {
+    color: var(--blue);
+  }
+  .obs-display {
+    font-family: var(--font-display);
+    font-weight: 560;
+    font-size: clamp(1.9rem, 4.2vw, 3rem);
+    line-height: 1.08;
+    letter-spacing: -0.01em;
+    max-width: 22ch;
+    margin-top: 0.9rem;
+  }
+  .obs-lede {
+    font-size: clamp(1rem, 1.5vw, 1.12rem);
+    line-height: 1.65;
+    color: var(--ink-soft);
+    max-width: 62ch;
+    margin-top: 1.1rem;
+  }
+  .obs-meta {
+    margin-top: 1.1rem;
+    font-size: 0.8rem;
+    font-weight: 650;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+  }
+
+  .obs-body {
+    padding-bottom: clamp(3rem, 7vw, 5rem);
+  }
+  .obs-group {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+    margin-bottom: 1.1rem;
+  }
+  .obs-group--later {
+    margin-top: 2.4rem;
+  }
+  .obs-group--past {
+    margin-top: 2.8rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--hairline-strong);
+  }
+  /* Year headings in the report library read as dates, not as section labels. */
+  .obs-group--year {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 560;
+    letter-spacing: 0;
+    text-transform: none;
+    color: var(--ink);
+    font-variant-numeric: tabular-nums;
+    padding-bottom: 0.6rem;
+    border-bottom: 1px solid var(--hairline);
+  }
+  .entry-list {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    gap: clamp(0.9rem, 1.8vw, 1.3rem);
+  }
+  .entry-card {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: end;
+    gap: clamp(1rem, 3vw, 2.5rem);
+    background: #fff;
+    border: 1px solid var(--hairline);
+    border-radius: 14px;
+    padding: clamp(1.3rem, 2.6vw, 1.9rem);
+  }
+  .entry-card.is-past {
+    background: transparent;
+    border-style: dashed;
+  }
+  .ec-source {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--blue);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.6rem;
+  }
+  .is-past .ec-source {
+    color: var(--ink-muted);
+  }
+  .ec-past-tag {
+    letter-spacing: 0.08em;
+    font-weight: 650;
+    color: var(--ink-muted);
+    border: 1px solid var(--hairline-strong);
+    border-radius: 999px;
+    padding: 0.14rem 0.55rem;
+  }
+  .ec-title {
+    font-family: var(--font-display);
+    font-size: clamp(1.15rem, 2vw, 1.4rem);
+    font-weight: 600;
+    line-height: 1.25;
+    margin-top: 0.45rem;
+  }
+  .ec-meta {
+    font-size: 0.82rem;
+    color: var(--ink-muted);
+    margin-top: 0.35rem;
+    font-variant-numeric: tabular-nums;
+  }
+  .ec-summary {
+    margin-top: 0.85rem;
+    line-height: 1.65;
+    color: var(--ink-soft);
+    max-width: 68ch;
+  }
+  .ec-topics {
+    list-style: none;
+    padding: 0;
+    margin-top: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+  }
+  .ec-topics li {
+    font-size: 0.74rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: var(--ink-muted);
+    background: var(--ice);
+    border: 1px solid var(--hairline);
+    border-radius: 999px;
+    padding: 0.22rem 0.7rem;
+  }
+  .ec-actions {
+    flex-shrink: 0;
+  }
+  .ec-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    white-space: nowrap;
+    text-decoration: none;
+    background: var(--brand);
+    color: #fff;
+    font-weight: 650;
+    font-size: 0.9rem;
+    padding: 0.7rem 1.25rem;
+    border-radius: 999px;
+  }
+  .ec-btn:hover {
+    background: var(--blue);
+  }
+  .ec-btn:focus-visible {
+    outline: 3px solid var(--brand);
+    outline-offset: 3px;
+  }
+  .ec-btn--quiet {
+    background: transparent;
+    color: var(--brand);
+    border: 1px solid var(--hairline-strong);
+  }
+  .ec-btn--quiet:hover {
+    background: #fff;
+    color: var(--brand);
+  }
+
+  .footnote {
+    font-size: 0.75rem;
+    color: var(--ink-muted);
+    max-width: 72ch;
+    margin-top: 1.6rem;
+  }
+
+  .obs-siblings {
+    margin-top: 2.6rem;
+    padding-top: 1.8rem;
+    border-top: 1px solid var(--hairline-strong);
+  }
+  .obs-siblings-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+  }
+  .obs-siblings ul {
+    list-style: none;
+    padding: 0;
+    margin-top: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.7rem;
+  }
+  .obs-siblings a {
+    display: inline-block;
+    text-decoration: none;
+    background: #fff;
+    border: 1px solid var(--hairline);
+    border-radius: 999px;
+    padding: 0.55rem 1.1rem;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--brand);
+  }
+  .obs-siblings a:hover {
+    border-color: var(--brand);
+  }
+
+  .obs-back--bottom {
+    display: inline-flex;
+    margin-top: 2rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+  }
+
+  @media (max-width: 720px) {
+    .entry-card {
+      grid-template-columns: minmax(0, 1fr);
+      align-items: start;
+    }
+    .ec-btn {
+      width: 100%;
+      justify-content: center;
+      padding-inline: 1rem;
+      text-align: center;
+      white-space: normal;
+    }
+  }
+
+  @media (max-width: 420px) {
+    .obs-header-inner {
+      gap: 0.65rem;
+    }
+    .obs-logo {
+      width: min(7rem, 36vw);
+    }
+    .obs-nav {
+      min-width: 0;
+      gap: 0.55rem;
+      font-size: 0.8rem;
+    }
+    .obs-back {
+      gap: 0.3rem;
+    }
+  }
+</style>

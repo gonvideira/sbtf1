@@ -10,15 +10,13 @@ import naturafishBand from '@/assets/photos/naturafish-band.jpg'
 
 import antonioCastelBranco from '@/assets/team/antonio-castel-branco.jpg'
 import joaoReis from '@/assets/team/joao-reis.jpg'
+import goncaloVideira from '@/assets/team/goncalo-videira.jpg'
 import joaoFialho from '@/assets/team/joao-fialho.jpg'
 import manuelAbreu from '@/assets/team/manuel-abreu.jpg'
 import nathan from '@/assets/team/nathan.jpg'
 
-import partnerColab from '@/assets/partners/blue-bioeconomy-colab-logo.png'
-import partnerS2aqua from '@/assets/partners/s2aqua-logo.png'
 import partnerForumOceano from '@/assets/partners/forum-oceano-logo.png'
 import partnerFinnova from '@/assets/partners/finnova-logo.png'
-import partnerAllTheWay from '@/assets/partners/all-the-way-consulting-logo.png'
 import partnerBeCorporate from '@/assets/partners/be-corporate-logo.png'
 
 import type { ImageMetadata } from 'astro'
@@ -37,16 +35,16 @@ export const photos = {
 export const teamPhotos: Record<string, ImageMetadata> = {
   'antonio-castel-branco': antonioCastelBranco,
   'joao-reis': joaoReis,
+  'goncalo-videira': goncaloVideira,
   'joao-fialho': joaoFialho,
   'manuel-abreu': manuelAbreu,
   nathan,
 }
 
+// Trimmed to the three partners ACB confirmed (Aug 2026); more to follow from him.
+// The logos for the removed entries are still in src/assets/partners/.
 export const partners: { name: string; image: ImageMetadata }[] = [
-  { name: 'Blue Bioeconomy CoLAB', image: partnerColab },
-  { name: 'S2AQUA', image: partnerS2aqua },
-  { name: 'Fórum Oceano', image: partnerForumOceano },
   { name: 'Finnova', image: partnerFinnova },
-  { name: 'All The Way Consulting', image: partnerAllTheWay },
   { name: 'BE Corporate', image: partnerBeCorporate },
+  { name: 'Fórum Oceano', image: partnerForumOceano },
 ]
