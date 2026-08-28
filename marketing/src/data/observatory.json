@@ -1112,6 +1112,7 @@
         {
           "id": "blueinvest-africa-2026",
           "date": "2026-11-02",
+          "endDate": "2026-11-03",
           "source": {
             "pt": "Cidade do Cabo, África do Sul",
             "en": "Cape Town, South Africa"
@@ -1170,6 +1171,7 @@
         {
           "id": "tomorrow-blue-2026",
           "date": "2026-11-03",
+          "endDate": "2026-11-05",
           "source": {
             "pt": "Barcelona, Espanha",
             "en": "Barcelona, Spain"
@@ -1200,6 +1202,7 @@
         {
           "id": "sos-barcelona-2026",
           "date": "2026-11-04",
+          "endDate": "2026-11-05",
           "source": {
             "pt": "Barcelona, Espanha",
             "en": "Barcelona, Spain"
@@ -1256,6 +1259,7 @@
         {
           "id": "california-ocean-2026",
           "date": "2026-12-09",
+          "endDate": "2026-12-11",
           "source": {
             "pt": "Santa Barbara, EUA",
             "en": "Santa Barbara, United States"
@@ -1269,7 +1273,7 @@
             "pt": "Encontro por convite que junta cientistas, decisores políticos, investidores, filantropos e inovadores, com o objectivo de mobilizar capital para soluções oceânicas escaláveis e resiliência costeira.",
             "en": "An invitation-oriented summit connecting ocean scientists, policymakers, investors, philanthropists and innovators, with the aim of mobilising capital towards scalable ocean solutions and coastal resilience."
           },
-          "href": "https://www.beaconjournal.com/press-release/story/226668/california-ocean-summit-to-unite-top-scientists-policymakers-investors-innovators-to-accelerate-ocean-solutions/",
+          "href": "https://calocean.org/",
           "topics": {
             "pt": [
               "Mobilização de capital",
@@ -1312,6 +1316,7 @@
         {
           "id": "monaco-beff-2026",
           "date": "2026-05-27",
+          "endDate": "2026-05-29",
           "source": {
             "pt": "Mónaco",
             "en": "Monaco"
@@ -1345,6 +1350,7 @@
         {
           "id": "riaa-australia-2026",
           "date": "2026-05-27",
+          "endDate": "2026-05-28",
           "source": {
             "pt": "Melbourne, Austrália",
             "en": "Melbourne, Australia"
@@ -1401,6 +1407,7 @@
         {
           "id": "world-ocean-summit-2026",
           "date": "2026-03-04",
+          "endDate": "2026-03-05",
           "source": {
             "pt": "Montreal, Canadá",
             "en": "Montréal, Canada"

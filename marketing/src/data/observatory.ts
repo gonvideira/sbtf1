@@ -31,8 +31,9 @@ export interface ObservatoryEntry {
   topics: string[]
   /** Publication year, used for grouping the report library */
   year?: number
-  /** Events only: ISO start date, and whether it has already happened */
+  /** Events only: ISO start/end dates, and whether it has already happened */
   date?: string
+  endDate?: string
   isPast?: boolean
 }
 
@@ -63,6 +64,7 @@ interface RawEntry {
   topics: LocalisedList
   year?: number
   date?: string
+  endDate?: string
   /** Set when the publisher puts the file behind a registration form */
   gated?: boolean
 }
@@ -100,7 +102,8 @@ function resolve(entry: RawEntry, locale: Locale): ObservatoryEntry {
     topics: pickList(entry.topics, locale),
     year: entry.year,
     date: entry.date,
-    isPast: entry.date ? entry.date < TODAY : undefined,
+    endDate: entry.endDate,
+    isPast: entry.date ? (entry.endDate ?? entry.date) < TODAY : undefined,
   }
 }
 

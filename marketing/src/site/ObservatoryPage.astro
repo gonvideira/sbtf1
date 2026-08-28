@@ -31,6 +31,7 @@ const isPt = locale === 'pt'
 const other: Locale = isPt ? 'en' : 'pt'
 
 const isEvents = category === 'events'
+const isReports = category === 'reports'
 
 const groupLabels = isPt
   ? { upcoming: 'Próximos eventos', past: 'Edições já realizadas' }
@@ -45,29 +46,52 @@ const L = isPt
   ? {
       eyebrow: 'Observatório',
       back: 'Voltar ao Hub',
-      count: (n: number) => (isEvents ? `${n} eventos` : `${n} publicações`),
+      count: (n: number) => (isEvents ? `${n} eventos` : isReports ? `${n} publicações` : `${n} recursos`),
       updated: 'Actualizado',
       open: { page: isEvents ? 'Página do evento' : 'Abrir na fonte oficial', pdf: 'Descarregar PDF', gated: 'Aceder (exige registo)' },
       pastLabel: 'Edição realizada',
       alsoIn: 'Outras secções do Observatório',
       sourceNote: isEvents
         ? 'Calendário compilado a partir das páginas oficiais de cada organizador. Datas e programas são definidos pelos organizadores e podem mudar — confirme sempre na fonte.'
-        : 'As publicações são de terceiros e permanecem alojadas nos sites oficiais dos respectivos editores, o que garante o acesso à edição mais recente.',
+        : isReports
+          ? 'As publicações são de terceiros e permanecem alojadas nos sites oficiais dos respectivos editores, o que garante o acesso à edição mais recente.'
+          : 'Os recursos apresentados são de terceiros e permanecem alojados nos sites oficiais das entidades responsáveis, onde poderá consultar a informação mais recente.',
       navLabel: 'Navegação do Observatório',
     }
   : {
       eyebrow: 'Observatory',
       back: 'Back to the Hub',
-      count: (n: number) => (isEvents ? `${n} events` : `${n} publications`),
+      count: (n: number) => (isEvents ? `${n} events` : isReports ? `${n} publications` : `${n} resources`),
       updated: 'Updated',
       open: { page: isEvents ? 'Event page' : 'Open at the official source', pdf: 'Download PDF', gated: 'Access (registration required)' },
       pastLabel: 'Already held',
       alsoIn: 'Other Observatory sections',
       sourceNote: isEvents
         ? 'Calendar compiled from each organiser’s official pages. Dates and programmes are set by the organisers and may change — always confirm at the source.'
-        : 'These are third-party publications and remain hosted on their publishers’ official sites, which guarantees access to the most recent edition.',
+        : isReports
+          ? 'These are third-party publications and remain hosted on their publishers’ official sites, which guarantees access to the most recent edition.'
+          : 'These third-party resources remain hosted on the responsible organisations’ official sites, where the most recent information is available.',
       navLabel: 'Observatory navigation',
     }
+
+// Both event groups must exist in the static HTML so the client can move entries
+// across the date boundary without requiring a new deployment.
+const displayGroups = isEvents
+  ? [
+      {
+        label: groupLabels.upcoming,
+        isPast: false,
+        entries: cat.entries.filter((entry) => !entry.isPast),
+        eventStatus: 'upcoming' as const,
+      },
+      {
+        label: groupLabels.past,
+        isPast: true,
+        entries: cat.entries.filter((entry) => entry.isPast),
+        eventStatus: 'past' as const,
+      },
+    ]
+  : cat.groups.map((group) => ({ ...group, eventStatus: undefined }))
 
 const pageTitle = `${L.eyebrow} · ${cat.title} — Blue Transformation Fund`
 const hubHref = `/${locale}/#hub`
@@ -116,26 +140,41 @@ const hubHref = `/${locale}/#hub`
 
     <section class="obs-body" aria-label={cat.title}>
       <div class="shell">
-        {cat.groups.map((g, gi) => (
+        {displayGroups.map((g, gi) => (
           <>
             {g.label && (
-              <h2 class:list={['obs-group', g.isPast && 'obs-group--past', cat.groupBy === 'year' && 'obs-group--year', gi > 0 && 'obs-group--later']}>
+              <h2
+                class:list={['obs-group', g.isPast && 'obs-group--past', cat.groupBy === 'year' && 'obs-group--year', gi > 0 && 'obs-group--later']}
+                data-event-heading={g.eventStatus}
+                hidden={isEvents && g.entries.length === 0}
+              >
                 {g.label}
               </h2>
             )}
-            <ol class="entry-list">
+            <ol
+              class="entry-list"
+              data-event-list={g.eventStatus}
+              hidden={isEvents && g.entries.length === 0}
+            >
               {g.entries.map((e) => (
-                <li class:list={['entry-card', e.isPast && 'is-past']}>
+                <li
+                  class:list={['entry-card', e.isPast && 'is-past']}
+                  data-event-entry={isEvents ? e.id : undefined}
+                  data-event-start={isEvents ? e.date : undefined}
+                  data-event-end={isEvents ? (e.endDate ?? e.date) : undefined}
+                >
                   <div class="ec-main">
                     <p class="ec-source">
                       {e.source}
-                      {e.isPast && <span class="ec-past-tag">{L.pastLabel}</span>}
+                      {isEvents && (
+                        <span class="ec-past-tag" data-past-tag hidden={!e.isPast}>{L.pastLabel}</span>
+                      )}
                     </p>
                     <h3 class="ec-title">{e.title}</h3>
                     <p class="ec-meta">{e.meta}</p>
                     <p class="ec-summary">{e.summary}</p>
-                    {e.topics.length > 0 && !e.isPast && (
-                      <ul class="ec-topics">
+                    {e.topics.length > 0 && (
+                      <ul class="ec-topics" data-event-topics={isEvents ? '' : undefined} hidden={isEvents && e.isPast}>
                         {e.topics.map((topic) => (
                           <li>{topic}</li>
                         ))}
@@ -149,7 +188,7 @@ const hubHref = `/${locale}/#hub`
                       rel="noopener"
                       target="_blank"
                     >
-                      {L.open[e.linkType]} <span aria-hidden="true">↗</span>
+                      <span class="ec-btn-label">{L.open[e.linkType]}</span> <span aria-hidden="true">↗</span>
                     </a>
                   </div>
                 </li>
@@ -182,6 +221,56 @@ const hubHref = `/${locale}/#hub`
     </section>
   </main>
 </BaseLayout>
+
+<script>
+  const eventEntries = Array.from(document.querySelectorAll<HTMLElement>('[data-event-entry]'))
+
+  if (eventEntries.length > 0) {
+    const now = new Date()
+    const today = [
+      now.getFullYear(),
+      String(now.getMonth() + 1).padStart(2, '0'),
+      String(now.getDate()).padStart(2, '0'),
+    ].join('-')
+
+    const upcoming: HTMLElement[] = []
+    const past: HTMLElement[] = []
+
+    for (const entry of eventEntries) {
+      const lastDate = entry.dataset.eventEnd || entry.dataset.eventStart
+      const isPast = Boolean(lastDate && lastDate < today)
+
+      entry.classList.toggle('is-past', isPast)
+
+      const pastTag = entry.querySelector<HTMLElement>('[data-past-tag]')
+      if (pastTag) pastTag.hidden = !isPast
+
+      const topics = entry.querySelector<HTMLElement>('[data-event-topics]')
+      if (topics) topics.hidden = isPast
+
+      entry.querySelector<HTMLElement>('.ec-btn')?.classList.toggle('ec-btn--quiet', isPast)
+      ;(isPast ? past : upcoming).push(entry)
+    }
+
+    const startDate = (entry: HTMLElement) => entry.dataset.eventStart ?? ''
+    upcoming.sort((a, b) => startDate(a).localeCompare(startDate(b)))
+    past.sort((a, b) => startDate(b).localeCompare(startDate(a)))
+
+    const renderGroup = (status: 'upcoming' | 'past', entries: HTMLElement[]) => {
+      const list = document.querySelector<HTMLOListElement>(`[data-event-list="${status}"]`)
+      const heading = document.querySelector<HTMLElement>(`[data-event-heading="${status}"]`)
+      if (!list || !heading) return
+
+      for (const entry of entries) list.append(entry)
+      const isEmpty = entries.length === 0
+      list.hidden = isEmpty
+      heading.hidden = isEmpty
+    }
+
+    renderGroup('upcoming', upcoming)
+    renderGroup('past', past)
+  }
+</script>
 
 <style>
   :global(body.obs-page) {
@@ -228,6 +317,11 @@ const hubHref = `/${locale}/#hub`
   .obs-logo {
     display: block;
     flex-shrink: 0;
+  }
+  .obs-logo :global(img) {
+    display: block;
+    width: 100%;
+    height: auto;
   }
   .obs-nav {
     display: flex;
@@ -422,6 +516,10 @@ const hubHref = `/${locale}/#hub`
   .ec-btn:hover {
     background: var(--blue);
   }
+  .ec-btn:focus-visible {
+    outline: 3px solid var(--brand);
+    outline-offset: 3px;
+  }
   .ec-btn--quiet {
     background: transparent;
     color: var(--brand);
@@ -489,6 +587,26 @@ const hubHref = `/${locale}/#hub`
     .ec-btn {
       width: 100%;
       justify-content: center;
+      padding-inline: 1rem;
+      text-align: center;
+      white-space: normal;
+    }
+  }
+
+  @media (max-width: 420px) {
+    .obs-header-inner {
+      gap: 0.65rem;
+    }
+    .obs-logo {
+      width: min(7rem, 36vw);
+    }
+    .obs-nav {
+      min-width: 0;
+      gap: 0.55rem;
+      font-size: 0.8rem;
+    }
+    .obs-back {
+      gap: 0.3rem;
     }
   }
 </style>
