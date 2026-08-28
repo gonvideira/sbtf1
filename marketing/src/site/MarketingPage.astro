@@ -18,6 +18,7 @@ import AllocationStripe from '@/components/charts/AllocationStripe.astro'
 import { getContent, type Locale } from '@/content'
 import { euSelfSufficiency, fundAllocation } from '@/data/charts'
 import { getResearchStats, researchUpdated } from '@/data/research'
+import { observatoryHref } from '@/data/observatory'
 import { brand, photos, teamPhotos, partners } from '@/data/images'
 
 interface Props {
@@ -38,7 +39,6 @@ const L = isPt
       chartValue: 'Auto-suficiência',
       heroCredit: 'Cardume de barracudas — o mar que Portugal conhece há séculos.',
       diveCue: 'Mergulhar',
-      diveKicker: 'Uma imersão em quatro capítulos',
       resurface: 'De volta à superfície',
       eras: ['Há quinhentos anos', 'Hoje', 'O futuro · 2026 → 2034'] as const,
       eraKicker: 'Regressar ao futuro',
@@ -59,7 +59,6 @@ const L = isPt
       chartValue: 'Self-sufficiency',
       heroCredit: 'A school of barracuda — the sea Portugal has known for centuries.',
       diveCue: 'Dive in',
-      diveKicker: 'An immersion in four chapters',
       resurface: 'Back to the surface',
       eras: ['Five hundred years ago', 'Today', 'The future · 2026 → 2034'] as const,
       eraKicker: 'Back to the future',
@@ -120,6 +119,12 @@ const allocSegments = t.fund.verticals.items.map((v, i) => {
               {isPt ? 'EN' : 'PT'}
             </a>
           </li>
+          <li class="nav-investor-item">
+            <span class="nav-investor">
+              {t.nav.investorArea.label}
+              <span class="nav-investor-badge">{t.nav.investorArea.badge}</span>
+            </span>
+          </li>
           <li class="nav-cta-item">
             <a class="nav-cta" href={t.nav.cta.anchor}>{t.nav.cta.label} <span aria-hidden="true">→</span></a>
           </li>
@@ -172,25 +177,10 @@ const allocSegments = t.fund.verticals.items.map((v, i) => {
         </div>
         <p class="hero-credit rise" style="--d:900ms">{L.heroCredit}</p>
       </div>
-      <a class="scroll-cue" href="#stats" aria-label={L.diveCue}>
+      <a class="scroll-cue" href="#hub" aria-label={L.diveCue}>
         <span class="cue-ring" aria-hidden="true"></span>
         <span class="cue-arrow" aria-hidden="true">↓</span>
       </a>
-    </section>
-
-    <!-- stat band — hard navy block -->
-    <section class="stats" id="stats" aria-label={L.metrics}>
-      <div class="shell">
-        <dl class="stat-band">
-          {t.statBar.stats.map((s) => (
-            <div class="stat reveal">
-              <dd data-count>{s.value}</dd>
-              <dt>{s.label}</dt>
-            </div>
-          ))}
-        </dl>
-        <p class="footnote footnote-dark">{t.statBar.irrCaveat}</p>
-      </div>
     </section>
 
     <!-- ============ 2 · HUB — the dive ============ -->
@@ -227,9 +217,12 @@ const allocSegments = t.fund.verticals.items.map((v, i) => {
         <div class="chapter" data-scene>
           <div class="shell chapter-inner">
             <div class="glass glass-intro" data-parallax="0.06">
-              <p class="chapter-kicker">{L.diveKicker}</p>
               <h2 id="hub-title" class="dive-display">{t.hub.title}</h2>
               <p class="dive-lede">{t.hub.intro}</p>
+              <p class="dive-contribute">
+                {t.hub.contribution.prompt}{' '}
+                <a href={`mailto:${t.hub.contribution.email}`}>{t.hub.contribution.email}</a>
+              </p>
             </div>
           </div>
         </div>
@@ -254,44 +247,43 @@ const allocSegments = t.fund.verticals.items.map((v, i) => {
 
         <div class="chapter" data-scene>
           <div class="shell chapter-inner">
-            <div class="glass glass-chart" data-parallax="0.05">
-              <h3 class="g-title">{t.hub.chart.title}</h3>
-              <p class="g-sub">{t.hub.chart.subtitle}</p>
-              <LineChart
-                data={euSelfSufficiency}
-                locale={locale}
-                yMin={30}
-                yMax={50}
-                yUnit="%"
-                summary={`${t.hub.chart.title} — ${t.hub.chart.subtitle}`}
-                tableLabel={L.chartTable}
-                yearLabel={L.chartYear}
-                valueLabel={L.chartValue}
-              >
-                <span slot="caption">{t.hub.chart.sourceNote}</span>
-              </LineChart>
-            </div>
-          </div>
-        </div>
+            <div class="dive-duo" data-parallax="0.05">
+              <div class="glass glass-chart">
+                <h3 class="g-title">{t.hub.chart.title}</h3>
+                <p class="g-sub">{t.hub.chart.subtitle}</p>
+                <LineChart
+                  data={euSelfSufficiency}
+                  locale={locale}
+                  orientation="vertical"
+                  yMin={30}
+                  yMax={50}
+                  yUnit="%"
+                  summary={`${t.hub.chart.title} — ${t.hub.chart.subtitle}`}
+                  tableLabel={L.chartTable}
+                  yearLabel={L.chartYear}
+                  valueLabel={L.chartValue}
+                >
+                  <span slot="caption">{t.hub.chart.sourceNote}</span>
+                </LineChart>
+              </div>
 
-        <div class="chapter" data-scene>
-          <div class="shell chapter-inner">
-            <aside class="glass glass-obs" aria-labelledby="obs-title" data-research-slot data-parallax="0.05">
-              <div class="obs-head">
-                <h3 id="obs-title">{t.hub.researchSlot.title}</h3>
-                <p class="obs-updated"><span class="obs-pulse" aria-hidden="true"></span>{t.hub.researchSlot.updatedLabel} {researchUpdated}</p>
-              </div>
-              <div class="obs-grid">
-                {research.map((s) => (
-                  <article class="obs-card">
-                    <p class="g-value g-value-sm">{s.value}</p>
-                    <p class="g-label">{s.label}</p>
-                    <p class="g-source"><a href={s.sourceUrl} rel="noopener">{s.report}</a> · {s.asOf}</p>
-                  </article>
-                ))}
-              </div>
-              <p class="obs-note">{t.hub.researchSlot.note}</p>
-            </aside>
+              <aside class="glass glass-obs" aria-labelledby="obs-title" data-research-slot>
+                <div class="obs-head">
+                  <h3 id="obs-title">{t.hub.researchSlot.title}</h3>
+                  <p class="obs-updated"><span class="obs-pulse" aria-hidden="true"></span>{t.hub.researchSlot.updatedLabel} {researchUpdated}</p>
+                </div>
+                <div class="obs-grid">
+                  {research.map((s) => (
+                    <article class="obs-card">
+                      <p class="g-value g-value-sm">{s.value}</p>
+                      <p class="g-label">{s.label}</p>
+                      <p class="g-source"><a href={s.sourceUrl} rel="noopener">{s.report}</a> · {s.asOf}</p>
+                    </article>
+                  ))}
+                </div>
+                <p class="obs-note">{t.hub.researchSlot.note}</p>
+              </aside>
+            </div>
           </div>
         </div>
       </div>
@@ -304,18 +296,12 @@ const allocSegments = t.fund.verticals.items.map((v, i) => {
         <h2 class="display reveal">{t.hub.resourcesTitle}</h2>
         <div class="resource-grid">
           {t.hub.resourceCards.map((c) => (
-            <article class="resource-card reveal">
-              <h3>{c.title}</h3>
+            <article class="resource-card resource-card--page reveal">
+              <h3><a class="rc-page-link" href={observatoryHref(c.category, locale)}>{c.title}</a></h3>
               <p>{c.description}</p>
-              <ul class="resource-links">
-                {c.links.map((l) => (
-                  <li>
-                    <a href={l.href} rel={l.external ? 'noopener' : undefined}>
-                      {l.label} {l.external && <span aria-hidden="true">↗</span>}
-                    </a>
-                  </li>
-                ))}
-              </ul>
+              <p class="resource-cta" aria-hidden="true">
+                {c.pageLabel} <span>→</span>
+              </p>
             </article>
           ))}
         </div>
@@ -456,6 +442,25 @@ const allocSegments = t.fund.verticals.items.map((v, i) => {
               <p class="pf-credit">{L.farmCaption}</p>
             </div>
           </div>
+        </div>
+      </article>
+
+      <!-- Sustainable approach — light block between portfolio and terms -->
+      <article class="sustain" id="sustentabilidade" aria-labelledby="sustain-title">
+        <div class="shell">
+          <p class="kicker kicker-ink reveal">{t.fund.sustainability.sectionLabel}</p>
+          <h2 id="sustain-title" class="display reveal">{t.fund.sustainability.title}</h2>
+          <p class="lede reveal">{t.fund.sustainability.lede}</p>
+          <ol class="sustain-grid">
+            {t.fund.sustainability.pillars.map((p, i) => (
+              <li class="sustain-card reveal">
+                <p class="sc-no" aria-hidden="true">{String(i + 1).padStart(2, '0')}</p>
+                <h3 class="sc-title">{p.title}</h3>
+                <p class="sc-copy">{p.copy}</p>
+              </li>
+            ))}
+          </ol>
+          <p class="footnote reveal">{t.fund.sustainability.note}</p>
         </div>
       </article>
 
@@ -795,6 +800,30 @@ const allocSegments = t.fund.verticals.items.map((v, i) => {
     font-weight: 700;
     letter-spacing: 0.08em;
   }
+  /* Investor area — placeholder until the gated area is built, so it is
+     deliberately inert: no href, dimmed, and badged "soon". */
+  .nav-investor {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    white-space: nowrap;
+    color: rgba(255, 255, 255, 0.62);
+    cursor: default;
+  }
+  :global(body.alt-a[data-scrolled]) .nav-investor {
+    color: rgba(3, 32, 63, 0.5);
+  }
+  .nav-investor-badge {
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.16rem 0.42rem;
+    border-radius: 999px;
+    border: 1px solid currentColor;
+    opacity: 0.85;
+    white-space: nowrap;
+  }
   .nav-cta {
     background: #fff;
     color: var(--brand) !important;
@@ -837,7 +866,9 @@ const allocSegments = t.fund.verticals.items.map((v, i) => {
     height: 2px;
     background: currentColor;
   }
-  @media (max-width: 900px) {
+  /* Collapses at 1100px rather than 900px: with the investor-area item the bar
+     no longer fits between ~900 and ~1100, where the label wrapped to two lines. */
+  @media (max-width: 1100px) {
     .nav-toggle {
       display: inline-flex;
     }
@@ -867,6 +898,11 @@ const allocSegments = t.fund.verticals.items.map((v, i) => {
       display: block;
       padding: 0.9rem 0.25rem;
       color: var(--ink-soft) !important;
+    }
+    .nav-investor {
+      display: flex;
+      padding: 0.9rem 0.25rem;
+      color: rgba(3, 32, 63, 0.5) !important;
     }
     .nav-cta {
       display: inline-block;
@@ -1053,40 +1089,6 @@ const allocSegments = t.fund.verticals.items.map((v, i) => {
     }
   }
 
-  /* ===== Stats — a solid navy block, hard edges ===== */
-  .stats {
-    background: var(--deep);
-    padding-block: clamp(2.4rem, 5vw, 3.8rem);
-  }
-  .stat-band {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: clamp(1rem, 2.5vw, 2rem);
-    margin: 0;
-    background: #fff;
-    border-radius: 18px;
-    padding: clamp(1.4rem, 3vw, 2.2rem);
-    box-shadow: 0 24px 60px rgba(1, 16, 31, 0.4);
-  }
-  .stat dd {
-    font-family: var(--font-display);
-    font-size: clamp(1.8rem, 3.2vw, 2.5rem);
-    font-weight: 600;
-    color: var(--brand);
-    margin: 0;
-  }
-  .stat dt {
-    font-size: 0.82rem;
-    color: var(--ink-muted);
-    margin-top: 0.4rem;
-    line-height: 1.4;
-  }
-  @media (max-width: 760px) {
-    .stat-band {
-      grid-template-columns: 1fr 1fr;
-    }
-  }
-
   /* ===== The dive ===== */
   .dive {
     position: relative;
@@ -1193,6 +1195,18 @@ const allocSegments = t.fund.verticals.items.map((v, i) => {
     color: rgba(220, 233, 246, 0.92);
     max-width: 52ch;
   }
+  .dive-contribute {
+    margin-top: 0.9rem;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: rgba(220, 233, 246, 0.75);
+    max-width: 52ch;
+  }
+  .dive-contribute a {
+    color: #fff;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
   .glass-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -1242,9 +1256,26 @@ const allocSegments = t.fund.verticals.items.map((v, i) => {
     }
   }
 
+  /* Chart and Observatory share one chapter, side by side on desktop and
+     stacked (chart first) below 1080px. minmax(0,…) so the chart SVG cannot
+     push its column wider than half. */
+  /* 5/7 rather than 50/50: the Observatory carries six stat cards and needs the
+     width to hold three per row (two rows instead of three), which brings its
+     height close to the chart's. Both cards share a top edge; their differing
+     bottoms read as columns of content, not as a broken grid. */
+  .dive-duo {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: clamp(1rem, 2vw, 1.6rem);
+    align-items: start;
+  }
+  @media (max-width: 1080px) {
+    .dive-duo {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
   .glass-chart {
-    max-width: 56rem;
-    margin-inline: auto;
     padding: clamp(1.6rem, 3.5vw, 2.4rem);
     --chart-surface: rgba(2, 29, 59, 0.001);
     --chart-ink: #eaf2fb;
@@ -1382,6 +1413,41 @@ const allocSegments = t.fund.verticals.items.map((v, i) => {
   }
   .resource-links a:hover {
     color: var(--brand);
+  }
+  /* A card that opens its own Observatory page: the whole card is the hit target,
+     with the heading link stretched over it. */
+  .resource-card--page {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    border-color: var(--hairline-strong);
+  }
+  .rc-page-link {
+    text-decoration: none;
+  }
+  .rc-page-link::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+  }
+  .resource-card--page:hover .rc-page-link {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .resource-cta {
+    margin-top: auto;
+    padding-top: 0.9rem;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--blue);
+  }
+  .resource-cta span {
+    display: inline-block;
+    transition: transform 0.2s ease;
+  }
+  .resource-card--page:hover .resource-cta span {
+    transform: translateX(4px);
   }
   @media (max-width: 880px) {
     .resource-grid {
@@ -2047,6 +2113,52 @@ const allocSegments = t.fund.verticals.items.map((v, i) => {
   }
   @media (max-width: 760px) {
     .invest-cta {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* ===== Sustainable approach ===== */
+  .sustain {
+    background: var(--ice);
+    border-top: 1px solid var(--hairline-strong);
+    padding-block: clamp(3rem, 6vw, 4.5rem);
+    scroll-margin-top: calc(var(--header-h, 139px) + var(--subnav-h, 0px));
+  }
+  .sustain-grid {
+    list-style: none;
+    padding: 0;
+    margin-top: 2.4rem;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: clamp(1rem, 2vw, 1.6rem);
+  }
+  .sustain-card {
+    background: #fff;
+    border: 1px solid var(--hairline);
+    border-radius: 14px;
+    padding: clamp(1.3rem, 2.4vw, 1.8rem);
+  }
+  .sc-no {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 1.1rem;
+    color: var(--blue);
+  }
+  .sc-title {
+    font-family: var(--font-display);
+    font-size: 1.2rem;
+    font-weight: 600;
+    line-height: 1.25;
+    margin-top: 0.5rem;
+  }
+  .sc-copy {
+    margin-top: 0.7rem;
+    line-height: 1.65;
+    color: var(--ink-soft);
+    font-size: 0.95rem;
+  }
+  @media (max-width: 900px) {
+    .sustain-grid {
       grid-template-columns: 1fr;
     }
   }

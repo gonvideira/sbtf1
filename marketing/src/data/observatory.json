@@ -1,0 +1,1433 @@
+{
+  "$comment": "OBSERVATÓRIO — the four resource categories behind the 'Recursos do sector' cards. Each category renders through src/site/ObservatoryPage.astro. SOURCES: the 'reports' category is ACB's Research_Reports_Index (28 titles, 2015–2026), with his own short summaries edited for the site and translated to pt-PT; 'events' comes from his 'SBTF | Site - Events' email of 2026-08-26; 'portugal' and 'regulation' are the sources already cited elsewhere in this repo, plus dgrm.pt and docapesca.pt verified against their live sites. All links are ACB's own, or repo-verified — none invented. 'href' points at the publisher's page or their PDF; nothing is self-hosted, since these are third-party copyrighted publications. Set 'gated: true' where the publisher requires registration. A field may be a plain string when it is identical in both languages, or {pt, en} when it differs.",
+  "updated": "2026-08-28",
+  "categories": [
+    {
+      "key": "reports",
+      "slug": {
+        "pt": "relatorios",
+        "en": "reports"
+      },
+      "title": {
+        "pt": "Relatórios de Referência",
+        "en": "Reference Reports"
+      },
+      "lede": {
+        "pt": "Informação relevante de fontes credíveis — a biblioteca de referência do sector, de 2015 a 2026, com um resumo de cada publicação e ligação à fonte oficial.",
+        "en": "Relevant information from credible sources — the sector reference library, 2015 to 2026, each publication summarised and linked to its official source."
+      },
+      "entries": [
+        {
+          "id": "fao-sofia-2026",
+          "source": "FAO",
+          "title": "The State of World Fisheries and Aquaculture 2026 (SOFIA) — Blue Transformation: Turning Vision into Impact",
+          "meta": {
+            "pt": "Food and Agriculture Organization of the UN",
+            "en": "Food and Agriculture Organization of the UN"
+          },
+          "summary": {
+            "pt": "O mais recente relatório bienal de referência da FAO sobre a produção, o comércio e a sustentabilidade das pescas e da aquacultura mundiais e sobre a agenda Blue Transformation.",
+            "en": "FAO's newest flagship biennial report on global fisheries and aquaculture production, trade, sustainability and the Blue Transformation agenda."
+          },
+          "href": "https://doi.org/10.4060/cd8357en",
+          "year": 2026,
+          "topics": {
+            "pt": [
+              "Produção mundial",
+              "Aquacultura",
+              "Sustentabilidade"
+            ],
+            "en": [
+              "Global production",
+              "Aquaculture",
+              "Sustainability"
+            ]
+          }
+        },
+        {
+          "id": "eumofa-efm-2025",
+          "source": "EUMOFA",
+          "title": "The EU Fish Market 2025",
+          "meta": {
+            "pt": "Observatório Europeu do Mercado dos Produtos da Pesca e da Aquacultura · Comissão Europeia",
+            "en": "European Market Observatory for Fisheries and Aquaculture Products · European Commission"
+          },
+          "summary": {
+            "pt": "Relatório anual de referência do EUMOFA sobre os mercados de pescado na UE e no mundo: produção, fluxos comerciais, preços e tendências de consumo dos produtos da pesca e da aquacultura.",
+            "en": "The annual EUMOFA flagship report on EU and world seafood markets: production, trade flows, prices and consumption trends for fishery and aquaculture products."
+          },
+          "href": "https://eumofa.eu/documents/20124/210402/EFM2025_EN.pdf",
+          "year": 2025,
+          "topics": {
+            "pt": [
+              "Mercado UE",
+              "Preços",
+              "Comércio"
+            ],
+            "en": [
+              "EU market",
+              "Prices",
+              "Trade"
+            ]
+          }
+        },
+        {
+          "id": "ec-blue-economy-2025",
+          "source": {
+            "pt": "Comissão Europeia",
+            "en": "European Commission"
+          },
+          "title": "The EU Blue Economy Report 2025",
+          "meta": {
+            "pt": "DG MARE · Centro Comum de Investigação",
+            "en": "DG MARE · Joint Research Centre"
+          },
+          "summary": {
+            "pt": "A edição mais recente do relatório anual sobre a economia azul da UE, que actualiza os dados sector a sector e se centra na resiliência baseada nos ecossistemas e no crescimento continuado do sector.",
+            "en": "The latest edition of the annual EU blue economy report, updating sector-by-sector data and focusing on ecosystem-based resilience and continued sector growth."
+          },
+          "href": "https://op.europa.eu/en/publication-detail/-/publication/0a4a79d8-353f-11f0-8a44-01aa75ed71a1/language-en",
+          "year": 2025,
+          "topics": {
+            "pt": [
+              "Economia azul",
+              "UE",
+              "Resiliência"
+            ],
+            "en": [
+              "Blue economy",
+              "EU",
+              "Resilience"
+            ]
+          }
+        },
+        {
+          "id": "worldbank-problue-2025",
+          "source": {
+            "pt": "Banco Mundial",
+            "en": "World Bank"
+          },
+          "title": "PROBLUE Annual Report 2025",
+          "meta": {
+            "pt": "Fundo fiduciário multi-doador PROBLUE",
+            "en": "PROBLUE multi-donor trust fund"
+          },
+          "summary": {
+            "pt": "Relatório anual do fundo fiduciário do Banco Mundial dedicado à economia azul, abrangendo projectos financiados em governação das pescas, aquacultura, plásticos marinhos e turismo costeiro.",
+            "en": "Annual report on the World Bank's dedicated blue economy trust fund, covering financed projects in fisheries governance, aquaculture, marine plastics and coastal tourism."
+          },
+          "href": "https://thedocs.worldbank.org/en/doc/c2b10aa06282d8d5fe03a79b33d179e7-0320072025/problue-annual-report-2025",
+          "year": 2025,
+          "topics": {
+            "pt": [
+              "Financiamento",
+              "Governação",
+              "Projectos"
+            ],
+            "en": [
+              "Funding",
+              "Governance",
+              "Projects"
+            ]
+          }
+        },
+        {
+          "id": "oecd-review-fisheries-2025",
+          "source": "OECD",
+          "title": "OECD Review of Fisheries 2025",
+          "meta": {
+            "pt": "Organização para a Cooperação e Desenvolvimento Económico",
+            "en": "Organisation for Economic Co-operation and Development"
+          },
+          "summary": {
+            "pt": "Publicação bienal de referência da OECD que compara as políticas de pescas e aquacultura, as medidas de apoio público e as tendências de mercado nos países da OECD e nos países parceiros.",
+            "en": "The biennial OECD flagship comparing fisheries and aquaculture policies, government support measures and market trends across OECD and partner countries."
+          },
+          "href": "https://www.oecd.org/content/dam/oecd/en/publications/reports/2025/02/oecd-review-of-fisheries-2025_d308ff48/560cd8fc-en.pdf",
+          "year": 2025,
+          "topics": {
+            "pt": [
+              "Política pública",
+              "Comparação internacional"
+            ],
+            "en": [
+              "Public policy",
+              "International comparison"
+            ]
+          }
+        },
+        {
+          "id": "fao-globefish-2025",
+          "source": "FAO",
+          "title": "GLOBEFISH Highlights — International Markets for Fisheries and Aquaculture Products",
+          "meta": {
+            "pt": "FAO GLOBEFISH · boletim trimestral",
+            "en": "FAO GLOBEFISH · quarterly bulletin"
+          },
+          "summary": {
+            "pt": "Boletim trimestral de informação de mercado da FAO que acompanha volumes de comércio, preços e tendências de oferta e procura por espécie a nível mundial — o equivalente global aos relatórios do EUMOFA, restritos à UE.",
+            "en": "A quarterly FAO market-intelligence bulletin tracking global trade volumes, prices and supply and demand trends by species — the global counterpart to the EU-only EUMOFA reports."
+          },
+          "href": "https://openknowledge.fao.org/server/api/core/bitstreams/d8c8b80e-c132-453a-9743-4be83de1f3ff/content",
+          "year": 2025,
+          "topics": {
+            "pt": [
+              "Preços",
+              "Comércio global",
+              "Espécies"
+            ],
+            "en": [
+              "Prices",
+              "Global trade",
+              "Species"
+            ]
+          }
+        },
+        {
+          "id": "giin-state-market-2025",
+          "source": "GIIN",
+          "title": "GIIN State of the Market 2025",
+          "meta": {
+            "pt": "Global Impact Investing Network",
+            "en": "Global Impact Investing Network"
+          },
+          "summary": {
+            "pt": "Inquérito anual de referência ao sector global do investimento de impacto, abrangendo activos sob gestão, retornos e afectação por sector.",
+            "en": "The annual benchmark survey of the global impact investing industry, covering assets under management, returns and sector allocations."
+          },
+          "href": "https://s3.amazonaws.com/giin-web-assets/giin/assets/publication/giin-stateofthemarket2025.pdf",
+          "year": 2025,
+          "topics": {
+            "pt": [
+              "Investimento de impacto",
+              "Benchmark"
+            ],
+            "en": [
+              "Impact investing",
+              "Benchmark"
+            ]
+          }
+        },
+        {
+          "id": "gsa-annual-2025",
+          "source": {
+            "pt": "Global Seafood Alliance",
+            "en": "Global Seafood Alliance"
+          },
+          "title": "Global Seafood Alliance 2025 Annual Report",
+          "meta": {
+            "pt": "Entidade responsável pela norma Best Aquaculture Practices (BAP)",
+            "en": "Publisher of the Best Aquaculture Practices (BAP) standard"
+          },
+          "summary": {
+            "pt": "Relatório anual da entidade responsável pela norma de certificação Best Aquaculture Practices, sobre o crescimento dos produtores certificados (4 308 produtores em 45 países) e as tendências de aprovisionamento responsável. O relatório completo exige registo gratuito.",
+            "en": "Annual report from the body behind the Best Aquaculture Practices certification standard, covering certified-producer growth (4,308 producers across 45 countries) and responsible-sourcing trends. The full report sits behind a free registration form."
+          },
+          "href": "https://info.globalseafood.org/2025-annual-report",
+          "year": 2025,
+          "gated": true,
+          "topics": {
+            "pt": [
+              "Certificação",
+              "Aquacultura"
+            ],
+            "en": [
+              "Certification",
+              "Aquaculture"
+            ]
+          }
+        },
+        {
+          "id": "eumofa-efm-2024",
+          "source": "EUMOFA",
+          "title": "The EU Fish Market 2024",
+          "meta": {
+            "pt": "Comissão Europeia · edição anterior da série anual",
+            "en": "European Commission · previous edition of the annual series"
+          },
+          "summary": {
+            "pt": "A edição de 2024 da mesma série anual do EUMOFA sobre os mercados de pescado na UE e no mundo.",
+            "en": "The 2024 edition of the same annual EUMOFA series on EU and world seafood markets."
+          },
+          "href": "https://eumofa.eu/documents/20124/145239/EFM2024_EN.pdf",
+          "year": 2024,
+          "topics": {
+            "pt": [
+              "Mercado UE",
+              "Série anterior"
+            ],
+            "en": [
+              "EU market",
+              "Previous edition"
+            ]
+          }
+        },
+        {
+          "id": "fao-sofia-2024",
+          "source": "FAO",
+          "title": "The State of World Fisheries and Aquaculture 2024 (SOFIA) — Blue Transformation in Action",
+          "meta": {
+            "pt": "Food and Agriculture Organization of the UN · edição anterior",
+            "en": "Food and Agriculture Organization of the UN · previous edition"
+          },
+          "summary": {
+            "pt": "A edição anterior do relatório de referência da FAO sobre as pescas e a aquacultura mundiais.",
+            "en": "The previous edition of FAO's flagship report on world fisheries and aquaculture."
+          },
+          "href": "https://doi.org/10.4060/cd0683en",
+          "year": 2024,
+          "topics": {
+            "pt": [
+              "Produção mundial",
+              "Série anterior"
+            ],
+            "en": [
+              "Global production",
+              "Previous edition"
+            ]
+          }
+        },
+        {
+          "id": "blueinvest-investor-2024",
+          "source": "BlueInvest",
+          "title": "BlueInvest Investor Report 2024: Unlocking the Potential of the Blue Economy",
+          "meta": {
+            "pt": "Comissão Europeia · iniciativa BlueInvest",
+            "en": "European Commission · BlueInvest initiative"
+          },
+          "summary": {
+            "pt": "Relatório actualizado do BlueInvest dirigido a investidores, sobre a actividade transaccional na economia azul, as tecnologias-chave e as empresas preparadas para investimento em dez sectores da economia azul sustentável.",
+            "en": "An updated BlueInvest investor report covering blue-economy deal activity, key technologies and investment-ready companies across ten sustainable blue-economy sectors."
+          },
+          "href": "https://blue-economy-observatory.ec.europa.eu/publications/blueinvest-investor-report-2024-unlocking-potential-blue-economy_en",
+          "year": 2024,
+          "topics": {
+            "pt": [
+              "Investimento",
+              "Pipeline",
+              "Tecnologia"
+            ],
+            "en": [
+              "Investment",
+              "Pipeline",
+              "Technology"
+            ]
+          }
+        },
+        {
+          "id": "ec-blue-economy-2024",
+          "source": {
+            "pt": "Comissão Europeia",
+            "en": "European Commission"
+          },
+          "title": "The EU Blue Economy Report 2024",
+          "meta": {
+            "pt": "DG MARE · Centro Comum de Investigação",
+            "en": "DG MARE · Joint Research Centre"
+          },
+          "summary": {
+            "pt": "Relatório estatístico e de política anual da UE que acompanha a dimensão, o emprego, o crescimento e as tendências de inovação dos sectores estabelecidos e emergentes da economia azul europeia.",
+            "en": "The annual EU statistical and policy report tracking the size, employment, growth and innovation trends of the EU's established and emerging blue economy sectors."
+          },
+          "href": "https://op.europa.eu/en/publication-detail/-/publication/ef90077b-1e82-11ef-a251-01aa75ed71a1",
+          "year": 2024,
+          "topics": {
+            "pt": [
+              "Economia azul",
+              "Emprego",
+              "Inovação"
+            ],
+            "en": [
+              "Blue economy",
+              "Employment",
+              "Innovation"
+            ]
+          }
+        },
+        {
+          "id": "eumofa-country-profile-2023",
+          "source": "EUMOFA",
+          "title": "EU Country Profile — Fishery and Aquaculture Statistics",
+          "meta": {
+            "pt": "Comissão Europeia · ficha informativa",
+            "en": "European Commission · fact sheet"
+          },
+          "summary": {
+            "pt": "Ficha informativa breve do EUMOFA com estatísticas da UE-27 sobre frota, capturas, aquacultura, comércio e consumo em comparação com os totais mundiais, a partir de dados do Eurostat e da FAO.",
+            "en": "A short EUMOFA fact sheet giving EU-27 fleet, catch, aquaculture, trade and consumption statistics against world totals, sourced from Eurostat and FAO."
+          },
+          "href": "https://fishery-aquaculture-market-observatory.ec.europa.eu/en/country-and-species-profiles/country-profiles",
+          "year": 2023,
+          "topics": {
+            "pt": [
+              "Estatística",
+              "UE-27",
+              "Perfis por país"
+            ],
+            "en": [
+              "Statistics",
+              "EU-27",
+              "Country profiles"
+            ]
+          }
+        },
+        {
+          "id": "blueinvest-investor-2023",
+          "source": "BlueInvest",
+          "title": "BlueInvest Investor Report: An Ocean of Opportunities",
+          "meta": {
+            "pt": "Comissão Europeia · iniciativa BlueInvest",
+            "en": "European Commission · BlueInvest initiative"
+          },
+          "summary": {
+            "pt": "Relatório dirigido a investidores que caracteriza as tendências e as oportunidades de investimento na economia azul sustentável na Europa, no âmbito do programa BlueInvest da UE para mobilizar capital privado.",
+            "en": "An investor-facing report profiling sustainable blue economy investment trends and opportunities across Europe, part of the EU's BlueInvest programme to mobilise private capital."
+          },
+          "href": "https://oceans-and-fisheries.ec.europa.eu/system/files/2023-03/Blueinvest-Investor-report-An-ocean-of-opportunities_0.pdf",
+          "year": 2023,
+          "topics": {
+            "pt": [
+              "Investimento",
+              "Capital privado"
+            ],
+            "en": [
+              "Investment",
+              "Private capital"
+            ]
+          }
+        },
+        {
+          "id": "icma-blue-bonds-2023",
+          "source": {
+            "pt": "ICMA e parceiros",
+            "en": "ICMA and partners"
+          },
+          "title": "Bonds to Finance the Sustainable Blue Economy: A Practitioner's Guide",
+          "meta": {
+            "pt": "Asian Development Bank · ICMA · IFC · UNEP FI · UN Global Compact",
+            "en": "Asian Development Bank · ICMA · IFC · UNEP FI · UN Global Compact"
+          },
+          "summary": {
+            "pt": "Orientações práticas para emitentes, investidores e bancos colocadores sobre a estruturação de obrigações azuis credíveis destinadas a financiar projectos de sustentabilidade ligados ao oceano, alinhadas com as normas globais do mercado obrigacionista.",
+            "en": "Practical guidance for issuers, investors and underwriters on structuring credible blue bonds to finance ocean-related sustainability projects, aligned with global bond market standards."
+          },
+          "href": "https://www.icmagroup.org/assets/documents/Sustainable-finance/Bonds-to-Finance-the-Sustainable-Blue-Economy-a-Practitioners-Guide-September-2023.pdf",
+          "year": 2023,
+          "topics": {
+            "pt": [
+              "Obrigações azuis",
+              "Estruturação"
+            ],
+            "en": [
+              "Blue bonds",
+              "Structuring"
+            ]
+          }
+        },
+        {
+          "id": "eib-clean-oceans-2023",
+          "source": {
+            "pt": "BEI",
+            "en": "EIB"
+          },
+          "title": "Clean Oceans and the Blue Economy — Overview 2023",
+          "meta": {
+            "pt": "Banco Europeu de Investimento",
+            "en": "European Investment Bank"
+          },
+          "summary": {
+            "pt": "Panorama da Clean Oceans Initiative do Banco Europeu de Investimento e da sua actividade de financiamento da economia azul, abrangendo projectos de água, gestão de resíduos e plásticos marinhos.",
+            "en": "An overview of the European Investment Bank's Clean Oceans Initiative and its blue-economy financing activity, covering water, waste management and marine plastics projects."
+          },
+          "href": "https://www.eib.org/attachments/lucalli/20220311-clean-oceans-and-the-blue-economy-overview-2023.pdf",
+          "year": 2023,
+          "topics": {
+            "pt": [
+              "Financiamento",
+              "Poluição marinha"
+            ],
+            "en": [
+              "Funding",
+              "Marine pollution"
+            ]
+          }
+        },
+        {
+          "id": "orraa-blue-acceleration-2022",
+          "source": "ORRAA",
+          "title": "Blue Acceleration: An Ocean of Risks and Opportunities",
+          "meta": {
+            "pt": "Ocean Risk and Resilience Action Alliance",
+            "en": "Ocean Risk and Resilience Action Alliance"
+          },
+          "summary": {
+            "pt": "Relatório sobre o risco oceânico cumulativo — clima, biodiversidade e poluição — e sobre a forma como instrumentos de mitigação de risco, como os seguros paramétricos e as obrigações de resiliência, podem mobilizar capital privado para a resiliência do oceano.",
+            "en": "A report on compounding ocean risk — climate, biodiversity and pollution — and how de-risking instruments such as parametric insurance and resilience bonds can unlock private capital for ocean resilience."
+          },
+          "href": "https://oceanrisk.earth/wp-content/uploads/2022/12/ORRAA-Blue-acceleration.pdf",
+          "year": 2022,
+          "topics": {
+            "pt": [
+              "Risco",
+              "Seguros",
+              "Resiliência"
+            ],
+            "en": [
+              "Risk",
+              "Insurance",
+              "Resilience"
+            ]
+          }
+        },
+        {
+          "id": "unepfi-rising-tide-2021",
+          "source": "UNEP FI",
+          "title": "The Rising Tide: Mapping Ocean Finance for a New Decade",
+          "meta": {
+            "pt": "UN Environment Programme Finance Initiative",
+            "en": "UN Environment Programme Finance Initiative"
+          },
+          "summary": {
+            "pt": "Caracteriza o estado do financiamento do oceano a nível global nos sectores do pescado, portos, transporte marítimo, turismo costeiro e energias renováveis marinhas, e apresenta instrumentos financeiros de apoio ao ODS 14.",
+            "en": "Maps the state of global ocean finance across seafood, ports, maritime transport, coastal tourism and marine renewable energy, and sets out financial instruments to support SDG 14."
+          },
+          "href": "https://www.unepfi.org/publications/rising-tide/",
+          "year": 2021,
+          "topics": {
+            "pt": [
+              "Financiamento do oceano",
+              "ODS 14"
+            ],
+            "en": [
+              "Ocean finance",
+              "SDG 14"
+            ]
+          }
+        },
+        {
+          "id": "unepfi-turning-tide-2021",
+          "source": "UNEP FI",
+          "title": "Turning the Tide: How to Finance a Sustainable Ocean Recovery",
+          "meta": {
+            "pt": "UN Environment Programme Finance Initiative",
+            "en": "UN Environment Programme Finance Initiative"
+          },
+          "summary": {
+            "pt": "Complemento de The Rising Tide: orientações práticas para bancos, seguradoras e investidores na aplicação dos Sustainable Blue Economy Finance Principles.",
+            "en": "The companion to The Rising Tide: practical guidance for banks, insurers and investors applying the Sustainable Blue Economy Finance Principles."
+          },
+          "href": "https://www.unepfi.org/publications/turning-the-tide/",
+          "year": 2021,
+          "topics": {
+            "pt": [
+              "Banca",
+              "Seguros",
+              "Princípios"
+            ],
+            "en": [
+              "Banking",
+              "Insurance",
+              "Principles"
+            ]
+          }
+        },
+        {
+          "id": "sumaila-financing-ocean-2021",
+          "source": {
+            "pt": "Nature Communications",
+            "en": "Nature Communications"
+          },
+          "title": "Financing a Sustainable Ocean Economy",
+          "meta": {
+            "pt": "U. Rashid Sumaila et al. · artigo revisto por pares",
+            "en": "U. Rashid Sumaila et al. · peer-reviewed paper"
+          },
+          "summary": {
+            "pt": "Artigo científico revisto por pares e amplamente citado, que quantifica o défice de financiamento do oceano e analisa os mecanismos públicos e privados — obrigações, financiamento misto, seguros — disponíveis para o colmatar.",
+            "en": "A widely cited peer-reviewed paper quantifying the ocean finance gap and reviewing the public and private mechanisms — bonds, blended finance, insurance — available to close it."
+          },
+          "href": "https://www.nature.com/articles/s41467-021-23168-y",
+          "year": 2021,
+          "topics": {
+            "pt": [
+              "Défice de financiamento",
+              "Investigação"
+            ],
+            "en": [
+              "Finance gap",
+              "Research"
+            ]
+          }
+        },
+        {
+          "id": "mckinsey-feeding-world-2020",
+          "source": "McKinsey & Company",
+          "title": "Feeding the World Sustainably",
+          "meta": {
+            "pt": "McKinsey Quarterly",
+            "en": "McKinsey Quarterly"
+          },
+          "summary": {
+            "pt": "Artigo que examina como a tecnologia, a gestão das pescas, a redução do desperdício alimentar e as proteínas alternativas podem reduzir as emissões da agricultura, melhorando ao mesmo tempo a segurança alimentar.",
+            "en": "An article examining how technology, fisheries management, food-waste reduction and alternative proteins can cut agriculture's emissions while improving food security."
+          },
+          "href": "https://www.mckinsey.com/capabilities/sustainability/our-insights/feeding-the-world-sustainably",
+          "year": 2020,
+          "topics": {
+            "pt": [
+              "Sistemas alimentares",
+              "Tecnologia"
+            ],
+            "en": [
+              "Food systems",
+              "Technology"
+            ]
+          }
+        },
+        {
+          "id": "wef-ocean-finance-handbook-2020",
+          "source": {
+            "pt": "Fórum Económico Mundial",
+            "en": "World Economic Forum"
+          },
+          "title": "The Ocean Finance Handbook: Increasing Finance for a Healthy Ocean",
+          "meta": {
+            "pt": "Friends of Ocean Action",
+            "en": "Friends of Ocean Action"
+          },
+          "summary": {
+            "pt": "Manual prático que mapeia os mecanismos e instrumentos de financiamento disponíveis para projectos de sustentabilidade do oceano e para empresas da economia azul.",
+            "en": "A practical handbook mapping the financing mechanisms and instruments available to fund ocean sustainability projects and blue economy businesses."
+          },
+          "href": "https://www3.weforum.org/docs/WEF_FOA_The_Ocean_Finance_Handbook_April_2020.pdf",
+          "year": 2020,
+          "topics": {
+            "pt": [
+              "Instrumentos financeiros",
+              "Manual"
+            ],
+            "en": [
+              "Financial instruments",
+              "Handbook"
+            ]
+          }
+        },
+        {
+          "id": "ocean-panel-solutions-2020",
+          "source": {
+            "pt": "Ocean Panel",
+            "en": "Ocean Panel"
+          },
+          "title": "Ocean Solutions That Benefit People, Nature and the Economy",
+          "meta": {
+            "pt": "High Level Panel for a Sustainable Ocean Economy · secretariado do World Resources Institute",
+            "en": "High Level Panel for a Sustainable Ocean Economy · World Resources Institute secretariat"
+          },
+          "summary": {
+            "pt": "Relatório de síntese de referência, elaborado por catorze chefes de governo, que define acções nas áreas da alimentação, transportes, energia, turismo e carbono para a gestão sustentável das águas nacionais.",
+            "en": "The flagship synthesis report from fourteen heads of government, setting out actions across food, transport, energy, tourism and carbon to sustainably manage national waters."
+          },
+          "href": "https://oceanpanel.org/publication/ocean-solutions-that-benefit-people-nature-and-the-economy/",
+          "year": 2020,
+          "topics": {
+            "pt": [
+              "Política global",
+              "Síntese"
+            ],
+            "en": [
+              "Global policy",
+              "Synthesis"
+            ]
+          }
+        },
+        {
+          "id": "fao-future-food-2018",
+          "source": "FAO",
+          "title": "The Future of Food and Agriculture — Alternative Pathways to 2050",
+          "meta": {
+            "pt": "Food and Agriculture Organization of the UN",
+            "en": "Food and Agriculture Organization of the UN"
+          },
+          "summary": {
+            "pt": "Estudo prospectivo da FAO que modela três cenários até 2050 para os sistemas alimentares e agrícolas mundiais, abrangendo utilização de recursos, clima, segurança alimentar e opções de política.",
+            "en": "A long-range FAO study modelling three scenarios to 2050 for global food and agriculture systems, covering resource use, climate, food security and policy pathways."
+          },
+          "href": "https://www.fao.org/global-perspectives-studies/fofa/en/",
+          "year": 2018,
+          "topics": {
+            "pt": [
+              "Cenários",
+              "2050",
+              "Segurança alimentar"
+            ],
+            "en": [
+              "Scenarios",
+              "2050",
+              "Food security"
+            ]
+          }
+        },
+        {
+          "id": "fao-sustainable-food-systems-2018",
+          "source": "FAO",
+          "title": "Sustainable Food Systems: Concept and Framework",
+          "meta": {
+            "pt": "Food and Agriculture Organization of the UN",
+            "en": "Food and Agriculture Organization of the UN"
+          },
+          "summary": {
+            "pt": "Nota breve da FAO que define sistemas alimentares sustentáveis e apresenta o quadro utilizado pela FAO para avaliar a sustentabilidade ambiental, social e económica ao longo da cadeia alimentar.",
+            "en": "A short FAO brief defining sustainable food systems and setting out the framework FAO uses to assess environmental, social and economic sustainability across the food chain."
+          },
+          "href": "https://www.fao.org/family-farming/detail/en/c/1442563/",
+          "year": 2018,
+          "topics": {
+            "pt": [
+              "Enquadramento",
+              "Cadeia alimentar"
+            ],
+            "en": [
+              "Framework",
+              "Food chain"
+            ]
+          }
+        },
+        {
+          "id": "worldbank-sunken-billions-2017",
+          "source": {
+            "pt": "Banco Mundial",
+            "en": "World Bank Group"
+          },
+          "title": "The Sunken Billions Revisited: Progress and Challenges in Global Marine Fisheries",
+          "meta": {
+            "pt": "Banco Mundial com a FAO",
+            "en": "World Bank Group with FAO"
+          },
+          "summary": {
+            "pt": "Análise global de referência que estima as perdas económicas — cerca de USD 83 mil milhões por ano — decorrentes da má gestão das pescas, actualizando o relatório original Sunken Billions de 2009.",
+            "en": "A landmark global analysis estimating the economic losses — around USD 83 billion a year — from fisheries mismanagement, updating the original 2009 Sunken Billions report."
+          },
+          "href": "https://www.worldbank.org/content/dam/Worldbank/Topics/Environment/Sunken%20Billions%20Revisited-web-2.pdf",
+          "year": 2017,
+          "topics": {
+            "pt": [
+              "Gestão das pescas",
+              "Perdas económicas"
+            ],
+            "en": [
+              "Fisheries management",
+              "Economic losses"
+            ]
+          }
+        },
+        {
+          "id": "oecd-ocean-economy-2030-2016",
+          "source": "OECD",
+          "title": "The Ocean Economy in 2030",
+          "meta": {
+            "pt": "Organização para a Cooperação e Desenvolvimento Económico",
+            "en": "Organisation for Economic Co-operation and Development"
+          },
+          "summary": {
+            "pt": "Estudo de referência da OECD que projecta o crescimento das indústrias baseadas no oceano — pescas, aquacultura, transporte marítimo, energia, turismo — até 2030 e as suas implicações económicas e ambientais.",
+            "en": "The OECD flagship study projecting the growth of ocean-based industries — fisheries, aquaculture, shipping, energy, tourism — to 2030, and their economic and environmental implications."
+          },
+          "href": "https://www.oecd.org/en/publications/the-ocean-economy-in-2030_9789264251724-en.html",
+          "year": 2016,
+          "topics": {
+            "pt": [
+              "Projecções",
+              "Indústrias oceânicas"
+            ],
+            "en": [
+              "Projections",
+              "Ocean industries"
+            ]
+          }
+        },
+        {
+          "id": "wwf-reviving-ocean-2015",
+          "source": "WWF",
+          "title": "Reviving the Ocean Economy: The Case for Action",
+          "meta": {
+            "pt": "WWF International · análise do Boston Consulting Group e do Global Change Institute",
+            "en": "WWF International · analysis by Boston Consulting Group and the Global Change Institute"
+          },
+          "summary": {
+            "pt": "Avaliação de referência que estima os activos do oceano em mais de USD 24 biliões, estabelecendo a base económica para a conservação do oceano e o investimento na economia azul sustentável.",
+            "en": "A landmark valuation of the ocean's assets at over USD 24 trillion, making the founding economic case for ocean conservation and sustainable blue economy investment."
+          },
+          "href": "https://www.wwf.de/fileadmin/fm-wwf/Publikationen-PDF/WWF-Report-Reviving-the-Ocean-Economy.pdf",
+          "year": 2015,
+          "topics": {
+            "pt": [
+              "Valorização",
+              "Conservação"
+            ],
+            "en": [
+              "Valuation",
+              "Conservation"
+            ]
+          }
+        }
+      ],
+      "groupBy": "year"
+    },
+    {
+      "key": "portugal",
+      "slug": {
+        "pt": "dados-portugal",
+        "en": "portugal-data"
+      },
+      "title": {
+        "pt": "Dados Portugal",
+        "en": "Portugal Data"
+      },
+      "lede": {
+        "pt": "A última informação disponível sobre o sector em Portugal — estatística oficial de pescas, aquacultura e primeira venda.",
+        "en": "The latest available information on the sector in Portugal — official statistics on fisheries, aquaculture and first sale."
+      },
+      "entries": [
+        {
+          "id": "dgrm",
+          "source": "DGRM",
+          "title": {
+            "pt": "Direcção-Geral de Recursos Naturais, Segurança e Serviços Marítimos",
+            "en": "Directorate-General for Natural Resources, Safety and Maritime Services"
+          },
+          "meta": {
+            "pt": "Autoridade nacional · actualização contínua",
+            "en": "National authority · continuously updated"
+          },
+          "summary": {
+            "pt": "A autoridade nacional para os recursos marinhos. Publica dados de frota, pesca profissional e recreativa, aquacultura, mercados e inspecção, incluindo os do Programa Nacional de Recolha de Dados — a base estatística oficial do sector em Portugal.",
+            "en": "Portugal's national authority for marine resources. It publishes fleet, commercial and recreational fishing, aquaculture, market and inspection data, including the National Data Collection Programme — the sector's official statistical base in Portugal."
+          },
+          "href": "https://www.dgrm.pt/",
+          "topics": {
+            "pt": [
+              "Frota",
+              "Aquacultura",
+              "Licenciamento"
+            ],
+            "en": [
+              "Fleet",
+              "Aquaculture",
+              "Licensing"
+            ]
+          }
+        },
+        {
+          "id": "docapesca",
+          "source": "Docapesca",
+          "title": {
+            "pt": "Estatísticas de primeira venda",
+            "en": "First-sale statistics"
+          },
+          "meta": {
+            "pt": "Portos e Lotas · actualização diária",
+            "en": "Ports and auction markets · updated daily"
+          },
+          "summary": {
+            "pt": "A entidade que gere os portos e lotas nacionais publica estatísticas diárias de venda em lota — volumes, espécies e preços à primeira venda em toda a rede nacional. É a fonte mais próxima do tempo real para preços de pescado em Portugal.",
+            "en": "The body that runs Portugal's fishing ports and auction markets publishes daily auction statistics — volumes, species and first-sale prices across the national network. It is the closest thing to a real-time price source for Portuguese seafood."
+          },
+          "href": "https://www.docapesca.pt/",
+          "topics": {
+            "pt": [
+              "Primeira venda",
+              "Preços",
+              "Espécies"
+            ],
+            "en": [
+              "First sale",
+              "Prices",
+              "Species"
+            ]
+          }
+        },
+        {
+          "id": "ine-pescas",
+          "source": "INE",
+          "title": {
+            "pt": "Estatísticas da Pesca",
+            "en": "Fishery Statistics"
+          },
+          "meta": {
+            "pt": "Publicação anual",
+            "en": "Annual publication"
+          },
+          "summary": {
+            "pt": "O Instituto Nacional de Estatística publica anualmente as Estatísticas da Pesca, com capturas, produção aquícola, frota e emprego. É a série oficial usada para comparações plurianuais e para reporte à Eurostat.",
+            "en": "Portugal's national statistics institute publishes annual Fishery Statistics covering catches, aquaculture production, fleet and employment. It is the official series used for multi-year comparison and for reporting to Eurostat."
+          },
+          "href": "https://www.ine.pt/",
+          "topics": {
+            "pt": [
+              "Capturas",
+              "Produção",
+              "Emprego"
+            ],
+            "en": [
+              "Catches",
+              "Production",
+              "Employment"
+            ]
+          }
+        },
+        {
+          "id": "eumofa-portal",
+          "source": "EUMOFA",
+          "title": {
+            "pt": "Observatório europeu do mercado — dados por país",
+            "en": "European market observatory — country data"
+          },
+          "meta": {
+            "pt": "Comissão Europeia · actualização mensal",
+            "en": "European Commission · updated monthly"
+          },
+          "summary": {
+            "pt": "O observatório da Comissão Europeia para os produtos da pesca e aquacultura permite isolar Portugal dentro do mercado europeu: consumo per capita, comércio, preços por espécie e evolução mensal. Útil para posicionar o mercado interno face ao resto da UE.",
+            "en": "The European Commission's observatory for fishery and aquaculture products lets you isolate Portugal within the European market: per-capita consumption, trade, prices by species and monthly movement. Useful for positioning the domestic market against the rest of the EU."
+          },
+          "href": "https://www.eumofa.eu/",
+          "topics": {
+            "pt": [
+              "Consumo",
+              "Comércio",
+              "Comparação UE"
+            ],
+            "en": [
+              "Consumption",
+              "Trade",
+              "EU comparison"
+            ]
+          }
+        },
+        {
+          "id": "fao-fishstat",
+          "source": "FAO",
+          "title": "FishStat",
+          "meta": {
+            "pt": "Séries globais · actualização anual",
+            "en": "Global time series · updated annually"
+          },
+          "summary": {
+            "pt": "A base de dados global da FAO para pescas e aquacultura, com séries longas por país e por espécie. É a referência para enquadrar os números portugueses num contexto mundial e para análises de tendência de longo prazo.",
+            "en": "The FAO's global fisheries and aquaculture database, with long time series by country and species. It is the reference for placing Portuguese figures in a world context and for long-run trend analysis."
+          },
+          "href": "https://www.fao.org/fishery/en/statistics",
+          "topics": {
+            "pt": [
+              "Séries longas",
+              "Comparação global"
+            ],
+            "en": [
+              "Long series",
+              "Global comparison"
+            ]
+          }
+        }
+      ],
+      "groupBy": "none"
+    },
+    {
+      "key": "regulation",
+      "slug": {
+        "pt": "regulacao-financiamento",
+        "en": "regulation-funding"
+      },
+      "title": {
+        "pt": "Regulação & Financiamento",
+        "en": "Regulation & Funding"
+      },
+      "lede": {
+        "pt": "Regulação da UE e nacional, e os programas de financiamento e certificação disponíveis para o sector.",
+        "en": "EU and national regulation, and the funding and certification programmes available to the sector."
+      },
+      "entries": [
+        {
+          "id": "mar2030",
+          "source": {
+            "pt": "Programa nacional",
+            "en": "National programme"
+          },
+          "title": "Mar2030",
+          "meta": {
+            "pt": "Portugal · período 2021–2027",
+            "en": "Portugal · 2021–2027 period"
+          },
+          "summary": {
+            "pt": "O programa nacional que canaliza o financiamento europeu para o mar em Portugal. Cobre apoios a pescas, aquacultura, transformação e economia azul, com avisos abertos ao longo do período de programação — o principal instrumento de co-financiamento para operadores nacionais.",
+            "en": "The national programme channelling European maritime funding in Portugal. It covers support for fisheries, aquaculture, processing and the blue economy, with calls opening across the programming period — the primary co-funding instrument for domestic operators."
+          },
+          "href": "https://mar2030.pt/",
+          "topics": {
+            "pt": [
+              "Financiamento",
+              "Portugal",
+              "Avisos"
+            ],
+            "en": [
+              "Funding",
+              "Portugal",
+              "Calls"
+            ]
+          }
+        },
+        {
+          "id": "emfaf",
+          "source": {
+            "pt": "Comissão Europeia",
+            "en": "European Commission"
+          },
+          "title": {
+            "pt": "FEAMPA — Fundo Europeu dos Assuntos Marítimos, das Pescas e da Aquacultura",
+            "en": "EMFAF — European Maritime, Fisheries and Aquaculture Fund"
+          },
+          "meta": {
+            "pt": "UE · período 2021–2027",
+            "en": "EU · 2021–2027 period"
+          },
+          "summary": {
+            "pt": "O fundo europeu que financia a Política Comum das Pescas e a economia azul sustentável. Define as regras de elegibilidade que os programas nacionais como o Mar2030 aplicam, e é onde se consultam as prioridades e limites de apoio ao investimento.",
+            "en": "The European fund behind the Common Fisheries Policy and the sustainable blue economy. It sets the eligibility rules that national programmes such as Mar2030 apply, and is where investment support priorities and ceilings are set out."
+          },
+          "href": "https://oceans-and-fisheries.ec.europa.eu/funding/emfaf_en",
+          "topics": {
+            "pt": [
+              "Financiamento UE",
+              "Elegibilidade",
+              "PCP"
+            ],
+            "en": [
+              "EU funding",
+              "Eligibility",
+              "CFP"
+            ]
+          }
+        },
+        {
+          "id": "blueinvest-platform",
+          "source": {
+            "pt": "Comissão Europeia",
+            "en": "European Commission"
+          },
+          "title": "BlueInvest",
+          "meta": {
+            "pt": "Plataforma de investimento · actualização contínua",
+            "en": "Investment platform · continuously updated"
+          },
+          "summary": {
+            "pt": "A iniciativa da Comissão Europeia que liga empresas da economia azul a investidores privados, através de apoio à preparação de investimento, matchmaking e um fundo dedicado. Relevante para co-investimento e para acompanhar o pipeline europeu.",
+            "en": "The European Commission initiative connecting blue economy companies with private investors through investment-readiness support, matchmaking and a dedicated fund. Relevant for co-investment and for tracking the European pipeline."
+          },
+          "href": "https://blueinvest.ec.europa.eu/",
+          "topics": {
+            "pt": [
+              "Co-investimento",
+              "Pipeline",
+              "UE"
+            ],
+            "en": [
+              "Co-investment",
+              "Pipeline",
+              "EU"
+            ]
+          }
+        },
+        {
+          "id": "asc",
+          "source": {
+            "pt": "Certificação",
+            "en": "Certification"
+          },
+          "title": "Aquaculture Stewardship Council (ASC)",
+          "meta": {
+            "pt": "Norma internacional · aquacultura",
+            "en": "International standard · aquaculture"
+          },
+          "summary": {
+            "pt": "A norma de certificação de aquacultura responsável mais exigida pela distribuição europeia. Define requisitos ambientais e sociais auditáveis ao nível da exploração e é, na prática, condição de acesso a vários canais premium na Europa do Norte.",
+            "en": "The responsible-aquaculture certification standard most often required by European retail. It sets auditable environmental and social requirements at farm level and is, in practice, a condition of access to several premium Northern European channels."
+          },
+          "href": "https://asc-aqua.org/",
+          "topics": {
+            "pt": [
+              "Certificação",
+              "Acesso a mercado"
+            ],
+            "en": [
+              "Certification",
+              "Market access"
+            ]
+          }
+        }
+      ],
+      "groupBy": "none"
+    },
+    {
+      "key": "events",
+      "slug": {
+        "pt": "eventos",
+        "en": "events"
+      },
+      "title": {
+        "pt": "Eventos",
+        "en": "Events"
+      },
+      "lede": {
+        "pt": "Calendário de eventos do sector — encontros de investimento, política e ciência na economia azul. Os já realizados ficam listados como referência.",
+        "en": "The sector's event calendar — investment, policy and science gatherings across the blue economy. Editions already held stay listed for reference."
+      },
+      "entries": [
+        {
+          "id": "sbes-halifax-2026",
+          "date": "2026-09-18",
+          "source": {
+            "pt": "Halifax, Canadá",
+            "en": "Halifax, Canada"
+          },
+          "title": "Sustainable Blue Economy Summit 2026",
+          "meta": {
+            "pt": "18 de Setembro de 2026",
+            "en": "18 September 2026"
+          },
+          "summary": {
+            "pt": "Centrado no crescimento sustentável do oceano, inovação, qualificação e investimento na economia oceânica canadiana. Relevante para quem explora o Atlântico canadiano, aquacultura, tecnologia marinha e infraestrutura costeira.",
+            "en": "Focused on sustainable ocean growth, innovation, workforce and investment in Canada's ocean economy. Relevant to investors exploring Atlantic Canada, aquaculture, marine technology and coastal infrastructure."
+          },
+          "href": "https://oceanalliancecanada.ca/blue-economy-summit-2026/",
+          "topics": {
+            "pt": [
+              "Investimento",
+              "Aquacultura"
+            ],
+            "en": [
+              "Investment",
+              "Aquaculture"
+            ]
+          }
+        },
+        {
+          "id": "blueinvest-africa-2026",
+          "date": "2026-11-02",
+          "source": {
+            "pt": "Cidade do Cabo, África do Sul",
+            "en": "Cape Town, South Africa"
+          },
+          "title": "BlueInvest Africa 2026",
+          "meta": {
+            "pt": "2–3 de Novembro de 2026",
+            "en": "2–3 November 2026"
+          },
+          "summary": {
+            "pt": "Evento B2B entre investidores e empresários da economia azul africana. Dirigido a capital de risco, private equity, financiamento de desenvolvimento e investidores estratégicos em aquacultura, pescas, tecnologia marinha e serviços marítimos.",
+            "en": "A B2B investor–entrepreneur event built around Africa's blue economy. Aimed at venture capital, private equity, development finance and strategic investors in aquaculture, fisheries, marine technology and maritime services."
+          },
+          "href": "https://blueinvestafrica.eu/",
+          "topics": {
+            "pt": [
+              "B2B",
+              "Private equity",
+              "África"
+            ],
+            "en": [
+              "B2B",
+              "Private equity",
+              "Africa"
+            ]
+          }
+        },
+        {
+          "id": "bluefin-2026",
+          "date": "2026-11-03",
+          "source": {
+            "pt": "Barcelona, Espanha",
+            "en": "Barcelona, Spain"
+          },
+          "title": "Global Blue Finance Summit — BlueFIN 2026",
+          "meta": {
+            "pt": "3 de Novembro de 2026",
+            "en": "3 November 2026"
+          },
+          "summary": {
+            "pt": "Programa dedicado a financiamento azul: para onde está a fluir o capital, que projectos são efectivamente financiáveis e como construir pipelines mais robustos de empresas e projectos oceânicos. Particularmente relevante para gestores de fundos e instituições financeiras.",
+            "en": "A dedicated blue-finance programme: where capital is moving, which projects are actually fundable, and how to build stronger pipelines of investable ocean companies and projects. Particularly relevant to fund managers and financial institutions."
+          },
+          "href": "https://www.tomorrowblueconomy.com/",
+          "topics": {
+            "pt": [
+              "Financiamento azul",
+              "Pipeline"
+            ],
+            "en": [
+              "Blue finance",
+              "Pipeline"
+            ]
+          }
+        },
+        {
+          "id": "tomorrow-blue-2026",
+          "date": "2026-11-03",
+          "source": {
+            "pt": "Barcelona, Espanha",
+            "en": "Barcelona, Spain"
+          },
+          "title": "Tomorrow.Blue Economy World Congress 2026",
+          "meta": {
+            "pt": "3–5 de Novembro de 2026",
+            "en": "3–5 November 2026"
+          },
+          "summary": {
+            "pt": "A plataforma mais ampla que integra o BlueFIN, o Sustainable Ocean Summit, portos inteligentes, inovação oceânica e pitching de startups. Útil para percorrer toda a cadeia de valor: infraestrutura, portos, tecnologia e financiamento.",
+            "en": "The broader platform combining BlueFIN, the Sustainable Ocean Summit, smart ports, ocean innovation and startup pitching. Useful for reviewing the whole value chain: infrastructure, ports, technology and finance."
+          },
+          "href": "https://www.tomorrowblueconomy.com/",
+          "topics": {
+            "pt": [
+              "Cadeia de valor",
+              "Startups",
+              "Portos"
+            ],
+            "en": [
+              "Value chain",
+              "Startups",
+              "Ports"
+            ]
+          }
+        },
+        {
+          "id": "sos-barcelona-2026",
+          "date": "2026-11-04",
+          "source": {
+            "pt": "Barcelona, Espanha",
+            "en": "Barcelona, Spain"
+          },
+          "title": "Sustainable Ocean Summit 2026",
+          "meta": {
+            "pt": "4–5 de Novembro de 2026",
+            "en": "4–5 November 2026"
+          },
+          "summary": {
+            "pt": "O evento de referência do World Ocean Council para negócio e investimento. Cobre descarbonização, restauro marinho, blue food, resiliência costeira e transição justa, com orientação mais comercial do que uma conferência ambiental convencional.",
+            "en": "The World Ocean Council's flagship business and investment event. It covers decarbonisation, marine restoration, blue food, coastal resilience and the just transition, and is more commercially oriented than a conventional environmental conference."
+          },
+          "href": "https://www.sustainableoceansummit.org/",
+          "topics": {
+            "pt": [
+              "Blue food",
+              "Descarbonização"
+            ],
+            "en": [
+              "Blue food",
+              "Decarbonisation"
+            ]
+          }
+        },
+        {
+          "id": "coastal-futures-2026",
+          "date": "2026-11-11",
+          "source": {
+            "pt": "Londres, Reino Unido",
+            "en": "London, United Kingdom"
+          },
+          "title": "Blue Finance 2026 — Ocean and Coastal Futures",
+          "meta": {
+            "pt": "11 de Novembro de 2026",
+            "en": "11 November 2026"
+          },
+          "summary": {
+            "pt": "Conferência muito focada em financiamento: ganho líquido marinho, carbono azul, créditos marinhos, financiamento misto, capital de primeira perda, garantias e investimento costeiro. Dirigida a quem testa se activos ambientais resistem a due diligence de investidor.",
+            "en": "A tightly focused finance conference: marine net gain, blue carbon, marine credits, blended finance, first-loss capital, guarantees and coastal investment. Aimed at practitioners testing whether environmental assets withstand investor due diligence."
+          },
+          "href": "https://coastal-futures.net/blue-finance-26",
+          "topics": {
+            "pt": [
+              "Blended finance",
+              "Carbono azul"
+            ],
+            "en": [
+              "Blended finance",
+              "Blue carbon"
+            ]
+          }
+        },
+        {
+          "id": "california-ocean-2026",
+          "date": "2026-12-09",
+          "source": {
+            "pt": "Santa Barbara, EUA",
+            "en": "Santa Barbara, United States"
+          },
+          "title": "California Ocean Summit 2026",
+          "meta": {
+            "pt": "9–11 de Dezembro de 2026",
+            "en": "9–11 December 2026"
+          },
+          "summary": {
+            "pt": "Encontro por convite que junta cientistas, decisores políticos, investidores, filantropos e inovadores, com o objectivo de mobilizar capital para soluções oceânicas escaláveis e resiliência costeira.",
+            "en": "An invitation-oriented summit connecting ocean scientists, policymakers, investors, philanthropists and innovators, with the aim of mobilising capital towards scalable ocean solutions and coastal resilience."
+          },
+          "href": "https://www.beaconjournal.com/press-release/story/226668/california-ocean-summit-to-unite-top-scientists-policymakers-investors-innovators-to-accelerate-ocean-solutions/",
+          "topics": {
+            "pt": [
+              "Mobilização de capital",
+              "EUA"
+            ],
+            "en": [
+              "Capital mobilisation",
+              "United States"
+            ]
+          }
+        },
+        {
+          "id": "db-ocean-summit-2026",
+          "date": "2026-06-23",
+          "source": {
+            "pt": "Londres, Reino Unido",
+            "en": "London, United Kingdom"
+          },
+          "title": "Deutsche Bank Ocean Summit 2026",
+          "meta": {
+            "pt": "23 de Junho de 2026",
+            "en": "23 June 2026"
+          },
+          "summary": {
+            "pt": "Evento do sector financeiro organizado pelo Deutsche Bank com a ORRAA, reunindo finanças, política, ciência e empreendedores oceânicos em torno da resiliência oceânica e do papel das instituições financeiras na economia azul.",
+            "en": "A finance-sector event convened by Deutsche Bank with ORRAA, bringing together finance, policy, science and ocean entrepreneurs around ocean resilience and the role of financial institutions in the blue economy."
+          },
+          "href": "https://wealth.db.com/en/insights/sustainability/blue-economy/deutsche-bank-ocean-summit-2026.html",
+          "topics": {
+            "pt": [
+              "Banca",
+              "Resiliência oceânica"
+            ],
+            "en": [
+              "Banking",
+              "Ocean resilience"
+            ]
+          }
+        },
+        {
+          "id": "monaco-beff-2026",
+          "date": "2026-05-27",
+          "source": {
+            "pt": "Mónaco",
+            "en": "Monaco"
+          },
+          "title": {
+            "pt": "Monaco Blue Initiative e Blue Economy and Finance Forum 2026",
+            "en": "Monaco Blue Initiative and Blue Economy and Finance Forum 2026"
+          },
+          "meta": {
+            "pt": "27–29 de Maio de 2026",
+            "en": "27–29 May 2026"
+          },
+          "summary": {
+            "pt": "Três dias que ligam ciência, governação do oceano e alocação de capital: a Monaco Blue Initiative a 27 de Maio, seguida do fórum de financiamento a 28–29. O evento mais directamente relevante para investimento na economia azul sustentável, juntando investidores, bancos, fundos de pensões, fundos soberanos e decisores políticos.",
+            "en": "Three days linking science, ocean governance and capital allocation: the Monaco Blue Initiative on 27 May, followed by the finance forum on 28–29. The most directly relevant event for sustainable blue-economy investing, convening investors, banks, pension funds, sovereign wealth funds and policymakers."
+          },
+          "href": "https://blue-economy-observatory.ec.europa.eu/events/17th-monaco-blue-initiative-2nd-blue-economy-and-finance-forum-2026-05-27_en",
+          "topics": {
+            "pt": [
+              "Investimento",
+              "Governação",
+              "Capital institucional"
+            ],
+            "en": [
+              "Investment",
+              "Governance",
+              "Institutional capital"
+            ]
+          }
+        },
+        {
+          "id": "riaa-australia-2026",
+          "date": "2026-05-27",
+          "source": {
+            "pt": "Melbourne, Austrália",
+            "en": "Melbourne, Australia"
+          },
+          "title": "RIAA Conference Australia — \"Financing a Blue Future\"",
+          "meta": {
+            "pt": "27–28 de Maio de 2026",
+            "en": "27–28 May 2026"
+          },
+          "summary": {
+            "pt": "Sessão de uma conferência de investimento sustentável dedicada ao investimento em oceanos sustentáveis. Relevante para gestores de investimento responsável, fundos de pensões e investidores de impacto na Ásia-Pacífico.",
+            "en": "A sustainable-investment conference session examining investment in sustainable oceans. Relevant to responsible-investment managers, superannuation funds and impact investors across Asia-Pacific."
+          },
+          "href": "https://www.fairr.org/news-events/events/panel-discussion-or-financing-a-blue-future-investing-in-sustainable-oceans",
+          "topics": {
+            "pt": [
+              "Ásia-Pacífico",
+              "Investimento responsável"
+            ],
+            "en": [
+              "Asia-Pacific",
+              "Responsible investment"
+            ]
+          }
+        },
+        {
+          "id": "earthx-blue-finance-2026",
+          "date": "2026-04-22",
+          "source": {
+            "pt": "Dallas, EUA",
+            "en": "Dallas, United States"
+          },
+          "title": "Blue Finance Convening and Workshop",
+          "meta": {
+            "pt": "22 de Abril de 2026",
+            "en": "22 April 2026"
+          },
+          "summary": {
+            "pt": "Workshop especializado que junta bancos, capital de risco, investidores institucionais, family offices, seguradoras e filantropia. Centrado em mecanismos de financiamento e oportunidades de investimento na economia oceânica.",
+            "en": "A specialist workshop bringing together banks, venture capital, institutional investors, family offices, insurers and philanthropy. Focused on financing mechanisms and investment opportunities in the ocean enterprise."
+          },
+          "href": "https://earthx.org/blue-finance-convening-and-workshop-innovation-and-investment-in-the-ocean-enterprise/",
+          "topics": {
+            "pt": [
+              "Family offices",
+              "Mecanismos de financiamento"
+            ],
+            "en": [
+              "Family offices",
+              "Financing mechanisms"
+            ]
+          }
+        },
+        {
+          "id": "world-ocean-summit-2026",
+          "date": "2026-03-04",
+          "source": {
+            "pt": "Montreal, Canadá",
+            "en": "Montréal, Canada"
+          },
+          "title": "World Ocean Summit & Expo 2026",
+          "meta": {
+            "pt": "4–5 de Março de 2026",
+            "en": "4–5 March 2026"
+          },
+          "summary": {
+            "pt": "Evento internacional de alto nível sobre a economia oceânica sustentável, organizado pela Economist Impact. O programa de 2026 incluiu workshops sobre carbono azul, financiamento de adaptação, aquacultura sustentável, debt-for-nature swaps e áreas marinhas protegidas.",
+            "en": "A high-level international event on the sustainable ocean economy, run by Economist Impact. The 2026 programme included workshops on blue carbon, ocean adaptation finance, sustainable aquaculture, debt-for-nature swaps and marine protected areas."
+          },
+          "href": "https://events.economist.com/world-ocean-summit/",
+          "topics": {
+            "pt": [
+              "Política global",
+              "Carbono azul"
+            ],
+            "en": [
+              "Global policy",
+              "Blue carbon"
+            ]
+          }
+        }
+      ],
+      "groupBy": "eventStatus"
+    }
+  ]
+}

@@ -10,7 +10,7 @@ export const pt: SiteContent = {
   nav: {
     pageTitle: 'Blue Transformation Fund · Economia Azul',
     metaDescription:
-      'O mar já é nosso — a escala é o próximo passo. Fundo de private equity de €126M focado na economia azul portuguesa: aquacultura sustentável, transformação de seafood e BlueTech. Gerido pela STAG Fund Management, regulada pela CMVM.',
+      'Crescer com o Mar — dar escala à economia azul. Fundo de private equity de €126M focado na economia azul portuguesa: aquacultura sustentável, transformação de seafood e BlueTech. Gerido pela STAG Fund Management, regulada pela CMVM.',
     items: [
       { label: 'Fundo', anchor: '#fundo' },
       { label: 'Hub', anchor: '#hub' },
@@ -20,12 +20,13 @@ export const pt: SiteContent = {
       { label: 'Investir', anchor: '#investir' },
     ],
     cta: { label: 'Investir', anchor: '#investir' },
+    investorArea: { label: 'Área do Investidor', badge: 'Brevemente' },
   },
 
   hero: {
     kicker: 'STAG BLUE TRANSFORMATION FUND 1',
-    headlineLine1: 'O mar já é nosso.',
-    headlineLine2: 'A escala é o próximo passo.',
+    headlineLine1: 'Crescer com o Mar',
+    headlineLine2: 'dar escala à economia azul.',
     subheadline:
       'Uma estratégia de private equity focada na economia azul portuguesa — inovação incremental, escala e qualidade para os mercados europeus.',
     ctaPrimary: { label: 'Conhecer o Fundo', anchor: '#fundo' },
@@ -34,22 +35,15 @@ export const pt: SiteContent = {
       'Vista aérea dos tanques de aquacultura em estuário da NaturaFish, no Algarve — água azul-esverdeada entre diques dourados.',
   },
 
-  statBar: {
-    stats: [
-      { value: '€126M', label: 'Dimensão do fundo' },
-      { value: '20%', label: 'IRR alvo¹' },
-      { value: '3', label: 'Verticais — Aquacultura · Transformação · BlueTech' },
-      { value: '1,7M km²', label: 'Zona Económica Exclusiva portuguesa (maior da UE)' },
-    ],
-    irrCaveat:
-      '¹ Objectivo de rentabilidade, não garantido. O investimento envolve risco, incluindo a perda parcial ou total do capital investido.',
-  },
-
   hub: {
     sectionLabel: 'Hub',
     title: 'Hub da Economia Azul',
     intro:
-      'Este site é também um recurso para quem opera, investe ou investiga na economia azul portuguesa e europeia. Dados actualizados, regulação relevante e eventos do sector.',
+      'Num sector com informação dispersa, queremos ser um recurso que centraliza informação relevante para quem opera, investe ou investiga na economia azul portuguesa ou europeia. Gostávamos de o fazer de forma colaborativa.',
+    contribution: {
+      prompt: 'Se tiver informação relevante que não encontra aqui, partilhe connosco através deste email:',
+      email: 'hub@bluetransformationfund.com',
+    },
     statCardsTitle: 'Dados do sector',
     statCards: [
       {
@@ -118,59 +112,33 @@ export const pt: SiteContent = {
       yUnit: '%',
     },
     resourcesTitle: 'Recursos do sector',
+    // All four cards open their own Observatory page. Order follows ACB's brief.
+    // `category` resolves to the page path via observatoryHref(), so the links
+    // cannot drift from the routes.
     resourceCards: [
       {
-        title: 'Dados do Sector',
-        description:
-          'Preços spot de seafood nos mercados europeus · Produção aquícola UE · Stocks FAO · Tracker do défice EUMOFA',
-        links: [
-          { label: 'EUMOFA', href: 'https://www.eumofa.eu/', external: true },
-          { label: 'FAO FishStat', href: 'https://www.fao.org/fishery/en/statistics', external: true },
-          { label: 'DGRM', href: 'https://www.dgrm.pt/', external: true },
-        ],
-      },
-      {
-        title: 'Regulação & Financiamento',
-        description:
-          'Mar2030 (programa nacional) · FEAMPA (Fundo Europeu dos Assuntos Marítimos, das Pescas e da Aquacultura) · BlueInvest · Certificações ASC / MSC',
-        links: [
-          { label: 'Mar2030', href: 'https://mar2030.pt/', external: true },
-          { label: 'FEAMPA', href: 'https://oceans-and-fisheries.ec.europa.eu/funding/emfaf_en', external: true },
-          { label: 'BlueInvest', href: 'https://blueinvest.ec.europa.eu/', external: true },
-          { label: 'ASC', href: 'https://asc-aqua.org/', external: true },
-        ],
-      },
-      {
+        category: 'reports',
         title: 'Relatórios de Referência',
-        description:
-          'FAO SOFIA 2024 · EU Blue Economy Report 2024 (DG MARE) · EUMOFA The EU Fish Market 2024 · BlueInvest Investor Report 2023 · OECD Blue Economy review Portugal',
-        links: [
-          {
-            label: 'FAO SOFIA 2024',
-            href: 'https://openknowledge.fao.org/handle/20.500.14283/cd0683en',
-            external: true,
-          },
-          {
-            label: 'EU Blue Economy Report',
-            href: 'https://oceans-and-fisheries.ec.europa.eu/publications/eu-blue-economy-report-2024_en',
-            external: true,
-          },
-          {
-            label: 'EUMOFA Fish Market',
-            href: 'https://www.eumofa.eu/the-eu-fish-market',
-            external: true,
-          },
-        ],
+        description: 'Informação relevante de fontes credíveis — relatórios e estatística do sector.',
+        pageLabel: 'Abrir Observatório',
       },
       {
+        category: 'portugal',
+        title: 'Dados Portugal',
+        description: 'A última informação disponível sobre o sector em Portugal — pescas, aquacultura e primeira venda.',
+        pageLabel: 'Abrir Observatório',
+      },
+      {
+        category: 'regulation',
+        title: 'Regulação & Financiamento',
+        description: 'Regulação da UE e nacional, e os programas de financiamento e certificação disponíveis.',
+        pageLabel: 'Abrir Observatório',
+      },
+      {
+        category: 'events',
         title: 'Eventos',
-        description:
-          'BlueInvest Forum (anual, Bruxelas) · Seafood Expo Global (Barcelona) · Portugal Blue Week · Aquaculture Europe',
-        links: [
-          { label: 'BlueInvest Forum', href: 'https://blueinvest.ec.europa.eu/', external: true },
-          { label: 'Seafood Expo Global', href: 'https://www.seafoodexpo.com/global/', external: true },
-          { label: 'Aquaculture Europe', href: 'https://www.aquaeas.org/', external: true },
-        ],
+        description: 'Calendário de eventos do sector — investimento, política e ciência na economia azul.',
+        pageLabel: 'Abrir Observatório',
       },
     ],
   },
@@ -182,6 +150,7 @@ export const pt: SiteContent = {
       { label: 'Tese', anchor: '#tese' },
       { label: 'Verticais', anchor: '#verticais' },
       { label: 'Portfólio', anchor: '#portfolio' },
+      { label: 'Sustentabilidade', anchor: '#sustentabilidade' },
       { label: 'Estrutura', anchor: '#estrutura' },
       { label: 'Equipa', anchor: '#equipa' },
       { label: 'Investir', anchor: '#investir' },
@@ -293,6 +262,27 @@ export const pt: SiteContent = {
         'Fotografia aérea das quintas de aquacultura da NaturaFish no estuário algarvio: tanques geométricos de água entre diques de terra dourada.',
     },
 
+    sustainability: {
+      sectionLabel: 'Sustentabilidade',
+      title: 'Um fundo com impacto — não um fundo de impacto.',
+      lede: 'O SBTF 1 é um fundo de investimento com impacto — não um fundo de impacto. O retorno financeiro é o objectivo primário e não está subordinado a critérios extra-financeiros. A sustentabilidade entra como disciplina de gestão: é medida, planeada e melhorada porque determina acesso a mercado, prémio de preço e valor na saída. A distinção é explícita porque tem consequências legais e comerciais.',
+      pillars: [
+        {
+          title: 'Rating de entrada e saída',
+          copy: 'Cada empresa é avaliada segundo uma metodologia própria de rating de sustentabilidade no momento da aquisição. A mesma metodologia é reaplicada à saída. O que muda entre os dois momentos é medido, não estimado — e é atribuível à gestão do fundo durante o período de detenção.',
+        },
+        {
+          title: 'Dois planos, um investimento',
+          copy: 'Nenhum investimento entra em carteira apenas com um plano financeiro. Cada participada tem também um plano de upgrade de sustentabilidade, com acções e prazos definidos, executado no mesmo horizonte e revisto na mesma cadência. Certificação, eficiência de recursos e rastreabilidade são trabalho de criação de valor — não relatório.',
+        },
+        {
+          title: 'Verificação independente',
+          copy: 'Os resultados de sustentabilidade atingidos são verificados por uma entidade terceira, independente do fundo e das participadas, e é essa verificação que sustenta a sua publicitação. O que não for verificável por terceiros não é apresentado aos investidores como resultado.',
+        },
+      ],
+      note: 'A metodologia completa, o plano de upgrade de cada participada e os resultados verificados são apresentados aos investidores.',
+    },
+
     terms: {
       sectionLabel: 'Estrutura',
       title: 'Estrutura e Termos',
@@ -329,6 +319,13 @@ export const pt: SiteContent = {
               bio: 'Especialista em estruturação de fundos de investimento e mercados de capitais. Suporte à estratégia e relação com investidores. +20 anos na economia azul; ex-membro do Conselho da Docapesca e assessor da Secretaria de Estado das Pescas.',
               photo: 'joao-reis',
               linkedIn: 'https://www.linkedin.com/in/jo%C3%A3o-reis-7a181a362/',
+            },
+            {
+              name: 'Gonçalo Videira',
+              role: 'Fund Advisor, SBTF 1',
+              bio: 'Especialista em estratégia comercial e acesso a mercado no retalho alimentar. Apoia o crescimento comercial das participadas. Director na Sonae, com uma integração vertical em aquacultura de c. €40M aprovada em Conselho; antes na P&G, Microsoft e L’Oréal. MBA pelo INSEAD.',
+              photo: 'goncalo-videira',
+              linkedIn: 'https://www.linkedin.com/in/goncalovideira/',
             },
           ],
         },

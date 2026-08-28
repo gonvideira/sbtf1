@@ -20,6 +20,8 @@ export interface NavContent {
   metaDescription: string
   items: { label: string; anchor: string }[]
   cta: { label: string; anchor: string }
+  /** Announced but not yet built — renders as inert text, no destination */
+  investorArea: { label: string; badge: string }
 }
 
 export interface HeroContent {
@@ -34,22 +36,22 @@ export interface HeroContent {
   imageAlt: string
 }
 
-export interface StatBarContent {
-  stats: Stat[]
-  /** Risk footnote attached to the IRR figure (regulatory requirement) */
-  irrCaveat: string
-}
+/** Observatory category this card opens; the path is resolved from the data. */
+export type ObservatoryCategoryKey = 'reports' | 'portugal' | 'regulation' | 'events'
 
 export interface HubResourceCard {
+  category: ObservatoryCategoryKey
   title: string
   description: string
-  links: { label: string; href: string; external?: boolean }[]
+  pageLabel: string
 }
 
 export interface HubContent {
   sectionLabel: string
   title: string
   intro: string
+  /** Open invitation for readers to send in sector information the hub is missing */
+  contribution: { prompt: string; email: string }
   /** Sourced, dated stat cards — interim data now, refreshed from /research later */
   statCardsTitle: string
   statCards: Stat[]
@@ -117,6 +119,15 @@ export interface TermsContent {
   irrCaveat: string
 }
 
+export interface SustainabilityContent {
+  sectionLabel: string
+  title: string
+  /** The "with impact, not an impact fund" distinction — the load-bearing paragraph */
+  lede: string
+  pillars: { title: string; copy: string }[]
+  note: string
+}
+
 export interface TeamMember {
   name: string
   role: string
@@ -163,7 +174,6 @@ export interface SiteContent {
   htmlLang: string
   nav: NavContent
   hero: HeroContent
-  statBar: StatBarContent
   hub: HubContent
   fund: {
     sectionLabel: string
@@ -173,6 +183,7 @@ export interface SiteContent {
     euContext: EuContextContent
     verticals: VerticalsContent
     portfolio: PortfolioContent
+    sustainability: SustainabilityContent
     terms: TermsContent
     team: TeamContent
     process: ProcessContent
