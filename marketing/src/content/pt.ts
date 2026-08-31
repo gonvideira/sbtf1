@@ -167,8 +167,8 @@ export const pt: SiteContent = {
       metaDescription:
         'Crescer com o Mar — dar escala à economia azul. Fundo de private equity de €126M focado na economia azul portuguesa: aquacultura sustentável, transformação de seafood e BlueTech. Gerido pela STAG Fund Management, regulada pela CMVM.',
       masthead: {
-        kicker: 'STAG BLUE TRANSFORMATION FUND 1',
-        title: fundTitle,
+        kicker: fundTitle,
+        title: 'STAG Blue Transformation Fund 1',
         standfirst: fundSubheadline,
       },
       teaser: {
@@ -453,8 +453,6 @@ export const pt: SiteContent = {
     disclaimer:
       'Este website tem carácter meramente informativo e não constitui uma oferta, convite ou recomendação para subscrever unidades de participação ou tomar qualquer decisão de investimento. O investimento no SBTF 1 envolve riscos, incluindo o risco de perda parcial ou total do capital investido. Rentabilidades passadas não garantem rentabilidades futuras. A decisão de investir deve basear-se exclusivamente na análise do prospecto completo e da documentação oficial do fundo. STAG Fund Management, Lda. é uma entidade gestora de organismos de investimento colectivo regulada e supervisionada pela CMVM — Comissão do Mercado de Valores Mobiliários.',
     links: [
-      { label: 'Política de Privacidade', href: '/pt/privacidade/' },
-      { label: 'Termos de Utilização', href: '/pt/termos/' },
       { label: 'STAG Fund Management', href: 'https://www.stagfundmanagement.com', external: true },
       { label: 'CMVM', href: 'https://www.cmvm.pt', external: true },
     ],

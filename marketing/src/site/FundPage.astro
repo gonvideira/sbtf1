@@ -1,9 +1,9 @@
 ---
 // STAG BLUE TRANSFORMATION FUND 1 — the fund's own page.
 // The seven approved chapters, moved here verbatim from MarketingPage when the
-// root pages became the Hub landing page. No video hero: a slim Observatory-style
-// header gets you back to the Hub, a compact navy masthead names the fund, and the
-// sticky .fund-subnav becomes this page's section nav.
+// root pages became the Hub landing page. A slim Observatory-style header gets you
+// back to the Hub, a compact masthead names the fund over the hero's vortex footage
+// (card height, not viewport), and the sticky .fund-subnav is this page's section nav.
 import '@fontsource-variable/fraunces'
 import '@fontsource-variable/ibm-plex-sans'
 import frauncesUrl from '@fontsource-variable/fraunces/files/fraunces-latin-wght-normal.woff2?url'
@@ -42,6 +42,8 @@ const L = isPt
       farmCaption: 'Instalações NaturaFish, estuário do Alvor e Arade — Algarve.',
       canyonAlt: '',
       back: 'Voltar ao Hub',
+      videoPlay: 'Reproduzir vídeo de fundo',
+      videoPause: 'Pausar vídeo de fundo',
     }
   : {
       eras: ['Five hundred years ago', 'Today', 'The future · 2026 → 2034'] as const,
@@ -54,6 +56,8 @@ const L = isPt
       farmCaption: 'NaturaFish facilities, Alvor and Arade estuaries — Algarve.',
       canyonAlt: '',
       back: 'Back to the Hub',
+      videoPlay: 'Play background video',
+      videoPause: 'Pause background video',
     }
 
 const mailSubjectCim = encodeURIComponent(isPt ? 'Pedido de acesso ao CIM — SBTF 1' : 'CIM access request — SBTF 1')
@@ -77,6 +81,7 @@ const allocSegments = fund.verticals.items.map((v, i) => {
   <Fragment slot="head">
     <link rel="preload" href={frauncesUrl} as="font" type="font/woff2" crossorigin />
     <link rel="preload" href={plexUrl} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/media/fish-vortex-poster.jpg" as="image" fetchpriority="high" />
   </Fragment>
   <a href="#main" class="skip-link">{t.a11y.skipToContent}</a>
 
@@ -102,10 +107,38 @@ const allocSegments = fund.verticals.items.map((v, i) => {
   </header>
 
   <main id="main">
-    <!-- Masthead — the fund named, on navy, without the video -->
+    <!-- Masthead — the fund named, over the hero's vortex footage at card height -->
     <!-- No aria-label here: naming this section would expose a second region
          called "O Fundo" alongside the .fund section below it. -->
     <section class="fund-masthead">
+      <div class="masthead-media">
+        <video
+          data-ambient
+          autoplay
+          muted
+          loop
+          playsinline
+          preload="none"
+          poster="/media/fish-vortex-poster.jpg"
+          width="1920"
+          height="1078"
+          aria-hidden="true"
+        >
+          <source data-src="/media/fish-vortex.av1.mp4" type='video/mp4; codecs="av01.0.08M.08"' />
+          <source data-src="/media/fish-vortex.mp4" type="video/mp4" />
+        </video>
+        <button
+          class="video-toggle"
+          data-video-toggle
+          data-label-play={L.videoPlay}
+          data-label-pause={L.videoPause}
+          aria-label={L.videoPause}
+        >
+          <span class="vt-pause" aria-hidden="true"></span>
+          <span class="vt-play" aria-hidden="true"></span>
+        </button>
+        <div class="masthead-veil" aria-hidden="true"></div>
+      </div>
       <div class="shell">
         <h1 class="masthead-title">
           <span class="kicker masthead-kicker">{fund.masthead.kicker}</span>
@@ -650,14 +683,89 @@ const allocSegments = fund.verticals.items.map((v, i) => {
     scroll-margin-top: var(--header-h, 139px);
   }
 
-  /* ===== Masthead — the fund named, on navy ===== */
+  /* ===== Masthead — the fund named, over the vortex footage ===== */
+  /* Same padding as the navy band it replaces: the video runs at card height,
+     not viewport height. The navy background stays as the loading/no-JS ground
+     and as the veil's terminal color. */
   .fund-masthead {
+    position: relative;
+    overflow: hidden;
     background: var(--deep);
     color: #eaf2fb;
     padding-block: clamp(2.6rem, 7vw, 4.4rem);
   }
-  /* One h1 in two lines: the kicker names the fund, the second line names the
-     page, so the heading's accessible name carries the fund. The spans carry
+  .fund-masthead .shell {
+    position: relative;
+    z-index: 2;
+  }
+  .masthead-media {
+    position: absolute;
+    inset: 0;
+  }
+  .masthead-media video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  /* The hero's veil, unchanged, so the type sits on the same approved contrast */
+  .masthead-veil {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      180deg,
+      rgba(2, 29, 59, 0.42) 0%,
+      rgba(2, 29, 59, 0.12) 38%,
+      rgba(2, 29, 59, 0.6) 74%,
+      var(--deep) 100%
+    );
+  }
+  .video-toggle {
+    position: absolute;
+    right: clamp(1rem, 3vw, 2rem);
+    bottom: clamp(1rem, 3vw, 2rem);
+    z-index: 3;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.55);
+    background: rgba(2, 29, 59, 0.45);
+    backdrop-filter: blur(6px);
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+  }
+  .video-toggle:hover {
+    background: rgba(2, 29, 59, 0.7);
+  }
+  .vt-pause,
+  .vt-play {
+    grid-area: 1 / 1;
+  }
+  .vt-pause {
+    width: 10px;
+    height: 12px;
+    border-left: 3px solid #fff;
+    border-right: 3px solid #fff;
+  }
+  .vt-play {
+    width: 0;
+    height: 0;
+    border-left: 11px solid #fff;
+    border-top: 7px solid transparent;
+    border-bottom: 7px solid transparent;
+    display: none;
+    margin-left: 2px;
+  }
+  .video-toggle[data-state='paused'] .vt-pause {
+    display: none;
+  }
+  .video-toggle[data-state='paused'] .vt-play {
+    display: block;
+  }
+  /* One h1 in two lines: the kicker labels the page ("O Fundo") and the second
+     line names the fund, so the heading's accessible name carries it. The spans carry
      exactly the styles the former <p class="kicker"> and <h1> had — the h1
      itself is only a wrapper, so nothing of the display face or the UA h1
      size/weight leaks into the kicker. */
