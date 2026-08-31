@@ -17,7 +17,6 @@ export interface Stat {
 export interface NavContent {
   /** Browser tab / <title> base */
   pageTitle: string
-  metaDescription: string
   items: { label: string; anchor: string }[]
   cta: { label: string; anchor: string }
   /** Announced but not yet built — renders as inert text, no destination */
@@ -69,6 +68,16 @@ export interface HubContent {
   }
   resourcesTitle: string
   resourceCards: HubResourceCard[]
+  /** The "Fundos" teaser rail that opens each fund's own page */
+  fundsRail: {
+    /** Accessible name of the rail section */
+    label: string
+    /** Visible heading */
+    title: string
+    ctaLabel: string
+  }
+  /** Meta description of the hub homepage — the opening of `intro`, verbatim */
+  metaDescription: string
 }
 
 export interface ThesisContent {
@@ -169,25 +178,51 @@ export interface FooterContent {
   copyright: string
 }
 
+/** One fund, rendered on its own page and teased from the hub homepage. */
+export interface FundContent {
+  slug: 'sbtf-1'
+  /** Absolute path of this fund's page in this locale, trailing slash included */
+  path: string
+  /** Browser tab / <title> of the fund page */
+  pageTitle: string
+  /** Meta description of the fund page */
+  metaDescription: string
+  /** Compact band that replaces the video hero on the fund page */
+  masthead: {
+    kicker: string
+    title: string
+    standfirst: string
+  }
+  /** Card shown in the hub homepage's "Fundos" rail */
+  teaser: {
+    /** Position in the platform's fund series, e.g. "Fundo #1" */
+    number: string
+    name: string
+    blurb: string
+    /** Headline terms strip, assembled from `terms.rows` */
+    terms: string
+  }
+  sectionLabel: string
+  title: string
+  subnav: { label: string; anchor: string }[]
+  thesis: ThesisContent
+  euContext: EuContextContent
+  verticals: VerticalsContent
+  portfolio: PortfolioContent
+  sustainability: SustainabilityContent
+  terms: TermsContent
+  team: TeamContent
+  process: ProcessContent
+}
+
 export interface SiteContent {
   locale: Locale
   htmlLang: string
   nav: NavContent
   hero: HeroContent
   hub: HubContent
-  fund: {
-    sectionLabel: string
-    title: string
-    subnav: { label: string; anchor: string }[]
-    thesis: ThesisContent
-    euContext: EuContextContent
-    verticals: VerticalsContent
-    portfolio: PortfolioContent
-    sustainability: SustainabilityContent
-    terms: TermsContent
-    team: TeamContent
-    process: ProcessContent
-  }
+  /** An array so fund #2 is additive; funds[0] is SBTF 1. */
+  funds: [FundContent]
   footer: FooterContent
   a11y: {
     skipToContent: string
