@@ -193,11 +193,11 @@ export const en: SiteContent = {
       paragraphs: [
         "Portugal's blue economy carries centuries of working knowledge: estuary aquaculture, world-class canning, cod-processing techniques with 500 years of history. This is not an emerging sector — it is a mature, under-capitalised one.",
         "Europe imports €22 billion of seafood every year, and EU self-sufficiency has fallen to 37.5%. Portugal has the assets, the climate and the premium species that Nordic and Central European markets cannot produce. The opportunity is not to invent something new — it is to modernise, certify and export what already exists.",
-        'SBTF 1 is the vehicle for that transformation: institutional capital, vertical integration and technology in service of the product — not the other way around.',
+        'SBTF 1 is the vehicle for that transformation: institutional capital, vertical integration and technology in service of the product — not the other way around. That work is what produces European leadership in quality.',
       ],
       equation: {
         blocks: ['Accumulated know-how', 'Institutional capital', 'Incremental innovation'],
-        result: 'European leadership in quality',
+        result: 'Value created, sustainability verified',
       },
     },
 
