@@ -1,25 +1,23 @@
 ---
-// BLUE TRANSFORMATION FUND — final marketing site ("Cardume" direction).
-// The luminous museum of the sea: the barracuda vortex opens the page, the
-// Hub dives into the dolphin canyon, the Fund alternates daylight and abyss —
-// thesis in the light, the European context back down in the canyon, the
-// NaturaFish estuary filling the frame, structure & terms on deep navy.
-// Hero claim: "O mar já é nosso. A escala é o próximo passo."
+// BLUE TRANSFORMATION FUND — the Hub da Economia Azul landing page.
+// The luminous museum of the sea: the barracuda vortex opens the page and the
+// Hub dives into the dolphin canyon, resurfacing into the sector resources and
+// the Fundos rail. The fund's own seven chapters live on FundPage.astro.
+// Hero claim: "Crescer com o Mar — dar escala à economia azul."
 import '@fontsource-variable/fraunces'
 import '@fontsource-variable/ibm-plex-sans'
 import frauncesUrl from '@fontsource-variable/fraunces/files/fraunces-latin-wght-normal.woff2?url'
 import plexUrl from '@fontsource-variable/ibm-plex-sans/files/ibm-plex-sans-latin-wght-normal.woff2?url'
 import '@/styles/base.css'
 
-import { Image, Picture } from 'astro:assets'
+import { Image } from 'astro:assets'
 import BaseLayout from '@/layouts/BaseLayout.astro'
 import LineChart from '@/components/charts/LineChart.astro'
-import AllocationStripe from '@/components/charts/AllocationStripe.astro'
 import { getContent, type Locale } from '@/content'
-import { euSelfSufficiency, fundAllocation } from '@/data/charts'
+import { euSelfSufficiency } from '@/data/charts'
 import { getResearchStats, researchUpdated } from '@/data/research'
 import { observatoryHref } from '@/data/observatory'
-import { brand, photos, teamPhotos, partners } from '@/data/images'
+import { brand, partners } from '@/data/images'
 
 interface Props {
   locale: Locale
@@ -32,6 +30,21 @@ const path = `/${locale}/`
 const altPath = `/${locale === 'pt' ? 'en' : 'pt'}/`
 const isPt = locale === 'pt'
 
+const fund = t.funds[0]
+
+// Anchors that used to live on this page and now live on the fund page. The
+// inline head script below sends any bookmarked/linked one straight there.
+const legacyFundHashes = [
+  '#fundo',
+  '#tese',
+  '#verticais',
+  '#portfolio',
+  '#sustentabilidade',
+  '#estrutura',
+  '#equipa',
+  '#investir',
+]
+
 const L = isPt
   ? {
       chartTable: 'Ver dados',
@@ -40,18 +53,12 @@ const L = isPt
       heroCredit: 'Cardume de barracudas — o mar que Portugal conhece há séculos.',
       diveCue: 'Mergulhar',
       resurface: 'De volta à superfície',
-      eras: ['Há quinhentos anos', 'Hoje', 'O futuro · 2026 → 2034'] as const,
-      eraKicker: 'Regressar ao futuro',
-      euKicker: 'Regresso à profundidade',
       partners: 'Ecossistema & Parceiros',
       metrics: 'Métricas do fundo',
       videoPlay: 'Reproduzir vídeo de fundo',
       videoPause: 'Pausar vídeo de fundo',
       navLabel: 'Navegação principal',
-      fundNav: 'Secções do fundo',
       legalNav: 'Links legais',
-      farmCaption: 'Instalações NaturaFish, estuário do Alvor e Arade — Algarve.',
-      canyonAlt: '',
     }
   : {
       chartTable: 'View data',
@@ -60,33 +67,19 @@ const L = isPt
       heroCredit: 'A school of barracuda — the sea Portugal has known for centuries.',
       diveCue: 'Dive in',
       resurface: 'Back to the surface',
-      eras: ['Five hundred years ago', 'Today', 'The future · 2026 → 2034'] as const,
-      eraKicker: 'Back to the future',
-      euKicker: 'Return to the deep',
       partners: 'Ecosystem & Partners',
       metrics: 'Fund metrics',
       videoPlay: 'Play background video',
       videoPause: 'Pause background video',
       navLabel: 'Main navigation',
-      fundNav: 'Fund sections',
       legalNav: 'Legal links',
-      farmCaption: 'NaturaFish facilities, Alvor and Arade estuaries — Algarve.',
-      canyonAlt: '',
     }
-
-const mailSubjectCim = encodeURIComponent(isPt ? 'Pedido de acesso ao CIM — SBTF 1' : 'CIM access request — SBTF 1')
-const mailSubjectMeet = encodeURIComponent(isPt ? 'Pedido de reunião — SBTF 1' : 'Meeting request — SBTF 1')
-
-const allocSegments = t.fund.verticals.items.map((v, i) => {
-  const a = fundAllocation[i]!
-  return { label: v.title, pct: v.allocationPct, amount: isPt ? a.amount : a.amountEn }
-})
 ---
 
 <BaseLayout
   locale={locale}
   title={t.nav.pageTitle}
-  description={t.nav.metaDescription}
+  description={t.hub.metaDescription}
   path={path}
   altPath={altPath}
   themeColor="#F2F7FC"
@@ -96,6 +89,14 @@ const allocSegments = t.fund.verticals.items.map((v, i) => {
     <link rel="preload" href={frauncesUrl} as="font" type="font/woff2" crossorigin />
     <link rel="preload" href={plexUrl} as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/media/fish-vortex-poster.jpg" as="image" fetchpriority="high" />
+    {/* The fund's chapters moved to their own page; anything still pointing at
+        the old anchors is redirected before paint so no one lands on nothing. */}
+    <script is:inline define:vars={{ legacyFundHashes, fundPath: fund.path }}>
+      var legacyHash = window.location.hash
+      if (legacyHash && legacyFundHashes.indexOf(legacyHash) !== -1) {
+        window.location.replace(fundPath + (legacyHash === '#fundo' ? '' : legacyHash))
+      }
+    </script>
   </Fragment>
   <a href="#main" class="skip-link">{t.a11y.skipToContent}</a>
 
@@ -290,7 +291,7 @@ const allocSegments = t.fund.verticals.items.map((v, i) => {
     </section>
 
     <!-- resurface: resources — marked cut back into the light -->
-    <section class="resources" aria-label={t.hub.resourcesTitle}>
+    <section class="resources" id="recursos" aria-label={t.hub.resourcesTitle}>
       <div class="shell">
         <p class="kicker kicker-ink reveal">{L.resurface}</p>
         <h2 class="display reveal">{t.hub.resourcesTitle}</h2>
@@ -308,249 +309,25 @@ const allocSegments = t.fund.verticals.items.map((v, i) => {
       </div>
     </section>
 
-    <!-- ============ 3 · THE FUND — daylight and abyss ============ -->
-    <section class="fund" id="fundo" aria-label={t.fund.sectionLabel}>
-      <nav class="fund-subnav" aria-label={L.fundNav}>
-        <div class="shell">
-          <ul>
-            {t.fund.subnav.map((s) => (
-              <li><a href={s.anchor}>{s.label}</a></li>
-            ))}
-          </ul>
+    <!-- ============ 3 · FUNDOS — the platform's funds, teased from the hub ============ -->
+    <section class="funds-rail" id="fundos" aria-label={t.hub.fundsRail.label}>
+      <div class="shell">
+        <h2 class="display reveal">{t.hub.fundsRail.title}</h2>
+        <div class="fund-rail-grid">
+          <article class="fund-card reveal">
+            <p class="fc-no">{fund.teaser.number}</p>
+            <h3 class="fc-name"><a class="fc-link" href={fund.path}>{fund.teaser.name}</a></h3>
+            <p class="fc-blurb">{fund.teaser.blurb}</p>
+            <p class="fc-terms">{fund.teaser.terms}</p>
+            <p class="fc-manager">{fund.terms.managerLine}</p>
+            <p class="fc-cta" aria-hidden="true">
+              {t.hub.fundsRail.ctaLabel} <span>→</span>
+            </p>
+          </article>
         </div>
-      </nav>
-
-      <!-- Thesis as three eras -->
-      <article class="thesis" id="tese" aria-labelledby="thesis-title">
-        <div class="shell">
-          <p class="kicker kicker-ink reveal">{L.eraKicker}</p>
-          <h2 id="thesis-title" class="display reveal">{t.fund.thesis.title}</h2>
-          <div class="eras">
-            {t.fund.thesis.paragraphs.map((p, i) => (
-              <div class="era reveal" data-scene>
-                <div class="era-rail" aria-hidden="true"><span class="era-node"></span></div>
-                <div class="era-body">
-                  <p class="era-label">{L.eras[i]}</p>
-                  <p class={`era-copy ${i === 0 ? 'drop-cap' : ''}`}>{p}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-          <div class="equation reveal" role="img" aria-label={`${t.fund.thesis.equation.blocks.join(' + ')} = ${t.fund.thesis.equation.result}`}>
-            {t.fund.thesis.equation.blocks.map((b, i) => (
-              <>
-                <span class="eq-block">{b}</span>
-                <span class="eq-op" aria-hidden="true">{i < 2 ? '+' : '='}</span>
-              </>
-            ))}
-            <span class="eq-result">{t.fund.thesis.equation.result}</span>
-          </div>
-        </div>
-      </article>
-
-      <!-- European context — the return to the canyon -->
-      <article class="eu-band" aria-labelledby="eu-title" data-scene>
-        <div class="eu-media" data-parallax="0.12">
-          <Picture
-            src={photos.canyonStill}
-            alt={L.canyonAlt}
-            widths={[768, 1280, 1920]}
-            sizes="100vw"
-            formats={['avif', 'webp']}
-            loading="lazy"
-          />
-        </div>
-        <div class="eu-veil" aria-hidden="true"></div>
-        <div class="shell eu-content">
-          <p class="kicker reveal">{L.euKicker}</p>
-          <h3 id="eu-title" class="eu-title reveal">{t.fund.euContext.title}</h3>
-          <p class="eu-intro reveal">{t.fund.euContext.intro}</p>
-          <div class="eu-grid">
-            {t.fund.euContext.stats.map((s, i) => (
-              <div class="glass eu-stat reveal" data-parallax={String(0.03 + (i % 4) * 0.02)}>
-                <p class="eu-value" data-count>{s.value}</p>
-                <p class="eu-label">{s.label}</p>
-                <p class="eu-source">{s.source}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </article>
-
-      <!-- Verticals -->
-      <article class="verticals" id="verticais" aria-labelledby="verticals-title">
-        <div class="shell">
-          <h2 id="verticals-title" class="display reveal">{t.fund.verticals.title}</h2>
-          <p class="lede reveal">{t.fund.verticals.intro}</p>
-          <div class="alloc-wrap reveal">
-            <AllocationStripe
-              segments={allocSegments}
-              summary={allocSegments.map((s) => `${s.label}: ${s.pct}% (${s.amount})`).join('; ')}
-            />
-          </div>
-          <div class="vertical-list">
-            {t.fund.verticals.items.map((v) => (
-              <section class="vertical reveal" aria-labelledby={`v-${v.number}`}>
-                <div class="v-head">
-                  <span class="v-no">{v.number}</span>
-                  <div>
-                    <h3 id={`v-${v.number}`}>{v.title}</h3>
-                    <p class="v-alloc">{v.allocationLabel}</p>
-                  </div>
-                </div>
-                <p class="v-copy">{v.copy}</p>
-                <ul class="v-bullets">
-                  {v.bullets.map((b) => (
-                    <li>{b}</li>
-                  ))}
-                </ul>
-              </section>
-            ))}
-          </div>
-        </div>
-      </article>
-
-      <!-- Portfolio — the estuary fills the frame -->
-      <article class="portfolio" id="portfolio" aria-labelledby="portfolio-title" data-scene>
-        <div class="pf-band">
-          <div class="pf-media" data-parallax="0.1">
-            <Picture
-              src={photos.naturafishBand}
-              alt={t.fund.portfolio.imageAlt}
-              widths={[768, 1280, 1720]}
-              sizes="100vw"
-              formats={['avif', 'webp']}
-              loading="lazy"
-            />
-          </div>
-          <div class="pf-veil" aria-hidden="true"></div>
-          <div class="shell pf-content">
-            <h2 id="portfolio-title" class="display display-inverse reveal">{t.fund.portfolio.title}</h2>
-            <div class="pf-body reveal">
-              <p class="anchor-tag">{t.fund.portfolio.anchorTag}</p>
-              <h3 class="anchor-name">{t.fund.portfolio.anchorTitle}</h3>
-              <p class="anchor-copy">{t.fund.portfolio.copy}</p>
-              <div class="farm-cards">
-                {t.fund.portfolio.farms.map((f) => (
-                  <div class="farm-card">
-                    <p class="farm-name">{f.name}</p>
-                    <p class="farm-specs">{f.specs}</p>
-                  </div>
-                ))}
-              </div>
-              <p class="pipeline-note">{t.fund.portfolio.pipelineNote}</p>
-              <p class="pf-credit">{L.farmCaption}</p>
-            </div>
-          </div>
-        </div>
-      </article>
-
-      <!-- Sustainable approach — light block between portfolio and terms -->
-      <article class="sustain" id="sustentabilidade" aria-labelledby="sustain-title">
-        <div class="shell">
-          <p class="kicker kicker-ink reveal">{t.fund.sustainability.sectionLabel}</p>
-          <h2 id="sustain-title" class="display reveal">{t.fund.sustainability.title}</h2>
-          <p class="lede reveal">{t.fund.sustainability.lede}</p>
-          <ol class="sustain-grid">
-            {t.fund.sustainability.pillars.map((p, i) => (
-              <li class="sustain-card reveal">
-                <p class="sc-no" aria-hidden="true">{String(i + 1).padStart(2, '0')}</p>
-                <h3 class="sc-title">{p.title}</h3>
-                <p class="sc-copy">{p.copy}</p>
-              </li>
-            ))}
-          </ol>
-          <p class="footnote reveal">{t.fund.sustainability.note}</p>
-        </div>
-      </article>
-
-      <!-- Structure & Terms — deep navy block -->
-      <article class="terms" id="estrutura" aria-labelledby="terms-title">
-        <div class="shell">
-          <h2 id="terms-title" class="display display-inverse reveal">{t.fund.terms.title}</h2>
-          <dl class="terms-table reveal">
-            {t.fund.terms.rows.map((r) => (
-              <div class="terms-row">
-                <dt>{r.label}</dt>
-                <dd>
-                  <span class="terms-value" data-count>{r.value}</span>
-                  {r.caveat && <span class="terms-caveat">{r.caveat}</span>}
-                </dd>
-              </div>
-            ))}
-          </dl>
-          <p class="manager-line reveal">{t.fund.terms.managerLine}</p>
-          <p class="footnote footnote-dark reveal">{t.fund.terms.irrCaveat}</p>
-        </div>
-      </article>
-
-      <!-- Team -->
-      <article class="team" id="equipa" aria-labelledby="team-title">
-        <div class="shell">
-          <h2 id="team-title" class="display reveal">{t.fund.team.title}</h2>
-          {t.fund.team.groups.map((g) => (
-            <section class="team-group" aria-label={g.title}>
-              <h3 class="sub-label reveal">{g.title}</h3>
-              <div class="team-grid">
-                {g.members.map((m) => (
-                  <article class="member reveal">
-                    {m.photo && teamPhotos[m.photo] ? (
-                      <Image
-                        class="member-photo"
-                        src={teamPhotos[m.photo]!}
-                        alt={m.name}
-                        width={400}
-                        densities={[1, 2]}
-                        loading="lazy"
-                      />
-                    ) : (
-                      <div class="member-monogram" role="img" aria-label={`${m.name} — ${t.fund.team.photoPendingLabel}`}>
-                        <span aria-hidden="true">{m.name.split(' ').map((w) => w[0]).filter((_, i, a) => i === 0 || i === a.length - 1).join('')}</span>
-                      </div>
-                    )}
-                    <h4 class="member-name">
-                      {m.linkedIn ? <a href={m.linkedIn} rel="noopener">{m.name}</a> : m.name}
-                    </h4>
-                    <p class="member-role">{m.role}</p>
-                    <p class="member-bio">{m.bio}</p>
-                  </article>
-                ))}
-              </div>
-            </section>
-          ))}
-        </div>
-      </article>
-
-      <!-- Investment process -->
-      <article class="process" id="investir" aria-labelledby="process-title">
-        <div class="shell">
-          <h2 id="process-title" class="display reveal">{t.fund.process.title}</h2>
-          <p class="lede reveal">{t.fund.process.intro}</p>
-          <ol class="steps reveal">
-            {t.fund.process.steps.map((s, i) => (
-              <li class="step">
-                <span class="step-no">{String(i + 1).padStart(2, '0')}</span>
-                <h3 class="step-title">{s.title}</h3>
-                <p class="step-desc">{s.description}</p>
-              </li>
-            ))}
-          </ol>
-          <div class="invest-cta reveal">
-            <div class="contact-card">
-              <p class="contact-name">{t.fund.process.contact.name}</p>
-              <p class="contact-role">{t.fund.process.contact.role}</p>
-              <p class="contact-line"><a href={`mailto:${t.fund.process.contact.email}`}>{t.fund.process.contact.email}</a></p>
-              <p class="contact-line"><a href={`tel:${t.fund.process.contact.phone.replace(/\s/g, '')}`}>{t.fund.process.contact.phone}</a></p>
-              <p class="contact-line contact-general"><a href={`mailto:${t.fund.process.contact.generalEmail}`}>{t.fund.process.contact.generalEmail}</a></p>
-            </div>
-            <div class="cta-stack">
-              <a class="btn btn-cta-solid" href={`mailto:${t.fund.process.contact.generalEmail}?subject=${mailSubjectCim}`}>{t.fund.process.ctaPrimary} <span aria-hidden="true">→</span></a>
-              <a class="btn btn-cta-outline" href={`mailto:${t.fund.process.contact.generalEmail}?subject=${mailSubjectMeet}`}>{t.fund.process.ctaSecondary} <span aria-hidden="true">→</span></a>
-              <p class="cta-note">{t.fund.process.formNote}</p>
-            </div>
-          </div>
-        </div>
-      </article>
+        <!-- the ¹ in the terms strip resolves here, on the same page (regulatory) -->
+        <p class="footnote reveal">{fund.terms.irrCaveat}</p>
+      </div>
     </section>
 
     <!-- Partners -->
@@ -654,27 +431,13 @@ const allocSegments = t.fund.verticals.items.map((v, i) => {
     margin-top: 0.9rem;
   }
   .resources .display::before,
-  .fund .display::before {
+  .funds-rail .display::before {
     content: '';
     display: block;
     width: 56px;
     height: 4px;
     background: var(--brand);
     margin-bottom: 1.1rem;
-  }
-  .display-inverse {
-    color: #fff;
-    text-shadow: 0 2px 22px rgba(1, 16, 31, 0.6);
-  }
-  .display-inverse::before {
-    background: var(--sky) !important;
-  }
-  .lede {
-    font-size: clamp(1.05rem, 1.6vw, 1.22rem);
-    line-height: 1.6;
-    color: var(--ink-soft);
-    max-width: 62ch;
-    margin-top: 1.1rem;
   }
   .sub-label {
     font-size: 0.75rem;
@@ -689,9 +452,6 @@ const allocSegments = t.fund.verticals.items.map((v, i) => {
     color: var(--ink-muted);
     max-width: 72ch;
     margin-top: 0.9rem;
-  }
-  .footnote-dark {
-    color: #9fbedc;
   }
   .mono-num {
     font-variant-numeric: tabular-nums;
@@ -726,21 +486,6 @@ const allocSegments = t.fund.verticals.items.map((v, i) => {
   }
   .btn-glass:hover {
     background: rgba(2, 29, 59, 0.5);
-  }
-  .btn-cta-solid {
-    background: #fff;
-    color: var(--brand);
-  }
-  .btn-cta-solid:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 12px 30px rgba(1, 16, 31, 0.5);
-  }
-  .btn-cta-outline {
-    border: 1.5px solid rgba(255, 255, 255, 0.65);
-    color: #fff;
-  }
-  .btn-cta-outline:hover {
-    background: rgba(255, 255, 255, 0.12);
   }
 
   /* ===== Header ===== */
@@ -1366,6 +1111,7 @@ const allocSegments = t.fund.verticals.items.map((v, i) => {
     background: var(--ice);
     border-top: 4px solid var(--brand);
     padding-block: clamp(3rem, 6vw, 4.5rem);
+    scroll-margin-top: var(--header-h, 139px);
   }
   .resource-grid {
     display: grid;
@@ -1460,708 +1206,113 @@ const allocSegments = t.fund.verticals.items.map((v, i) => {
     }
   }
 
-  /* ===== Fund ===== */
-  /* No-JS fallbacks; initStickyOffsets() overrides both inline on <html>. */
+  /* ===== Fundos rail — the platform's funds, on the site's inverse plate ===== */
+  /* No-JS fallback; initStickyOffsets() overrides it inline on <html>. */
   :global(:root) {
     --header-h: 139px;
-    --subnav-h: 0px;
-  }
-  @media (min-width: 901px) {
-    :global(:root) {
-      --subnav-h: 52px;
-    }
   }
 
-  .fund {
-    background: #fff;
-    /* the subnav is .fund's first child, so it only has to clear the header */
+  .funds-rail {
+    background: var(--ice);
+    border-top: 1px solid var(--hairline-strong);
+    padding-block: clamp(3rem, 6vw, 4.5rem);
     scroll-margin-top: var(--header-h, 139px);
   }
-  .fund-subnav {
-    position: sticky;
-    top: var(--header-h, 139px);
-    z-index: 40;
-    background: rgba(255, 255, 255, 0.93);
-    backdrop-filter: blur(9px);
-    border-top: 4px solid var(--brand);
-    border-bottom: 1px solid var(--hairline-strong);
-  }
-  .fund-subnav ul {
-    display: flex;
-    gap: clamp(1rem, 3vw, 2.2rem);
-    list-style: none;
-    padding: 0.7rem 0;
-    margin: 0;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-  }
-  .fund-subnav a {
-    font-size: 0.8rem;
-    font-weight: 650;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    text-decoration: none;
-    color: var(--ink-muted);
-    white-space: nowrap;
-  }
-  .fund-subnav a:hover {
-    color: var(--brand);
-  }
-  /* the sticky strip reads oddly on small screens — anchor nav lives in the
-     main menu there, so the subnav is desktop furniture only */
-  @media (max-width: 900px) {
-    .fund-subnav {
-      display: none;
-    }
-    .fund {
-      border-top: 4px solid var(--brand);
-    }
-  }
-
-  .thesis,
-  .verticals,
-  .team,
-  .process {
-    padding-block: clamp(3.2rem, 7vw, 5.5rem);
-    scroll-margin-top: calc(var(--header-h, 139px) + var(--subnav-h, 0px));
-  }
-  .thesis {
-    background: var(--ice);
-  }
-  .verticals {
-    background: #fff;
-  }
-  .team {
-    background: var(--ice);
-    border-top: 1px solid var(--hairline-strong);
-  }
-  .process {
-    background: #fff;
-    border-top: 1px solid var(--hairline-strong);
-  }
-
-  /* Eras — back to the future */
-  .eras {
-    margin-top: clamp(2.2rem, 5vw, 3.4rem);
-    display: flex;
-    flex-direction: column;
-  }
-  .era {
+  /* auto-fill, not auto-fit: with a single fund the empty second track stays,
+     so the lone card keeps a card's width instead of stretching across the
+     shell. A second fund fills that track and the rail reads as a 2-up grid. */
+  .fund-rail-grid {
     display: grid;
-    grid-template-columns: 48px 1fr;
-    gap: clamp(1rem, 3vw, 2rem);
-  }
-  .era-rail {
-    position: relative;
-    display: flex;
-    justify-content: center;
-  }
-  .era-rail::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    width: 1px;
-    background: linear-gradient(var(--sky), var(--brand));
-  }
-  .era-node {
-    position: relative;
-    z-index: 1;
-    width: 14px;
-    height: 14px;
-    border-radius: 50%;
-    background: var(--ice);
-    border: 3px solid var(--brand);
-    margin-top: 0.4rem;
-  }
-  .era:last-child .era-rail::before {
-    bottom: auto;
-    height: 1.2rem;
-  }
-  .era-body {
-    padding-bottom: clamp(2.2rem, 5vw, 3.2rem);
-    max-width: 62ch;
-  }
-  .era-label {
-    font-family: var(--font-display);
-    font-style: italic;
-    font-size: clamp(1.15rem, 2vw, 1.45rem);
-    color: var(--blue);
-  }
-  .era-copy {
-    margin-top: 0.7rem;
-    font-size: 1.08rem;
-    line-height: 1.75;
-    color: var(--ink-soft);
-  }
-  .drop-cap::first-letter {
-    font-family: var(--font-display);
-    font-size: 3.2em;
-    font-weight: 600;
-    float: left;
-    line-height: 0.85;
-    padding-right: 0.12em;
-    color: var(--brand);
-  }
-
-  .equation {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 0.9rem;
-    margin-top: 1.4rem;
-  }
-  .eq-block {
-    font-size: 0.92rem;
-    font-weight: 650;
-    color: var(--ink);
-    border: 1px solid var(--hairline-strong);
-    background: #fff;
-    padding: 0.85rem 1.2rem;
-    border-radius: 10px;
-  }
-  .eq-op {
-    font-family: var(--font-display);
-    font-style: italic;
-    font-size: 1.4rem;
-    color: var(--blue);
-  }
-  .eq-result {
-    font-size: 0.92rem;
-    font-weight: 700;
-    text-wrap: balance;
-    background: var(--brand);
-    color: #fff;
-    padding: 0.9rem 1.3rem;
-    border-radius: 10px;
-    box-shadow: 0 10px 26px rgba(4, 63, 127, 0.28);
-  }
-
-  /* ===== EU context — the return to the canyon ===== */
-  .eu-band {
-    position: relative;
-    overflow: hidden;
-    border-top: 4px solid var(--brand);
-    border-bottom: 4px solid var(--brand);
-    background: var(--deep);
-  }
-  .eu-media {
-    position: absolute;
-    inset: -12% 0;
-  }
-  .eu-media :global(img) {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-  .eu-veil {
-    position: absolute;
-    inset: 0;
-    background:
-      linear-gradient(180deg, rgba(1, 16, 31, 0.5) 0%, rgba(2, 29, 59, 0.24) 34%, rgba(1, 16, 31, 0.68) 100%),
-      radial-gradient(110% 80% at 50% 42%, transparent 40%, rgba(1, 16, 31, 0.5) 100%);
-  }
-  .eu-content {
-    position: relative;
-    z-index: 1;
-    padding-block: clamp(4rem, 10vh, 7rem);
-  }
-  .eu-title {
-    font-family: var(--font-display);
-    font-weight: 560;
-    font-size: clamp(1.7rem, 3.4vw, 2.5rem);
-    line-height: 1.12;
-    color: #fff;
-    max-width: 26ch;
-    margin-top: 0.9rem;
-    text-shadow: 0 2px 22px rgba(1, 16, 31, 0.7);
-  }
-  .eu-intro {
-    margin-top: 1rem;
-    color: rgba(234, 242, 251, 0.92);
-    max-width: 58ch;
-    line-height: 1.65;
-    text-shadow: 0 1px 12px rgba(1, 16, 31, 0.7);
-  }
-  .eu-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1rem;
-    margin-top: clamp(2rem, 4vw, 3rem);
-  }
-  .eu-stat {
-    padding: 1.3rem 1.3rem 1.2rem;
-  }
-  .eu-value {
-    font-family: var(--font-display);
-    font-size: clamp(1.9rem, 3.2vw, 2.5rem);
-    font-weight: 600;
-    color: #fff;
-    text-shadow: 0 0 28px rgba(111, 165, 220, 0.45);
-  }
-  .eu-label {
-    font-size: 0.85rem;
-    line-height: 1.45;
-    color: rgba(220, 233, 246, 0.9);
-    margin-top: 0.4rem;
-  }
-  .eu-source {
-    font-size: 0.7rem;
-    color: rgba(159, 190, 220, 0.85);
-    margin-top: 0.55rem;
-  }
-  @media (max-width: 880px) {
-    .eu-grid {
-      grid-template-columns: 1fr 1fr;
-    }
-  }
-  @media (max-width: 520px) {
-    .eu-grid {
-      grid-template-columns: 1fr;
-    }
-  }
-
-  /* Verticals */
-  .alloc-wrap {
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 26rem), 1fr));
+    gap: clamp(1rem, 2vw, 1.5rem);
     margin-top: 2.2rem;
-    max-width: 46rem;
   }
-  .vertical-list {
-    margin-top: clamp(2.4rem, 5vw, 3.6rem);
+  /* The card is the hit target, with the fund-name link stretched over it —
+     the same pattern the Observatory resource cards use. */
+  .fund-card {
+    position: relative;
+    /* caps the card at reading width in the single-track band between the
+       one- and two-column layouts; the min(100%, …) floor keeps it fluid below */
+    max-width: 44rem;
     display: flex;
     flex-direction: column;
-  }
-  .vertical {
-    border-top: 1px solid var(--hairline-strong);
-    padding: 2.2rem 0;
-    display: grid;
-    grid-template-columns: minmax(240px, 1.1fr) 1.6fr 1.4fr;
-    gap: clamp(1.4rem, 3vw, 2.6rem);
-  }
-  .v-head {
-    display: flex;
-    gap: 1rem;
-    align-items: baseline;
-  }
-  .v-no {
-    font-family: var(--font-display);
-    font-style: italic;
-    font-size: 1.2rem;
-    color: var(--blue);
-  }
-  .v-head h3 {
-    font-family: var(--font-display);
-    font-size: 1.45rem;
-    font-weight: 600;
-    line-height: 1.2;
-  }
-  .v-alloc {
-    font-size: 0.8rem;
-    font-weight: 650;
-    color: var(--ink-muted);
-    margin-top: 0.45rem;
-  }
-  .v-copy {
-    line-height: 1.65;
-    color: var(--ink-soft);
-  }
-  .v-bullets {
-    list-style: none;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 0.55rem;
-    font-size: 0.87rem;
-    color: var(--ink-soft);
-  }
-  .v-bullets li {
-    padding-left: 1.1rem;
-    position: relative;
-    line-height: 1.45;
-  }
-  .v-bullets li::before {
-    content: '·';
-    position: absolute;
-    left: 0;
-    color: var(--blue);
-    font-weight: 700;
-    font-size: 1.3em;
-    line-height: 1;
-  }
-  @media (max-width: 880px) {
-    .vertical {
-      grid-template-columns: 1fr;
-      gap: 1rem;
-    }
-  }
-
-  /* Portfolio — full-bleed estuary */
-  .portfolio {
-    scroll-margin-top: calc(var(--header-h, 139px) + var(--subnav-h, 0px));
-  }
-  .pf-band {
-    position: relative;
-    min-height: 100svh;
-    display: flex;
-    align-items: flex-end;
-    overflow: hidden;
-    border-top: 4px solid var(--brand);
-    /* any parallax overshoot lands on navy, never on the white page */
-    background: var(--deep);
-  }
-  .pf-media {
-    position: absolute;
-    inset: -18% 0;
-  }
-  .pf-media :global(img) {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-  .pf-veil {
-    position: absolute;
-    inset: 0;
-    background:
-      linear-gradient(
-        180deg,
-        rgba(2, 29, 59, 0.55) 0%,
-        rgba(2, 29, 59, 0.22) 30%,
-        rgba(2, 29, 59, 0.58) 64%,
-        rgba(1, 16, 31, 0.92) 100%
-      ),
-      linear-gradient(90deg, rgba(2, 29, 59, 0.55) 0%, rgba(2, 29, 59, 0.2) 48%, rgba(2, 29, 59, 0) 72%);
-  }
-  .pf-content {
-    position: relative;
-    z-index: 1;
-    width: 100%;
-    padding-block: clamp(3rem, 8vh, 5rem);
-  }
-  .pf-body {
-    max-width: 46rem;
-    margin-top: 1.6rem;
-  }
-  .anchor-tag {
-    font-size: 0.75rem;
-    font-weight: 700;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: var(--pale);
-    text-shadow: 0 1px 12px rgba(1, 16, 31, 0.8);
-  }
-  .anchor-name {
-    font-family: var(--font-display);
-    font-size: clamp(1.7rem, 3vw, 2.3rem);
-    font-weight: 600;
-    margin-top: 0.5rem;
-    color: #fff;
-  }
-  .anchor-copy {
-    margin-top: 1rem;
-    line-height: 1.65;
-    color: rgba(234, 242, 251, 0.92);
-    max-width: 56ch;
-  }
-  .farm-cards {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-    margin-top: 1.6rem;
-    max-width: 34rem;
-  }
-  .farm-card {
-    border: 1px solid rgba(111, 165, 220, 0.4);
-    background: rgba(2, 29, 59, 0.62);
-    backdrop-filter: blur(8px);
-    border-radius: 12px;
-    padding: 1rem 1.1rem;
-  }
-  .farm-name {
-    font-family: var(--font-display);
-    font-weight: 600;
-    font-size: 1.15rem;
-    color: var(--pale);
-  }
-  .farm-specs {
-    font-size: 0.83rem;
-    color: rgba(220, 233, 246, 0.85);
-    margin-top: 0.3rem;
-  }
-  .pipeline-note {
-    font-style: italic;
-    color: rgba(234, 242, 251, 0.9);
-    margin-top: 1.6rem;
-    max-width: 58ch;
-    line-height: 1.6;
-    border-left: 2px solid var(--sky);
-    padding-left: 1rem;
-  }
-  .pf-credit {
-    margin-top: 1.8rem;
-    font-size: 0.72rem;
-    letter-spacing: 0.05em;
-    color: rgba(220, 233, 246, 0.6);
-  }
-  @media (max-width: 560px) {
-    .farm-cards {
-      grid-template-columns: 1fr;
-    }
-  }
-
-  /* Terms — deep navy block */
-  .terms {
-    background: var(--deep);
-    color: #eaf2fb;
-    padding-block: clamp(3.2rem, 7vw, 5.5rem);
-    scroll-margin-top: calc(var(--header-h, 139px) + var(--subnav-h, 0px));
-  }
-  .terms-table {
-    margin-top: 2rem;
-    border-top: 2px solid var(--sky);
-    max-width: 46rem;
-  }
-  .terms-row {
-    display: grid;
-    grid-template-columns: 1fr 1.2fr;
-    gap: 1rem;
-    padding: 1.1rem 0;
-    border-bottom: 1px solid rgba(111, 165, 220, 0.24);
-  }
-  .terms-row dt {
-    font-size: 0.9rem;
-    color: #9fbedc;
-  }
-  .terms-row dd {
-    margin: 0;
-    display: flex;
-    align-items: baseline;
-    gap: 0.8rem;
-    flex-wrap: wrap;
-  }
-  .terms-value {
-    font-family: var(--font-display);
-    font-size: 1.3rem;
-    font-weight: 600;
-    color: var(--pale);
-    text-shadow: 0 0 24px rgba(111, 165, 220, 0.35);
-  }
-  .terms-caveat {
-    font-size: 0.8rem;
-    color: #9fbedc;
-  }
-  .manager-line {
-    font-size: 0.92rem;
-    font-weight: 600;
-    color: #c6daee;
-    margin-top: 1.6rem;
-    max-width: 60ch;
-  }
-
-  /* Team */
-  .team-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
-    gap: clamp(1.4rem, 3vw, 2.2rem);
-  }
-  .member-photo,
-  .member-monogram {
-    width: 100%;
-    height: auto;
-    aspect-ratio: 4 / 5;
-    object-fit: cover;
-    border-radius: 12px;
-  }
-  .member-monogram {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: linear-gradient(160deg, var(--brand), var(--deep));
-    color: rgba(255, 255, 255, 0.9);
-    font-family: var(--font-display);
-    font-size: 2.6rem;
-    font-weight: 500;
-  }
-  .member-name {
-    font-family: var(--font-display);
-    font-size: 1.1rem;
-    font-weight: 600;
-    margin-top: 0.9rem;
-  }
-  .member-name a {
-    color: inherit;
-    text-decoration-color: var(--hairline);
-  }
-  .member-name a:hover {
-    color: var(--blue);
-  }
-  .member-role {
-    font-size: 0.76rem;
-    font-weight: 650;
-    letter-spacing: 0.07em;
-    text-transform: uppercase;
-    color: var(--blue);
-    margin-top: 0.25rem;
-  }
-  .member-bio {
-    font-size: 0.84rem;
-    line-height: 1.5;
-    color: var(--ink-soft);
-    margin-top: 0.5rem;
-  }
-
-  /* Process */
-  .steps {
-    list-style: none;
-    padding: 0;
-    margin-top: 2.4rem;
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: clamp(1rem, 2vw, 1.6rem);
-  }
-  .step {
-    border-top: 2px solid var(--brand);
-    padding-top: 1rem;
-  }
-  .step-no {
-    font-family: var(--font-display);
-    font-style: italic;
-    font-size: 1.1rem;
-    color: var(--blue);
-  }
-  .step-title {
-    font-size: 0.95rem;
-    font-weight: 700;
-    margin-top: 0.4rem;
-  }
-  .step-desc {
-    font-size: 0.83rem;
-    line-height: 1.5;
-    color: var(--ink-soft);
-    margin-top: 0.45rem;
-  }
-  @media (max-width: 980px) {
-    .steps {
-      grid-template-columns: 1fr;
-      max-width: 34rem;
-    }
-    .step {
-      display: grid;
-      grid-template-columns: 3rem 1fr;
-      grid-template-rows: auto auto;
-      column-gap: 0.6rem;
-      border-top: none;
-      border-left: 2px solid var(--brand);
-      padding: 0.2rem 0 0.2rem 1.1rem;
-    }
-    .step-no {
-      grid-row: 1 / 3;
-    }
-    .step-title {
-      margin-top: 0;
-    }
-  }
-
-  /* Invest CTA — deep navy plate */
-  .invest-cta {
-    display: grid;
-    grid-template-columns: 1.2fr 1fr;
-    gap: clamp(1.8rem, 4vw, 3rem);
-    margin-top: clamp(2.5rem, 5vw, 3.6rem);
     background: var(--deep);
     color: #eaf2fb;
     border-radius: 18px;
     padding: clamp(1.5rem, 3.5vw, 2.5rem);
     box-shadow: 0 24px 60px rgba(2, 29, 59, 0.3);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
   }
-  .contact-name {
-    font-family: var(--font-display);
-    font-size: 1.4rem;
-    font-weight: 600;
-    color: #fff;
+  .fund-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 30px 70px rgba(2, 29, 59, 0.38);
   }
-  .contact-role {
-    font-size: 0.78rem;
-    font-weight: 650;
-    letter-spacing: 0.08em;
+  .fc-no {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
     text-transform: uppercase;
     color: var(--sky);
-    margin-top: 0.25rem;
+    font-variant-numeric: tabular-nums;
   }
-  .contact-line {
-    font-size: 0.95rem;
+  .fc-name {
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 3vw, 2.1rem);
+    font-weight: 600;
+    line-height: 1.15;
     margin-top: 0.6rem;
-  }
-  .contact-line a {
-    color: var(--pale);
-    text-decoration-color: rgba(111, 165, 220, 0.4);
-  }
-  .contact-line a:hover {
     color: #fff;
   }
-  .contact-general {
-    color: #9fbedc;
+  .fc-link {
+    text-decoration: none;
   }
-  .cta-stack {
-    display: flex;
-    flex-direction: column;
-    gap: 0.9rem;
-    justify-content: center;
+  .fc-link::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
   }
-  .cta-note {
+  .fund-card:hover .fc-link {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+  .fc-blurb {
+    margin-top: 1rem;
+    line-height: 1.65;
+    color: rgba(220, 233, 246, 0.92);
+    max-width: 56ch;
+  }
+  .fc-terms {
+    margin-top: 1.4rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid rgba(111, 165, 220, 0.28);
+    font-size: 0.95rem;
+    font-weight: 650;
+    color: var(--pale);
+    font-variant-numeric: tabular-nums;
+  }
+  .fc-manager {
+    margin-top: 0.7rem;
     font-size: 0.78rem;
     color: #9fbedc;
-    text-align: center;
+    max-width: 62ch;
   }
-  @media (max-width: 760px) {
-    .invest-cta {
-      grid-template-columns: 1fr;
-    }
-  }
-
-  /* ===== Sustainable approach ===== */
-  .sustain {
-    background: var(--ice);
-    border-top: 1px solid var(--hairline-strong);
-    padding-block: clamp(3rem, 6vw, 4.5rem);
-    scroll-margin-top: calc(var(--header-h, 139px) + var(--subnav-h, 0px));
-  }
-  .sustain-grid {
-    list-style: none;
-    padding: 0;
-    margin-top: 2.4rem;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: clamp(1rem, 2vw, 1.6rem);
-  }
-  .sustain-card {
-    background: #fff;
-    border: 1px solid var(--hairline);
-    border-radius: 14px;
-    padding: clamp(1.3rem, 2.4vw, 1.8rem);
-  }
-  .sc-no {
-    font-family: var(--font-display);
-    font-style: italic;
-    font-size: 1.1rem;
-    color: var(--blue);
-  }
-  .sc-title {
-    font-family: var(--font-display);
-    font-size: 1.2rem;
-    font-weight: 600;
-    line-height: 1.25;
-    margin-top: 0.5rem;
-  }
-  .sc-copy {
-    margin-top: 0.7rem;
-    line-height: 1.65;
-    color: var(--ink-soft);
+  .fc-cta {
+    margin-top: auto;
+    padding-top: 1.6rem;
     font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--sky);
   }
-  @media (max-width: 900px) {
-    .sustain-grid {
-      grid-template-columns: 1fr;
-    }
+  .fc-cta span {
+    display: inline-block;
+    transition: transform 0.2s ease;
+  }
+  .fund-card:hover .fc-cta span {
+    transform: translateX(4px);
+  }
+  .funds-rail .footnote {
+    margin-top: 1.4rem;
   }
 
   /* Partners */
