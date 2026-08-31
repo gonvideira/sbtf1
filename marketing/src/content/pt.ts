@@ -162,11 +162,11 @@ export const pt: SiteContent = {
       paragraphs: [
         'A economia azul portuguesa tem séculos de know-how artesanal: aquacultura em estuário, conservas de classe mundial, técnicas de processamento de bacalhau com 500 anos de história. Não é um sector emergente — é um sector maduro, sub-capitalizado.',
         'A Europa tem um défice comercial de €21,6 mil milhões em seafood por ano e a auto-suficiência da UE caiu para 37,5%. Portugal tem os activos, o clima e as espécies premium que os mercados nórdicos e centro-europeus não conseguem produzir. A oportunidade não é inventar algo novo — é modernizar, certificar e exportar o que já existe.',
-        'O SBTF 1 é o veículo para essa transformação: capital institucional, integração vertical e tecnologia ao serviço do produto — não o contrário.',
+        'O SBTF 1 é o veículo para essa transformação: capital institucional, integração vertical e tecnologia ao serviço do produto — não o contrário. É desse trabalho que resulta a liderança europeia em qualidade.',
       ],
       equation: {
         blocks: ['Know-how acumulado', 'Capital institucional', 'Inovação incremental'],
-        result: 'Liderança europeia em qualidade',
+        result: 'Valor criado, sustentabilidade verificada',
       },
     },
 
